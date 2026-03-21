@@ -1,0 +1,48 @@
+<div class="food-page">
+  <h1>BBQ Food & Drinks</h1>
+  <p class="subtitle">Sign up for what you're bringing to the cookout.</p>
+
+  <div class="food-grid" *ngIf="sections$ | async as sections">
+    <div *ngFor="let section of sections" class="food-category">
+      <h2>{{ section.emoji }} {{ section.label }}</h2>
+      <ul class="food-list">
+        <li *ngFor="let item of section.items" class="food-item">
+          <span class="food-item__name">{{ item.item }}</span>
+          <span class="food-item__servings" *ngIf="item.servings">{{ item.servings }} servings</span>
+          <span class="food-item__who">{{ item.broughtBy }}</span>
+          <button class="btn-remove" (click)="remove(item.id)" title="Remove">✕</button>
+        </li>
+        <li *ngIf="section.items.length === 0" class="food-item food-item--empty">
+          Nothing yet — be the first!
+        </li>
+      </ul>
+    </div>
+  </div>
+
+  <div class="food-add">
+    <h3>Add an item</h3>
+    <div class="form-row">
+      <div class="form-group">
+        <label for="addCategory">Category</label>
+        <select id="addCategory" [(ngModel)]="addCategory" name="addCategory">
+          <option *ngFor="let c of categories" [value]="c.value">{{ c.emoji }} {{ c.label }}</option>
+        </select>
+      </div>
+      <div class="form-group">
+        <label for="addItem">What are you bringing?</label>
+        <input id="addItem" type="text" [(ngModel)]="addItem" name="addItem" placeholder="e.g. Pasta salad" />
+      </div>
+      <div class="form-group">
+        <label for="addServings">Servings (optional)</label>
+        <input id="addServings" type="number" [(ngModel)]="addServings" name="addServings" min="1" [placeholder]="servingsPlaceholder" />
+      </div>
+      <div class="form-group">
+        <label for="addName">Your name</label>
+        <input id="addName" type="text" [(ngModel)]="addName" name="addName" placeholder="Your name" />
+      </div>
+    </div>
+    <div class="form-actions">
+      <button class="btn-primary" (click)="submit()" [disabled]="!isValid">Add Item</button>
+    </div>
+  </div>
+</div>

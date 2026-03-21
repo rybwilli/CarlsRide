@@ -1,0 +1,436 @@
+/* Global styles for CarlsRide */
+
+*, *::before, *::after {
+  box-sizing: border-box;
+  margin: 0;
+  padding: 0;
+}
+
+:root {
+  --color-primary: #e85d04;
+  --color-primary-dark: #c44d00;
+  --color-bg: #f8f9fa;
+  --color-surface: #ffffff;
+  --color-border: #dee2e6;
+  --color-text: #212529;
+  --color-text-muted: #6c757d;
+  --color-easy: #2d6a4f;
+  --color-moderate: #e9a825;
+  --color-hard: #c1121f;
+  --radius: 8px;
+}
+
+body {
+  font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, sans-serif;
+  background: var(--color-bg);
+  color: var(--color-text);
+  line-height: 1.5;
+}
+
+/* Header */
+.app-header {
+  background: var(--color-primary);
+  color: white;
+  padding: 0 1.5rem;
+  box-shadow: 0 2px 4px rgba(0,0,0,0.15);
+
+  &__inner {
+    max-width: 960px;
+    margin: 0 auto;
+    height: 56px;
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+  }
+}
+
+.app-title {
+  font-size: 1.25rem;
+  font-weight: 700;
+  color: white;
+  text-decoration: none;
+  letter-spacing: 0.5px;
+}
+
+nav a {
+  color: rgba(255,255,255,0.85);
+  text-decoration: none;
+  margin-left: 1.5rem;
+  font-size: 0.95rem;
+
+  &:hover, &.active {
+    color: white;
+    text-decoration: underline;
+  }
+}
+
+/* Main content */
+.app-content {
+  max-width: 960px;
+  margin: 2rem auto;
+  padding: 0 1.5rem;
+}
+
+/* Buttons */
+.btn-primary {
+  background: var(--color-primary);
+  color: white;
+  border: none;
+  border-radius: var(--radius);
+  padding: 0.5rem 1.25rem;
+  font-size: 0.95rem;
+  font-weight: 600;
+  cursor: pointer;
+
+  &:hover:not(:disabled) { background: var(--color-primary-dark); }
+  &:disabled { opacity: 0.5; cursor: not-allowed; }
+}
+
+.btn-secondary {
+  background: white;
+  color: var(--color-text);
+  border: 1px solid var(--color-border);
+  border-radius: var(--radius);
+  padding: 0.5rem 1.25rem;
+  font-size: 0.95rem;
+  font-weight: 600;
+  cursor: pointer;
+
+  &:hover { background: var(--color-bg); }
+}
+
+.btn-back {
+  background: none;
+  border: none;
+  color: var(--color-primary);
+  cursor: pointer;
+  font-size: 0.9rem;
+  padding: 0;
+  margin-bottom: 1.25rem;
+  display: inline-block;
+
+  &:hover { text-decoration: underline; }
+}
+
+/* Badges */
+.badge {
+  display: inline-block;
+  padding: 0.2rem 0.6rem;
+  border-radius: 999px;
+  font-size: 0.78rem;
+  font-weight: 600;
+  text-transform: capitalize;
+
+  &--easy     { background: #d8f3dc; color: var(--color-easy); }
+  &--moderate { background: #fff3cd; color: #7d4e00; }
+  &--hard     { background: #fde0de; color: var(--color-hard); }
+}
+
+/* Forms */
+.form-group {
+  display: flex;
+  flex-direction: column;
+  gap: 0.35rem;
+  margin-bottom: 1.1rem;
+
+  label {
+    font-size: 0.875rem;
+    font-weight: 600;
+    color: var(--color-text-muted);
+  }
+
+  input, select, textarea {
+    border: 1px solid var(--color-border);
+    border-radius: var(--radius);
+    padding: 0.5rem 0.75rem;
+    font-size: 0.95rem;
+    font-family: inherit;
+    background: white;
+
+    &:focus {
+      outline: none;
+      border-color: var(--color-primary);
+      box-shadow: 0 0 0 3px rgba(232,93,4,0.15);
+    }
+  }
+}
+
+.form-row {
+  display: grid;
+  grid-template-columns: 1fr 1fr;
+  gap: 1rem;
+}
+
+.form-actions {
+  display: flex;
+  gap: 0.75rem;
+  justify-content: flex-end;
+  margin-top: 1.5rem;
+}
+
+/* Ride list */
+.ride-list-page {
+  .page-header {
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    margin-bottom: 1.5rem;
+  }
+
+  .destination-banner {
+    font-size: 0.95rem;
+    color: var(--color-text-muted);
+  }
+}
+
+.rides-grid {
+  display: grid;
+  grid-template-columns: repeat(auto-fill, minmax(280px, 1fr));
+  gap: 1rem;
+}
+
+.ride-card {
+  background: var(--color-surface);
+  border: 1px solid var(--color-border);
+  border-radius: var(--radius);
+  padding: 1.1rem 1.25rem;
+  cursor: pointer;
+  transition: box-shadow 0.15s, border-color 0.15s;
+
+  &:hover {
+    box-shadow: 0 4px 12px rgba(0,0,0,0.1);
+    border-color: var(--color-primary);
+  }
+
+  &__header {
+    display: flex;
+    align-items: flex-start;
+    justify-content: space-between;
+    gap: 0.5rem;
+    margin-bottom: 0.75rem;
+
+    h2 {
+      font-size: 1rem;
+      font-weight: 700;
+      line-height: 1.3;
+    }
+  }
+
+  &__meta {
+    display: flex;
+    flex-direction: column;
+    gap: 0.25rem;
+    font-size: 0.875rem;
+    color: var(--color-text-muted);
+    margin-bottom: 0.75rem;
+  }
+
+  &__time {
+    font-size: 0.825rem;
+    color: var(--color-primary);
+    font-weight: 600;
+  }
+}
+
+.empty-state {
+  grid-column: 1 / -1;
+  text-align: center;
+  padding: 3rem;
+  color: var(--color-text-muted);
+}
+
+/* Ride detail */
+.ride-detail-page {
+  max-width: 640px;
+
+  h1 {
+    font-size: 1.6rem;
+    margin-right: 0.75rem;
+  }
+
+  &__header {
+    display: flex;
+    align-items: center;
+    margin-bottom: 1.5rem;
+  }
+
+  &__info {
+    background: var(--color-surface);
+    border: 1px solid var(--color-border);
+    border-radius: var(--radius);
+    padding: 1.25rem;
+    margin-bottom: 1.5rem;
+  }
+
+  &__riders {
+    margin-bottom: 1.5rem;
+
+    h3 { margin-bottom: 0.5rem; }
+
+    ul {
+      list-style: none;
+      display: flex;
+      flex-direction: column;
+      gap: 0.25rem;
+      font-size: 0.9rem;
+    }
+  }
+
+  &__join {
+    background: var(--color-surface);
+    border: 1px solid var(--color-border);
+    border-radius: var(--radius);
+    padding: 1.25rem;
+
+    h3 { margin-bottom: 1rem; }
+  }
+}
+
+.info-row {
+  display: grid;
+  grid-template-columns: 100px 1fr;
+  gap: 0.5rem;
+  padding: 0.4rem 0;
+  border-bottom: 1px solid var(--color-border);
+  font-size: 0.9rem;
+
+  &:last-child { border-bottom: none; }
+
+  label {
+    font-weight: 600;
+    color: var(--color-text-muted);
+    font-size: 0.8rem;
+    text-transform: uppercase;
+    letter-spacing: 0.5px;
+    align-self: center;
+  }
+}
+
+.join-success {
+  background: #d8f3dc;
+  color: var(--color-easy);
+  padding: 1rem 1.25rem;
+  border-radius: var(--radius);
+  font-weight: 600;
+}
+
+/* Add ride */
+.add-ride-page {
+  max-width: 600px;
+
+  h1 { margin-bottom: 0.25rem; }
+
+  .subtitle {
+    color: var(--color-text-muted);
+    margin-bottom: 1.75rem;
+    font-size: 0.95rem;
+  }
+}
+
+.not-found {
+  text-align: center;
+  padding: 3rem;
+  color: var(--color-text-muted);
+}
+
+/* Food signup */
+.food-page {
+  h1 { margin-bottom: 0.25rem; }
+
+  .subtitle {
+    color: var(--color-text-muted);
+    margin-bottom: 1.75rem;
+    font-size: 0.95rem;
+  }
+}
+
+.food-grid {
+  display: grid;
+  grid-template-columns: repeat(auto-fill, minmax(240px, 1fr));
+  gap: 1.25rem;
+  margin-bottom: 2rem;
+}
+
+.food-category {
+  background: var(--color-surface);
+  border: 1px solid var(--color-border);
+  border-radius: var(--radius);
+  padding: 1.1rem 1.25rem;
+
+  h2 {
+    font-size: 1rem;
+    font-weight: 700;
+    margin-bottom: 0.75rem;
+    padding-bottom: 0.5rem;
+    border-bottom: 1px solid var(--color-border);
+  }
+}
+
+.food-list {
+  list-style: none;
+  display: flex;
+  flex-direction: column;
+  gap: 0.4rem;
+}
+
+.food-item {
+  display: flex;
+  align-items: center;
+  gap: 0.5rem;
+  font-size: 0.9rem;
+
+  &__name {
+    flex: 1;
+    font-weight: 500;
+  }
+
+  &__servings {
+    font-size: 0.78rem;
+    color: white;
+    background: var(--color-primary);
+    border-radius: 999px;
+    padding: 0.1rem 0.45rem;
+    font-weight: 600;
+  }
+
+  &__who {
+    color: var(--color-text-muted);
+    font-size: 0.8rem;
+  }
+
+  &--empty {
+    color: var(--color-text-muted);
+    font-style: italic;
+    font-size: 0.85rem;
+  }
+}
+
+.btn-remove {
+  background: none;
+  border: none;
+  cursor: pointer;
+  color: var(--color-text-muted);
+  font-size: 0.75rem;
+  padding: 0.1rem 0.3rem;
+  border-radius: 4px;
+  line-height: 1;
+
+  &:hover {
+    background: #fde0de;
+    color: var(--color-hard);
+  }
+}
+
+.food-add {
+  background: var(--color-surface);
+  border: 1px solid var(--color-border);
+  border-radius: var(--radius);
+  padding: 1.25rem;
+  max-width: 100%;
+
+  h3 { margin-bottom: 1rem; }
+
+  .form-row {
+    grid-template-columns: 1fr 2fr 0.75fr 1fr;
+  }
+}

@@ -1,0 +1,66 @@
+<div class="ride-detail-page" *ngIf="ride; else notFound">
+  <button class="btn-back" (click)="goBack()">← Back to Rides</button>
+
+  <div class="ride-detail__header">
+    <h1>{{ ride.name }}</h1>
+    <span class="badge badge--{{ ride.difficulty }}">{{ ride.difficulty }}</span>
+  </div>
+
+  <div class="ride-detail__info">
+    <div class="info-row">
+      <label>Start</label>
+      <span>{{ ride.startLocation }}</span>
+    </div>
+    <div class="info-row">
+      <label>End</label>
+      <span>{{ bbqLocation }}</span>
+    </div>
+    <div class="info-row">
+      <label>Distance</label>
+      <span>{{ ride.distanceMiles }} miles</span>
+    </div>
+    <div class="info-row">
+      <label>Departs</label>
+      <span>{{ ride.departureTime | date:'EEEE, MMMM d · h:mm a' }}</span>
+    </div>
+    <div class="info-row">
+      <label>Leader</label>
+      <span>{{ ride.leader }}<span *ngIf="ride.leaderContact"> — {{ ride.leaderContact }}</span></span>
+    </div>
+    <div class="info-row" *ngIf="ride.notes">
+      <label>Notes</label>
+      <span>{{ ride.notes }}</span>
+    </div>
+  </div>
+
+  <div class="ride-detail__riders">
+    <h3>Riders ({{ ride.riders.length }})</h3>
+    <ul>
+      <li *ngFor="let rider of ride.riders">{{ rider.name }}<span *ngIf="rider.email"> — {{ rider.email }}</span></li>
+    </ul>
+  </div>
+
+  <div class="ride-detail__join" *ngIf="!joined">
+    <h3>Join this ride</h3>
+    <div class="form-group">
+      <label for="joinName">Your name *</label>
+      <input id="joinName" type="text" [(ngModel)]="joinName" placeholder="Full name" />
+    </div>
+    <div class="form-group">
+      <label for="joinEmail">Email (optional)</label>
+      <input id="joinEmail" type="email" [(ngModel)]="joinEmail" placeholder="you@example.com" />
+    </div>
+    <button class="btn-primary" (click)="joinRide()" [disabled]="!joinName.trim()">Join Ride</button>
+  </div>
+
+  <div class="join-success" *ngIf="joined">
+    You're in! See you at {{ bbqLocation }} after the ride.
+  </div>
+</div>
+
+<ng-template #notFound>
+  <div class="not-found">
+    <p>Ride not found.</p>
+    <button class="btn-back" (click)="goBack()">← Back to Rides</button>
+  </div>
+</ng-template>

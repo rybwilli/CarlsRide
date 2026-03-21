@@ -1,0 +1,55 @@
+<div class="add-ride-page">
+  <h1>Add a Ride</h1>
+  <p class="subtitle">All rides end at <strong>{{ bbqLocation }}</strong></p>
+
+  <form (ngSubmit)="submit()" #rideForm="ngForm">
+    <div class="form-group">
+      <label for="name">Ride Name *</label>
+      <input id="name" type="text" [(ngModel)]="name" name="name" placeholder="e.g. River Trail Route" required />
+    </div>
+
+    <div class="form-group">
+      <label for="startLocation">Start Location *</label>
+      <input id="startLocation" type="text" [(ngModel)]="startLocation" name="startLocation" placeholder="e.g. Downtown Library Parking Lot" required />
+    </div>
+
+    <div class="form-row">
+      <div class="form-group">
+        <label for="departureTime">Departure Date & Time *</label>
+        <input id="departureTime" type="datetime-local" [(ngModel)]="departureTime" name="departureTime" required />
+      </div>
+      <div class="form-group">
+        <label for="distanceMiles">Distance (miles) *</label>
+        <input id="distanceMiles" type="number" [(ngModel)]="distanceMiles" name="distanceMiles" min="0.1" step="0.1" placeholder="12" required />
+      </div>
+    </div>
+
+    <div class="form-group">
+      <label for="difficulty">Difficulty *</label>
+      <select id="difficulty" [(ngModel)]="difficulty" name="difficulty">
+        <option *ngFor="let d of difficulties" [value]="d">{{ d }}</option>
+      </select>
+    </div>
+
+    <div class="form-row">
+      <div class="form-group">
+        <label for="leader">Ride Leader *</label>
+        <input id="leader" type="text" [(ngModel)]="leader" name="leader" placeholder="Your name" required />
+      </div>
+      <div class="form-group">
+        <label for="leaderContact">Contact (optional)</label>
+        <input id="leaderContact" type="text" [(ngModel)]="leaderContact" name="leaderContact" placeholder="Email or phone" />
+      </div>
+    </div>
+
+    <div class="form-group">
+      <label for="notes">Notes (optional)</label>
+      <textarea id="notes" [(ngModel)]="notes" name="notes" rows="3" placeholder="Route info, tips, what to bring..."></textarea>
+    </div>
+
+    <div class="form-actions">
+      <button type="button" class="btn-secondary" (click)="cancel()">Cancel</button>
+      <button type="submit" class="btn-primary" [disabled]="!isValid">Add Ride</button>
+    </div>
+  </form>
+</div>
