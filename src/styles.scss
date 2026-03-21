@@ -45,18 +45,29 @@ body {
 }
 
 .app-title {
-  font-size: 1.25rem;
-  font-weight: 700;
+  font-family: 'Bangers', cursive;
+  font-size: 1.7rem;
+  letter-spacing: 1.5px;
   color: white;
   text-decoration: none;
-  letter-spacing: 0.5px;
+  display: flex;
+  align-items: center;
+  gap: 0.6rem;
+}
+
+.nav-logo {
+  height: 40px;
+  width: auto;
+  border-radius: 4px;
 }
 
 nav a {
+  font-family: 'Bangers', cursive;
   color: rgba(255,255,255,0.85);
   text-decoration: none;
   margin-left: 1.5rem;
-  font-size: 0.95rem;
+  font-size: 1.2rem;
+  letter-spacing: 1px;
 
   &:hover, &.active {
     color: white;
@@ -121,9 +132,12 @@ nav a {
   font-weight: 600;
   text-transform: capitalize;
 
-  &--easy     { background: #d8f3dc; color: var(--color-easy); }
-  &--moderate { background: #fff3cd; color: #7d4e00; }
-  &--hard     { background: #fde0de; color: var(--color-hard); }
+  &--easy              { background: #d8f3dc; color: var(--color-easy); }
+  &--moderately\ easy  { background: #d8f3dc; color: var(--color-easy); }
+  &--moderate          { background: #fff3cd; color: #7d4e00; }
+  &--moderately\ hard  { background: #ffe5cc; color: #8b3a00; }
+  &--hard              { background: #fde0de; color: var(--color-hard); }
+  &--bike              { background: #e0ecff; color: #1a4fa0; }
 }
 
 /* Forms */
@@ -170,6 +184,17 @@ nav a {
 
 /* Ride list */
 .ride-list-page {
+  .hero {
+    display: flex;
+    justify-content: center;
+    margin-bottom: 1.5rem;
+
+    &__logo {
+      width: 220px;
+      height: auto;
+    }
+  }
+
   .page-header {
     display: flex;
     align-items: center;
@@ -216,6 +241,20 @@ nav a {
     }
   }
 
+  &__badges {
+    display: flex;
+    flex-direction: column;
+    gap: 0.3rem;
+    flex-shrink: 0;
+  }
+
+  &__description {
+    font-size: 0.85rem;
+    color: var(--color-text-muted);
+    margin-bottom: 0.6rem;
+    line-height: 1.4;
+  }
+
   &__meta {
     display: flex;
     flex-direction: column;
@@ -240,6 +279,11 @@ nav a {
 }
 
 /* Ride detail */
+.btn-sm {
+  padding: 0.35rem 0.85rem;
+  font-size: 0.85rem;
+}
+
 .ride-detail-page {
   max-width: 640px;
 
@@ -248,10 +292,31 @@ nav a {
     margin-right: 0.75rem;
   }
 
+  &__topbar {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    margin-bottom: 1.25rem;
+  }
+
   &__header {
     display: flex;
-    align-items: center;
-    margin-bottom: 1.5rem;
+    align-items: flex-start;
+    gap: 1rem;
+    margin-bottom: 0.75rem;
+  }
+
+  &__badges {
+    display: flex;
+    gap: 0.4rem;
+    flex-shrink: 0;
+    padding-top: 0.4rem;
+  }
+
+  &__description {
+    color: var(--color-text-muted);
+    font-size: 0.95rem;
+    margin-bottom: 1.25rem;
   }
 
   &__info {
@@ -275,6 +340,25 @@ nav a {
       font-size: 0.9rem;
     }
   }
+}
+
+.rider-row {
+  display: flex;
+  align-items: center;
+  gap: 0.5rem;
+  padding: 0.25rem 0;
+
+  .rider-name { font-weight: 500; }
+  .rider-email { color: var(--color-text-muted); font-size: 0.85rem; }
+  .rider-guests {
+    background: #e0ecff;
+    color: #1a4fa0;
+    font-size: 0.75rem;
+    font-weight: 600;
+    padding: 0.1rem 0.45rem;
+    border-radius: 999px;
+  }
+  .btn-remove { margin-left: auto; }
 
   &__join {
     background: var(--color-surface);
@@ -327,6 +411,60 @@ nav a {
   }
 }
 
+/* Route links */
+.route-links {
+  display: flex;
+  gap: 0.4rem;
+  flex-wrap: wrap;
+}
+
+.link-type-badge {
+  display: inline-block;
+  padding: 0.2rem 0.6rem;
+  border-radius: 999px;
+  font-size: 0.78rem;
+  font-weight: 600;
+  text-decoration: none;
+
+  &--strava { background: #ffe5d0; color: #e34402; }
+  &--gpx    { background: #e0ecff; color: #1a4fa0; }
+  &--maps   { background: #d8f3dc; color: #2d6a4f; }
+
+  &:hover { opacity: 0.8; }
+}
+
+.route-link-row {
+  display: flex;
+  gap: 0.5rem;
+  align-items: center;
+
+  select { width: 120px; flex-shrink: 0; }
+  input  { flex: 1; }
+}
+
+.route-links-list {
+  list-style: none;
+  margin-top: 0.6rem;
+  display: flex;
+  flex-direction: column;
+  gap: 0.4rem;
+
+  li {
+    display: flex;
+    align-items: center;
+    gap: 0.5rem;
+    font-size: 0.875rem;
+  }
+
+  .link-url {
+    flex: 1;
+    color: var(--color-text-muted);
+    overflow: hidden;
+    text-overflow: ellipsis;
+    white-space: nowrap;
+  }
+}
+
 .not-found {
   text-align: center;
   padding: 3rem;
@@ -346,7 +484,7 @@ nav a {
 
 .food-grid {
   display: grid;
-  grid-template-columns: repeat(auto-fill, minmax(240px, 1fr));
+  grid-template-columns: repeat(2, 1fr);
   gap: 1.25rem;
   margin-bottom: 2rem;
 }

@@ -1,0 +1,230 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 600 330" width="600" height="330">
+  <!-- White background needed for multiply blend mode -->
+  <rect width="600" height="330" fill="white"/>
+
+  <g fill="none" stroke="#888" stroke-linecap="round" stroke-linejoin="round">
+
+    <!-- ============================= -->
+    <!-- ROAD BIKE - top left         -->
+    <!-- ============================= -->
+    <g transform="translate(10,12)" stroke-width="1">
+      <circle cx="35" cy="95" r="28" stroke-width="7"/>
+      <circle cx="143" cy="95" r="28" stroke-width="7"/>
+      <!-- Rear triangle -->
+      <line x1="35" y1="95" x2="75" y2="97" stroke-width="5"/>
+      <line x1="35" y1="93" x2="68" y2="47" stroke-width="4"/>
+      <!-- Front triangle -->
+      <line x1="75" y1="97" x2="68" y2="45" stroke-width="5"/>
+      <line x1="68" y1="45" x2="112" y2="52" stroke-width="5"/>
+      <line x1="75" y1="97" x2="117" y2="65" stroke-width="5"/>
+      <line x1="112" y1="52" x2="117" y2="65" stroke-width="5"/>
+      <!-- Fork (curved) -->
+      <path d="M117,65 C120,78 143,88 143,95" stroke-width="4"/>
+      <!-- Seatpost + narrow saddle -->
+      <line x1="68" y1="45" x2="66" y2="29" stroke-width="4"/>
+      <path d="M57,27 C60,23 72,23 77,27" stroke-width="5"/>
+      <!-- Stem + drop bars -->
+      <line x1="112" y1="52" x2="116" y2="39" stroke-width="4"/>
+      <line x1="108" y1="37" x2="124" y2="37" stroke-width="4"/>
+      <path d="M108,37 C104,37 102,44 104,52" stroke-width="4"/>
+      <path d="M124,37 C128,37 130,44 128,52" stroke-width="4"/>
+      <!-- Brake levers -->
+      <line x1="108" y1="40" x2="103" y2="48" stroke-width="3"/>
+      <line x1="124" y1="40" x2="129" y2="48" stroke-width="3"/>
+      <!-- Chainring + crank -->
+      <circle cx="75" cy="97" r="12" stroke-width="3"/>
+      <line x1="75" y1="97" x2="68" y2="109" stroke-width="4"/>
+      <line x1="63" y1="112" x2="73" y2="107" stroke-width="3"/>
+    </g>
+
+    <!-- ============================= -->
+    <!-- MOUNTAIN BIKE - top center   -->
+    <!-- ============================= -->
+    <g transform="translate(208,8)">
+      <!-- Thick knobby tires -->
+      <circle cx="35" cy="95" r="28" stroke-width="12"/>
+      <circle cx="143" cy="95" r="28" stroke-width="12"/>
+      <!-- Rear triangle -->
+      <line x1="35" y1="95" x2="75" y2="97" stroke-width="5"/>
+      <line x1="35" y1="92" x2="67" y2="46" stroke-width="4"/>
+      <!-- Front triangle -->
+      <line x1="75" y1="97" x2="67" y2="44" stroke-width="5"/>
+      <line x1="67" y1="44" x2="110" y2="50" stroke-width="5"/>
+      <line x1="75" y1="97" x2="115" y2="63" stroke-width="5"/>
+      <line x1="110" y1="50" x2="115" y2="63" stroke-width="5"/>
+      <!-- Suspension fork (two legs + brace) -->
+      <line x1="113" y1="64" x2="135" y2="93" stroke-width="4"/>
+      <line x1="119" y1="64" x2="143" y2="95" stroke-width="4"/>
+      <line x1="115" y1="80" x2="121" y2="80" stroke-width="3"/>
+      <!-- Seatpost + flat saddle -->
+      <line x1="67" y1="44" x2="65" y2="28" stroke-width="4"/>
+      <line x1="55" y1="26" x2="75" y2="26" stroke-width="5.5"/>
+      <!-- Stem + wide flat bars -->
+      <line x1="110" y1="50" x2="113" y2="37" stroke-width="4"/>
+      <line x1="95" y1="35" x2="131" y2="35" stroke-width="5"/>
+      <line x1="95" y1="35" x2="95" y2="40" stroke-width="3.5"/>
+      <line x1="131" y1="35" x2="131" y2="40" stroke-width="3.5"/>
+      <!-- Chainring + crank -->
+      <circle cx="75" cy="97" r="13" stroke-width="3"/>
+      <line x1="75" y1="97" x2="68" y2="110" stroke-width="4.5"/>
+      <line x1="63" y1="112" x2="73" y2="108" stroke-width="3.5"/>
+    </g>
+
+    <!-- ============================= -->
+    <!-- CITY BIKE - top right        -->
+    <!-- ============================= -->
+    <g transform="translate(403,8)">
+      <circle cx="35" cy="95" r="28" stroke-width="7"/>
+      <circle cx="143" cy="95" r="28" stroke-width="7"/>
+      <!-- Fenders -->
+      <path d="M9,73 C9,52 61,52 61,73" stroke-width="3"/>
+      <path d="M117,73 C117,52 169,52 169,73" stroke-width="3"/>
+      <!-- Rear rack -->
+      <line x1="36" y1="76" x2="67" y2="60" stroke-width="3"/>
+      <line x1="36" y1="81" x2="67" y2="65" stroke-width="2.5"/>
+      <line x1="36" y1="76" x2="36" y2="81" stroke-width="2.5"/>
+      <!-- Rear triangle -->
+      <line x1="35" y1="95" x2="75" y2="97" stroke-width="5"/>
+      <line x1="35" y1="91" x2="67" y2="47" stroke-width="4"/>
+      <!-- Step-through curved frame -->
+      <line x1="75" y1="97" x2="67" y2="46" stroke-width="5"/>
+      <path d="M67,54 C80,38 100,38 114,50" stroke-width="5"/>
+      <line x1="75" y1="97" x2="117" y2="65" stroke-width="5"/>
+      <line x1="114" y1="50" x2="117" y2="65" stroke-width="4.5"/>
+      <!-- Fork -->
+      <line x1="117" y1="65" x2="143" y2="95" stroke-width="4"/>
+      <!-- Seatpost + wide comfort saddle -->
+      <line x1="67" y1="46" x2="65" y2="28" stroke-width="4"/>
+      <path d="M53,26 C57,22 73,22 80,26" stroke-width="6"/>
+      <!-- Stem + swept-back bars -->
+      <line x1="114" y1="50" x2="116" y2="37" stroke-width="4"/>
+      <path d="M103,34 C109,28 116,37 116,37" stroke-width="4"/>
+      <path d="M129,34 C123,28 116,37 116,37" stroke-width="4"/>
+      <!-- Chainring + crank -->
+      <circle cx="75" cy="97" r="11" stroke-width="3"/>
+      <line x1="75" y1="97" x2="68" y2="109" stroke-width="4"/>
+      <line x1="63" y1="111" x2="73" y2="107" stroke-width="3"/>
+      <!-- Front basket -->
+      <path d="M119,58 L132,58 L136,46 L115,46 Z" stroke-width="2.5"/>
+      <line x1="119" y1="52" x2="136" y2="52" stroke-width="2"/>
+    </g>
+
+    <!-- ============================= -->
+    <!-- KIDS BIKE - bottom left      -->
+    <!-- ============================= -->
+    <g transform="translate(22,182)">
+      <!-- Smaller wheels -->
+      <circle cx="38" cy="90" r="22" stroke-width="6"/>
+      <circle cx="128" cy="90" r="22" stroke-width="6"/>
+      <!-- Training wheel -->
+      <circle cx="13" cy="102" r="11" stroke-width="4"/>
+      <line x1="38" y1="96" x2="14" y2="102" stroke-width="3"/>
+      <!-- Frame -->
+      <line x1="38" y1="90" x2="68" y2="92" stroke-width="4.5"/>
+      <line x1="38" y1="88" x2="62" y2="50" stroke-width="3.5"/>
+      <line x1="68" y1="92" x2="62" y2="48" stroke-width="4.5"/>
+      <line x1="62" y1="48" x2="98" y2="54" stroke-width="4.5"/>
+      <line x1="68" y1="92" x2="102" y2="64" stroke-width="4.5"/>
+      <line x1="98" y1="54" x2="102" y2="64" stroke-width="4.5"/>
+      <!-- Fork -->
+      <line x1="102" y1="64" x2="128" y2="90" stroke-width="3.5"/>
+      <!-- Seatpost + saddle -->
+      <line x1="62" y1="48" x2="60" y2="33" stroke-width="3.5"/>
+      <line x1="52" y1="31" x2="68" y2="31" stroke-width="5"/>
+      <!-- Stem + bars -->
+      <line x1="98" y1="54" x2="100" y2="41" stroke-width="3.5"/>
+      <line x1="88" y1="39" x2="112" y2="39" stroke-width="4.5"/>
+      <!-- Streamers -->
+      <path d="M88,39 C84,44 82,52 85,57" stroke-width="2" stroke-dasharray="3,2"/>
+      <path d="M112,39 C116,44 118,52 115,57" stroke-width="2" stroke-dasharray="3,2"/>
+      <!-- Chainring -->
+      <circle cx="68" cy="92" r="10" stroke-width="2.5"/>
+      <line x1="68" y1="92" x2="62" y2="102" stroke-width="3.5"/>
+      <line x1="58" y1="104" x2="66" y2="100" stroke-width="3"/>
+    </g>
+
+    <!-- ============================= -->
+    <!-- FAT TIRE BIKE - bottom center-->
+    <!-- ============================= -->
+    <g transform="translate(208,175)">
+      <!-- Very fat tires -->
+      <circle cx="38" cy="95" r="27" stroke-width="17"/>
+      <circle cx="143" cy="95" r="27" stroke-width="17"/>
+      <!-- Beefy frame tubes -->
+      <line x1="38" y1="95" x2="78" y2="97" stroke-width="6.5"/>
+      <line x1="38" y1="92" x2="69" y2="46" stroke-width="5.5"/>
+      <line x1="78" y1="97" x2="69" y2="44" stroke-width="6.5"/>
+      <line x1="69" y1="44" x2="113" y2="51" stroke-width="6.5"/>
+      <line x1="78" y1="97" x2="118" y2="65" stroke-width="6.5"/>
+      <line x1="113" y1="51" x2="118" y2="65" stroke-width="6.5"/>
+      <!-- Fork -->
+      <line x1="118" y1="65" x2="143" y2="95" stroke-width="5.5"/>
+      <!-- Seatpost + saddle -->
+      <line x1="69" y1="44" x2="67" y2="26" stroke-width="5"/>
+      <line x1="57" y1="24" x2="77" y2="24" stroke-width="6.5"/>
+      <!-- Stem + wide flat bars -->
+      <line x1="113" y1="51" x2="116" y2="36" stroke-width="5"/>
+      <line x1="98" y1="34" x2="134" y2="34" stroke-width="5.5"/>
+      <line x1="98" y1="34" x2="98" y2="40" stroke-width="4"/>
+      <line x1="134" y1="34" x2="134" y2="40" stroke-width="4"/>
+      <!-- Chainring + crank -->
+      <circle cx="78" cy="97" r="14" stroke-width="4"/>
+      <line x1="78" y1="97" x2="70" y2="111" stroke-width="5.5"/>
+      <line x1="65" y1="113" x2="75" y2="109" stroke-width="4.5"/>
+    </g>
+
+    <!-- ============================= -->
+    <!-- TANDEM BIKE - bottom right   -->
+    <!-- ============================= -->
+    <g transform="translate(393,175)">
+      <circle cx="28" cy="95" r="28" stroke-width="7"/>
+      <circle cx="175" cy="95" r="28" stroke-width="7"/>
+      <!-- Rear seat stays -->
+      <line x1="28" y1="92" x2="58" y2="47" stroke-width="4"/>
+      <!-- Rear chain stays -->
+      <line x1="28" y1="95" x2="72" y2="97" stroke-width="5"/>
+      <!-- Rear seat tube -->
+      <line x1="72" y1="97" x2="58" y2="45" stroke-width="5"/>
+      <!-- Long top tube -->
+      <line x1="58" y1="45" x2="130" y2="47" stroke-width="5"/>
+      <!-- Long bottom tube (chain tube) -->
+      <line x1="72" y1="97" x2="128" y2="97" stroke-width="5"/>
+      <!-- Front seat tube -->
+      <line x1="128" y1="97" x2="130" y2="47" stroke-width="5"/>
+      <!-- Down tube to head -->
+      <line x1="128" y1="97" x2="160" y2="65" stroke-width="5"/>
+      <!-- Short top tube to head -->
+      <line x1="130" y1="47" x2="157" y2="60" stroke-width="5"/>
+      <!-- Head tube -->
+      <line x1="157" y1="60" x2="160" y2="65" stroke-width="5.5"/>
+      <!-- Front seat stays -->
+      <line x1="175" y1="92" x2="130" y2="47" stroke-width="4"/>
+      <!-- Front chain stays -->
+      <line x1="175" y1="95" x2="160" y2="65" stroke-width="4"/>
+      <!-- Fork -->
+      <path d="M160,65 C163,78 175,88 175,95" stroke-width="4"/>
+      <!-- Rear seatpost + saddle -->
+      <line x1="58" y1="45" x2="56" y2="28" stroke-width="4"/>
+      <path d="M47,26 C50,22 62,22 68,26" stroke-width="5.5"/>
+      <!-- Front seatpost + saddle -->
+      <line x1="130" y1="47" x2="128" y2="28" stroke-width="4"/>
+      <path d="M119,26 C122,22 134,22 140,26" stroke-width="5.5"/>
+      <!-- Front stem + drop bars -->
+      <line x1="157" y1="60" x2="160" y2="46" stroke-width="4"/>
+      <line x1="152" y1="44" x2="168" y2="44" stroke-width="4"/>
+      <path d="M152,44 C148,44 146,51 148,59" stroke-width="3.5"/>
+      <path d="M168,44 C172,44 174,51 172,59" stroke-width="3.5"/>
+      <!-- Rear chainring + crank -->
+      <circle cx="72" cy="97" r="12" stroke-width="3"/>
+      <line x1="72" y1="97" x2="65" y2="109" stroke-width="4"/>
+      <line x1="61" y1="111" x2="69" y2="107" stroke-width="3"/>
+      <!-- Front chainring + crank -->
+      <circle cx="128" cy="97" r="12" stroke-width="3"/>
+      <line x1="128" y1="97" x2="121" y2="109" stroke-width="4"/>
+      <line x1="117" y1="111" x2="125" y2="107" stroke-width="3"/>
+      <!-- Connecting chain visual -->
+      <line x1="84" y1="99" x2="116" y2="99" stroke-width="2" stroke-dasharray="4,3"/>
+    </g>
+
+  </g>
+</svg>

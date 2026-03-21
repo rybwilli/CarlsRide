@@ -1,7 +1,8 @@
 <header class="app-header">
   <div class="app-header__inner">
-    <a routerLink="/rides" class="app-title">Carl's Ride</a>
+    <a routerLink="/" class="app-title">Carl's Ride</a>
     <nav>
+      <a routerLink="/about" routerLinkActive="active">About Carl</a>
       <a routerLink="/rides" routerLinkActive="active" [routerLinkActiveOptions]="{ exact: true }">Rides</a>
       <a routerLink="/food" routerLinkActive="active">Food & Drinks</a>
       <a routerLink="/rides/new" routerLinkActive="active">+ Add Ride</a>

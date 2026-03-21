@@ -1,5 +1,5 @@
 <div class="add-ride-page">
-  <h1>Add a Ride</h1>
+  <h1>Edit Ride</h1>
   <p class="subtitle">All rides end at <strong>{{ bbqLocation }}</strong></p>
 
   <form (ngSubmit)="submit()" #rideForm="ngForm">
@@ -80,7 +80,7 @@
 
     <div class="form-actions">
       <button type="button" class="btn-secondary" (click)="cancel()">Cancel</button>
-      <button type="submit" class="btn-primary" [disabled]="!isValid">Add Ride</button>
+      <button type="submit" class="btn-primary" [disabled]="!isValid">Save Changes</button>
     </div>
   </form>
 </div>

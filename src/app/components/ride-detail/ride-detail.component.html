@@ -1,10 +1,18 @@
 <div class="ride-detail-page" *ngIf="ride; else notFound">
-  <button class="btn-back" (click)="goBack()">← Back to Rides</button>
+  <div class="ride-detail__topbar">
+    <button class="btn-back" (click)="goBack()">← Back to Rides</button>
+    <button class="btn-secondary btn-sm" (click)="editRide()">Edit Ride</button>
+  </div>
 
   <div class="ride-detail__header">
     <h1>{{ ride.name }}</h1>
-    <span class="badge badge--{{ ride.difficulty }}">{{ ride.difficulty }}</span>
+    <div class="ride-detail__badges">
+      <span class="badge badge--{{ ride.difficulty }}">{{ ride.difficulty }}</span>
+      <span class="badge badge--bike">{{ ride.bikeType }}</span>
+    </div>
   </div>
+
+  <p class="ride-detail__description">{{ ride.description }}</p>
 
   <div class="ride-detail__info">
     <div class="info-row">
@@ -16,12 +24,12 @@
       <span>{{ bbqLocation }}</span>
     </div>
     <div class="info-row">
-      <label>Distance</label>
-      <span>{{ ride.distanceMiles }} miles</span>
+      <label>Start Time</label>
+      <span>{{ ride.departureTime }}</span>
     </div>
     <div class="info-row">
-      <label>Departs</label>
-      <span>{{ ride.departureTime | date:'EEEE, MMMM d · h:mm a' }}</span>
+      <label>Distance</label>
+      <span>{{ ride.distanceMiles }} miles</span>
     </div>
     <div class="info-row">
       <label>Leader</label>
@@ -31,12 +39,29 @@
       <label>Notes</label>
       <span>{{ ride.notes }}</span>
     </div>
+    <div class="info-row" *ngIf="ride.routeLinks?.length">
+      <label>Route</label>
+      <span class="route-links">
+        <a *ngFor="let link of ride.routeLinks"
+           [href]="link.url"
+           target="_blank"
+           rel="noopener noreferrer"
+           class="link-type-badge link-type-badge--{{ link.type }}">
+          {{ link.type | titlecase }}
+        </a>
+      </span>
+    </div>
   </div>
 
   <div class="ride-detail__riders">
-    <h3>Riders ({{ ride.riders.length }})</h3>
+    <h3>Riders ({{ ride.riders.length }}) &mdash; {{ totalPartyCount }} total at party</h3>
     <ul>
-      <li *ngFor="let rider of ride.riders">{{ rider.name }}<span *ngIf="rider.email"> — {{ rider.email }}</span></li>
+      <li *ngFor="let rider of ride.riders" class="rider-row">
+        <span class="rider-name">{{ rider.name }}</span>
+        <span *ngIf="rider.email" class="rider-email">{{ rider.email }}</span>
+        <span *ngIf="rider.additionalGuests" class="rider-guests">+{{ rider.additionalGuests }} guest{{ rider.additionalGuests !== 1 ? 's' : '' }}</span>
+        <button class="btn-remove" (click)="removeRider(rider.name)" title="Remove rider">✕</button>
+      </li>
     </ul>
   </div>
 
@@ -49,6 +74,10 @@
     <div class="form-group">
       <label for="joinEmail">Email (optional)</label>
       <input id="joinEmail" type="email" [(ngModel)]="joinEmail" placeholder="you@example.com" />
+    </div>
+    <div class="form-group">
+      <label for="joinGuests">Additional guests at party (optional)</label>
+      <input id="joinGuests" type="number" [(ngModel)]="joinGuests" min="0" placeholder="0" />
     </div>
     <button class="btn-primary" (click)="joinRide()" [disabled]="!joinName.trim()">Join Ride</button>
   </div>
