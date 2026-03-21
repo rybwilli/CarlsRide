@@ -26,7 +26,7 @@ import { EditRideComponent } from './components/edit-ride/edit-ride.component';
   imports: [
     BrowserModule,
     FormsModule,
-    AppRoutingModule
+    AppRoutingModule,
   ],
   providers: [],
   bootstrap: [AppComponent]

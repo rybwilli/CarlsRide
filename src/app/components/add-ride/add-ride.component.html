@@ -1,6 +1,6 @@
 <div class="add-ride-page">
   <h1>Add a Ride</h1>
-  <p class="subtitle">All rides end at <strong>{{ bbqLocation }}</strong></p>
+  <p class="subtitle">All rides end at around 2pm May 9 2026 at <strong>{{ bbqLocation }}</strong></p>
 
   <form (ngSubmit)="submit()" #rideForm="ngForm">
     <div class="form-group">
@@ -32,9 +32,12 @@
     <div class="form-row">
       <div class="form-group">
         <label for="difficulty">Difficulty *</label>
-        <select id="difficulty" [(ngModel)]="difficulty" name="difficulty">
-          <option *ngFor="let d of difficulties" [value]="d">{{ d }}</option>
-        </select>
+        <div class="difficulty-row">
+          <select id="difficulty" [(ngModel)]="difficulty" name="difficulty">
+            <option *ngFor="let d of difficulties" [value]="d">{{ d }}</option>
+          </select>
+          <span class="badge" [ngClass]="'badge--' + difficulty.replaceAll(' ', '-')">{{ difficulty }}</span>
+        </div>
       </div>
       <div class="form-group">
         <label for="bikeType">Bike Type *</label>

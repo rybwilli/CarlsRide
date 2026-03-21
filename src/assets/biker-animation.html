@@ -1,0 +1,327 @@
+<!DOCTYPE html>
+<html>
+<head>
+  <title>Mountain Biker</title>
+  <style>
+    * { margin: 0; padding: 0; box-sizing: border-box; }
+    body { background: #000; overflow: hidden; }
+    canvas { display: block; }
+  </style>
+</head>
+<body>
+<canvas id="c"></canvas>
+<script>
+const canvas = document.getElementById('c');
+const ctx = canvas.getContext('2d');
+canvas.width = window.innerWidth;
+canvas.height = 520;
+const W = canvas.width, H = canvas.height;
+
+// ── Terrain ──────────────────────────────────────────────────────────────────
+function terrainY(x) {
+  const flatL  = W * 0.08;
+  const hillEnd = W * 0.44;
+  const rampBase = W * 0.46;
+  const rampTip  = W * 0.52;
+  const landBase = W * 0.60;
+  const landEnd  = W * 0.68;
+  const flat2 = W * 0.72;
+
+  if (x < flatL)    return H * 0.50;
+  if (x < hillEnd) { const t = (x - flatL) / (hillEnd - flatL); return H * 0.50 + t * H * 0.22; }
+  if (x < rampBase) return H * 0.72;
+  if (x < rampTip)  { const t = (x - rampBase) / (rampTip - rampBase); return H * 0.72 - t * H * 0.14; }
+  if (x < landBase) return H * 0.58;        // in-air gap (sky)
+  if (x < landEnd)  { const t = (x - landBase) / (landEnd - landBase); return H * 0.58 + t * H * 0.14; }
+  return H * 0.72;
+}
+
+function drawTerrain() {
+  ctx.beginPath();
+  ctx.moveTo(0, H);
+  ctx.lineTo(0, terrainY(0));
+  for (let x = 1; x <= W; x++) ctx.lineTo(x, terrainY(x));
+  ctx.lineTo(W, H);
+  ctx.closePath();
+  const g = ctx.createLinearGradient(0, H * 0.45, 0, H);
+  g.addColorStop(0, '#3a7d44');
+  g.addColorStop(0.4, '#2d6a37');
+  g.addColorStop(1, '#1a3d20');
+  ctx.fillStyle = g;
+  ctx.fill();
+  // surface line
+  ctx.beginPath();
+  ctx.moveTo(0, terrainY(0));
+  for (let x = 1; x <= W; x++) ctx.lineTo(x, terrainY(x));
+  ctx.strokeStyle = '#52a865';
+  ctx.lineWidth = 3;
+  ctx.stroke();
+}
+
+// ── Sky + clouds ──────────────────────────────────────────────────────────────
+const clouds = [
+  { x: W * 0.12, y: H * 0.12, r: 55 },
+  { x: W * 0.38, y: H * 0.08, r: 70 },
+  { x: W * 0.65, y: H * 0.14, r: 48 },
+  { x: W * 0.88, y: H * 0.10, r: 62 },
+];
+
+function drawSky() {
+  const g = ctx.createLinearGradient(0, 0, 0, H * 0.75);
+  g.addColorStop(0, '#4aa8d8');
+  g.addColorStop(1, '#c9e8f5');
+  ctx.fillStyle = g;
+  ctx.fillRect(0, 0, W, H);
+}
+
+function drawClouds() {
+  ctx.fillStyle = 'rgba(255,255,255,0.82)';
+  clouds.forEach(({ x, y, r }) => {
+    ctx.beginPath();
+    ctx.arc(x,          y,          r * 0.55, 0, Math.PI * 2);
+    ctx.arc(x + r * 0.45, y - r * 0.1, r * 0.42, 0, Math.PI * 2);
+    ctx.arc(x + r * 0.88, y,          r * 0.48, 0, Math.PI * 2);
+    ctx.fill();
+  });
+}
+
+// ── Biker drawing ─────────────────────────────────────────────────────────────
+function drawBiker(cx, cy, tilt, phase, airT) {
+  ctx.save();
+  ctx.translate(cx, cy);
+  ctx.rotate(tilt);
+
+  const WR = 24; // wheel radius
+  const RX = -30, FX = 30; // rear / front wheel x
+
+  // ── Wheels ──
+  [RX, FX].forEach(wx => {
+    ctx.beginPath();
+    ctx.arc(wx, 0, WR, 0, Math.PI * 2);
+    ctx.strokeStyle = '#1a1a1a';
+    ctx.lineWidth = 6;
+    ctx.stroke();
+    // tread bumps
+    ctx.strokeStyle = '#444';
+    ctx.lineWidth = 2.5;
+    for (let i = 0; i < 8; i++) {
+      const a = (i / 8) * Math.PI * 2;
+      ctx.beginPath();
+      ctx.arc(wx, 0, WR + 2, a, a + 0.25);
+      ctx.stroke();
+    }
+    // hub
+    ctx.beginPath();
+    ctx.arc(wx, 0, 4, 0, Math.PI * 2);
+    ctx.fillStyle = '#888';
+    ctx.fill();
+  });
+
+  // ── Frame ──
+  const BB = { x: -5,  y: -16 }; // bottom bracket
+  const ST = { x: -14, y: -40 }; // seat tube top
+  const HT = { x: 24,  y: -34 }; // head tube top
+  const HB = { x: 22,  y: -22 }; // head tube bottom
+
+  ctx.strokeStyle = '#e85d04';
+  ctx.lineWidth = 4.5;
+  ctx.lineCap = 'round';
+
+  // chain stay
+  line(RX, 0, BB.x, BB.y);
+  // seat stay
+  ctx.lineWidth = 3;
+  line(RX, 0, ST.x, ST.y);
+  // seat tube
+  ctx.lineWidth = 4.5;
+  line(BB.x, BB.y, ST.x, ST.y);
+  // top tube
+  line(ST.x, ST.y, HT.x, HT.y);
+  // down tube
+  line(BB.x, BB.y, HT.x, HT.y);
+  // head tube
+  ctx.lineWidth = 5;
+  line(HT.x, HT.y, HB.x, HB.y);
+
+  // fork
+  ctx.strokeStyle = '#cc4a00';
+  ctx.lineWidth = 3.5;
+  line(HB.x, HB.y, FX, 0);
+  // suspension brace
+  ctx.lineWidth = 2.5;
+  const fmx = (HB.x + FX) / 2, fmy = (HB.y + 0) / 2;
+  line(HB.x - 3, HB.y + 10, fmx + 6, fmy + 10);
+
+  // handlebar
+  ctx.strokeStyle = '#555';
+  ctx.lineWidth = 3;
+  line(HT.x, HT.y, HT.x + 4, HT.y - 10);
+  line(HT.x + 4, HT.y - 10, HT.x + 12, HT.y - 7);
+
+  // seatpost + saddle
+  ctx.strokeStyle = '#555';
+  ctx.lineWidth = 3;
+  line(ST.x, ST.y, ST.x, ST.y - 10);
+  ctx.lineWidth = 4;
+  line(ST.x - 9, ST.y - 10, ST.x + 5, ST.y - 10);
+
+  // ── Rider ──
+  const hipX = ST.x, hipY = ST.y - 10;
+
+  // body lean: upright on flat, tuck in air, lean forward on hill
+  let bodyLean = -0.45; // forward lean
+  if (phase === 'air') bodyLean = -0.1 + airT * 0.35; // lean back over jump peak
+
+  ctx.save();
+  ctx.translate(hipX, hipY);
+  ctx.rotate(bodyLean);
+
+  // torso
+  ctx.strokeStyle = '#2c3e50';
+  ctx.lineWidth = 7;
+  ctx.lineCap = 'round';
+  ctx.beginPath();
+  ctx.moveTo(0, 0);
+  ctx.lineTo(6, -22);
+  ctx.stroke();
+
+  // arm to bars
+  ctx.lineWidth = 4.5;
+  ctx.beginPath();
+  ctx.moveTo(5, -18);
+  ctx.lineTo(HT.x - hipX + 9, HT.y - hipY - 9 - bodyLean * 5);
+  ctx.stroke();
+
+  // helmet
+  ctx.beginPath();
+  ctx.arc(8, -30, 10, 0, Math.PI * 2);
+  ctx.fillStyle = '#e74c3c';
+  ctx.fill();
+  ctx.strokeStyle = '#c0392b';
+  ctx.lineWidth = 1.5;
+  ctx.stroke();
+  // visor
+  ctx.beginPath();
+  ctx.moveTo(14, -28);
+  ctx.lineTo(20, -26);
+  ctx.strokeStyle = '#c0392b';
+  ctx.lineWidth = 3;
+  ctx.stroke();
+  // goggles
+  ctx.beginPath();
+  ctx.arc(13, -28, 4, -0.5, 0.8);
+  ctx.strokeStyle = '#f39c12';
+  ctx.lineWidth = 2.5;
+  ctx.stroke();
+
+  ctx.restore();
+
+  // legs
+  ctx.strokeStyle = '#2c3e50';
+  ctx.lineWidth = 6;
+  ctx.lineCap = 'round';
+  // rear leg (power stroke)
+  const legPhase = phase === 'air' ? 0.6 : 0.3; // slightly bent when airborne
+  ctx.beginPath();
+  ctx.moveTo(hipX, hipY);
+  ctx.quadraticCurveTo(hipX - 10, hipY + 16, RX + 8, -4);
+  ctx.stroke();
+  // front leg
+  ctx.beginPath();
+  ctx.moveTo(hipX, hipY);
+  ctx.quadraticCurveTo(hipX + 12, hipY + 14, BB.x + 10, BB.y - 2);
+  ctx.stroke();
+
+  ctx.restore(); // restore biker transform
+}
+
+function line(x1, y1, x2, y2) {
+  ctx.beginPath();
+  ctx.moveTo(x1, y1);
+  ctx.lineTo(x2, y2);
+  ctx.stroke();
+}
+
+// ── Dust particles ────────────────────────────────────────────────────────────
+let dustParticles = [];
+function spawnDust(x, y) {
+  for (let i = 0; i < 8; i++) {
+    dustParticles.push({
+      x, y,
+      vx: (Math.random() - 0.7) * 3,
+      vy: -(Math.random() * 3 + 1),
+      life: 1,
+      r: Math.random() * 5 + 2,
+    });
+  }
+}
+function updateDust() {
+  dustParticles = dustParticles.filter(p => p.life > 0);
+  dustParticles.forEach(p => {
+    p.x += p.vx; p.y += p.vy; p.vy += 0.15; p.life -= 0.04;
+    ctx.beginPath();
+    ctx.arc(p.x, p.y, p.r, 0, Math.PI * 2);
+    ctx.fillStyle = `rgba(180,140,80,${p.life * 0.6})`;
+    ctx.fill();
+  });
+}
+
+// ── Animation loop ────────────────────────────────────────────────────────────
+const DURATION = 4200; // ms per loop
+let startTime = null;
+let lastLandX = -999;
+
+function getBikerState(prog) {
+  const x = -80 + (W + 160) * prog;
+  const WR = 24;
+  const jumpStart = W * 0.52;
+  const jumpEnd   = W * 0.60;
+
+  if (x < jumpStart) {
+    const ty = terrainY(x);
+    const slope = terrainY(x + 4) - terrainY(x - 4);
+    const tilt = Math.atan2(slope, 8);
+    return { x, y: ty - WR, tilt, phase: 'ground', airT: 0 };
+  }
+  if (x < jumpEnd) {
+    const airT = (x - jumpStart) / (jumpEnd - jumpStart);
+    const yStart = terrainY(jumpStart);
+    const yEnd   = terrainY(jumpEnd);
+    const base   = yStart + (yEnd - yStart) * airT;
+    const arc    = -160 * airT * (1 - airT) * 4;
+    const tilt   = -0.18 + airT * 0.35;
+    return { x, y: base + arc - WR, tilt, phase: 'air', airT };
+  }
+  const ty = terrainY(x);
+  const slope = terrainY(x + 4) - terrainY(x - 4);
+  return { x, y: ty - WR, tilt: Math.atan2(slope, 8), phase: 'land', airT: 1 };
+}
+
+function animate(ts) {
+  if (!startTime) startTime = ts;
+  const prog = ((ts - startTime) % DURATION) / DURATION;
+
+  ctx.clearRect(0, 0, W, H);
+  drawSky();
+  drawClouds();
+  drawTerrain();
+
+  const s = getBikerState(prog);
+
+  // spawn dust on landing
+  if (s.phase === 'land' && s.x - lastLandX > 10) {
+    if (s.airT === 1 && prog > 0.01) spawnDust(s.x, s.y + 24);
+    lastLandX = s.x;
+  }
+  if (s.phase !== 'land') lastLandX = -999;
+
+  updateDust();
+  drawBiker(s.x, s.y, s.tilt, s.phase, s.airT);
+
+  requestAnimationFrame(animate);
+}
+
+requestAnimationFrame(animate);
+</script>
+</body>
+</html>

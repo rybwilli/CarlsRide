@@ -25,6 +25,7 @@ body {
   background: var(--color-bg);
   color: var(--color-text);
   line-height: 1.5;
+  overflow-x: hidden;
 }
 
 /* Header */
@@ -132,15 +133,32 @@ nav a {
   font-weight: 600;
   text-transform: capitalize;
 
-  &--easy              { background: #d8f3dc; color: var(--color-easy); }
-  &--moderately\ easy  { background: #d8f3dc; color: var(--color-easy); }
-  &--moderate          { background: #fff3cd; color: #7d4e00; }
-  &--moderately\ hard  { background: #ffe5cc; color: #8b3a00; }
-  &--hard              { background: #fde0de; color: var(--color-hard); }
-  &--bike              { background: #e0ecff; color: #1a4fa0; }
+  &--easy             { background: #d4edda; color: #1a6b30; }
+  &--moderately-easy  { background: #e8f5d0; color: #4a7a1a; }
+  &--moderate         { background: #fff3cd; color: #7d4e00; }
+  &--moderately-hard  { background: #ffe0c0; color: #9a3500; }
+  &--hard             { background: #fdd0ce; color: #b81010; }
+  &--bike-road     { background: #cce3ff; color: #1a4fa0; }
+  &--bike-gravel   { background: #e8d5b7; color: #6b4c1e; }
+  &--bike-mountain { background: #c8e6c0; color: #1a5e20; }
+  &--bike-city     { background: #ffe5cc; color: #a04000; }
 }
 
 /* Forms */
+.difficulty-row {
+  display: flex;
+  align-items: center;
+  gap: 0.75rem;
+
+  select { flex: 1; }
+}
+
+.difficulty-select--easy            { background: #d4edda; }
+.difficulty-select--moderately-easy { background: #e8f5d0; }
+.difficulty-select--moderate        { background: #fff3cd; }
+.difficulty-select--moderately-hard { background: #ffe0c0; }
+.difficulty-select--hard            { background: #fdd0ce; }
+
 .form-group {
   display: flex;
   flex-direction: column;
@@ -184,6 +202,11 @@ nav a {
 
 /* Ride list */
 .ride-list-page {
+  width: 1600px;
+  max-width: 100vw;
+  margin-left: calc(50% - 800px);
+  margin-right: calc(50% - 800px);
+  padding: 0 1.5rem;
   .hero {
     display: flex;
     justify-content: center;
@@ -210,7 +233,7 @@ nav a {
 
 .rides-grid {
   display: grid;
-  grid-template-columns: repeat(auto-fill, minmax(280px, 1fr));
+  grid-template-columns: repeat(auto-fill, minmax(400px, 1fr));
   gap: 1rem;
 }
 
@@ -235,9 +258,11 @@ nav a {
     margin-bottom: 0.75rem;
 
     h2 {
-      font-size: 1rem;
-      font-weight: 700;
-      line-height: 1.3;
+      font-family: 'Bangers', cursive;
+      font-size: 1.3rem;
+      font-weight: 400;
+      letter-spacing: 1px;
+      line-height: 1.2;
     }
   }
 
@@ -249,8 +274,9 @@ nav a {
   }
 
   &__description {
-    font-size: 0.85rem;
-    color: var(--color-text-muted);
+    font-size: 0.95rem;
+    font-weight: 700;
+    color: var(--color-text);
     margin-bottom: 0.6rem;
     line-height: 1.4;
   }
@@ -262,6 +288,22 @@ nav a {
     font-size: 0.875rem;
     color: var(--color-text-muted);
     margin-bottom: 0.75rem;
+  }
+
+  &__riders {
+    display: flex;
+    flex-wrap: wrap;
+    gap: 0.3rem;
+    margin-top: 0.3rem;
+  }
+
+  &__rider-chip {
+    background: var(--color-bg);
+    border: 1px solid var(--color-border);
+    border-radius: 999px;
+    font-size: 0.75rem;
+    padding: 0.15rem 0.55rem;
+    color: var(--color-text);
   }
 
   &__time {
@@ -296,6 +338,7 @@ nav a {
     display: flex;
     justify-content: space-between;
     align-items: center;
+    gap: 1.5rem;
     margin-bottom: 1.25rem;
   }
 
@@ -400,7 +443,7 @@ nav a {
 
 /* Add ride */
 .add-ride-page {
-  max-width: 600px;
+  max-width: 720px;
 
   h1 { margin-bottom: 0.25rem; }
 
@@ -473,6 +516,12 @@ nav a {
 
 /* Food signup */
 .food-page {
+  width: 1600px;
+  max-width: 100vw;
+  margin-left: calc(50% - 800px);
+  margin-right: calc(50% - 800px);
+  padding: 0 1.5rem;
+
   h1 { margin-bottom: 0.25rem; }
 
   .subtitle {
@@ -498,6 +547,10 @@ nav a {
   h2 {
     font-size: 1rem;
     font-weight: 700;
+    display: flex;
+    align-items: baseline;
+    justify-content: space-between;
+    gap: 0.5rem;
     margin-bottom: 0.75rem;
     padding-bottom: 0.5rem;
     border-bottom: 1px solid var(--color-border);
@@ -521,6 +574,11 @@ nav a {
     flex: 1;
     font-weight: 500;
   }
+  &__notes {
+    font-style: italic;
+    flex: 1;
+    font-weight: 500;
+  }
 
   &__servings {
     font-size: 0.78rem;
@@ -541,6 +599,15 @@ nav a {
     font-style: italic;
     font-size: 0.85rem;
   }
+}
+
+.servings-tally {
+  font-size: 0.72rem;
+  font-weight: 600;
+  color: var(--color-hard);
+  white-space: nowrap;
+
+  &--met { color: var(--color-easy); }
 }
 
 .btn-remove {
@@ -569,6 +636,6 @@ nav a {
   h3 { margin-bottom: 1rem; }
 
   .form-row {
-    grid-template-columns: 1fr 2fr 0.75fr 1fr;
+    grid-template-columns: 1fr 2fr 2fr 0.4fr 1fr;
   }
 }

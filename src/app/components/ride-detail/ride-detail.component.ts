@@ -11,6 +11,9 @@ import { RideService } from '../../services/ride.service';
 export class RideDetailComponent implements OnInit {
   ride: Ride | undefined;
   bbqLocation: string;
+  bikeEmoji: Record<string, string> = {
+    road: '⚡', mountain: '🌲', gravel: '🪨', city: '🏙️',
+  };
   joinName = '';
   joinEmail = '';
   joinGuests: number | null = null;

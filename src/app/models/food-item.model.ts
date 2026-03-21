@@ -6,4 +6,5 @@ export interface FoodItem {
   item: string;
   broughtBy: string;
   servings?: number;
+  notes?: string;
 }

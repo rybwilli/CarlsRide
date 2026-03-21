@@ -4,12 +4,32 @@
       <img src="assets/carls-ride-logo.jpg" alt="Carl's Ride" class="home-hero__logo" />
       <h1 class="home-hero__title">Memorial Rides for Carl</h1>
       <h1 class="home-hero__title">May 9 2026</h1>
+      <h1 class="home-hero__detail">Join a ride | Create a ride | Come to the celebration</h1>
       <p class="home-hero__subtitle">All rides should try to finish around 2pm and meet for a celebration with BBQ, drinks, and games at 4209 Branson St.</p>
       <p class="home-hero__subtitle">Carl would not care how far you rode or how fast you went, he would just want you to get out and ride with friends.</p>
       <div class="home-hero__actions">
         <a routerLink="/rides" class="btn-hero-primary">View Rides</a>
         <a routerLink="/rides/new" class="btn-hero-secondary">+ Add a Ride</a>
         <a routerLink="/food" class="btn-hero-primary">Food & Drinks</a>
+      </div>
+
+      <div class="home-stats" *ngIf="stats$ | async as stats">
+        <div class="home-stats__item">
+          <span class="home-stats__number">{{ stats.riders }}</span>
+          <span class="home-stats__label">Riders</span>
+        </div>
+        <div class="home-stats__item">
+          <span class="home-stats__number">{{ stats.attendees }}</span>
+          <span class="home-stats__label">Attendees</span>
+        </div>
+        <div class="home-stats__item">
+          <span class="home-stats__number">{{ stats.rides }}</span>
+          <span class="home-stats__label">Rides</span>
+        </div>
+        <div class="home-stats__item">
+          <span class="home-stats__number">{{ stats.contributors }}</span>
+          <span class="home-stats__label">Party Contributors</span>
+        </div>
       </div>
     </div>
   </div>

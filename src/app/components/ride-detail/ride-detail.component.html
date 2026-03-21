@@ -7,8 +7,8 @@
   <div class="ride-detail__header">
     <h1>{{ ride.name }}</h1>
     <div class="ride-detail__badges">
-      <span class="badge badge--{{ ride.difficulty }}">{{ ride.difficulty }}</span>
-      <span class="badge badge--bike">{{ ride.bikeType }}</span>
+      <span class="badge" [ngClass]="'badge--' + ride.difficulty.replaceAll(' ', '-')">{{ ride.difficulty }}</span>
+      <span class="badge" [ngClass]="'badge--bike-' + ride.bikeType">{{ bikeEmoji[ride.bikeType] }} {{ ride.bikeType }}</span>
     </div>
   </div>
 

@@ -1,13 +1,22 @@
 import { Component } from '@angular/core';
-import { Observable, map } from 'rxjs';
+import { combineLatest, map, Observable } from 'rxjs';
 import { FoodCategory, FoodItem } from '../../models/food-item.model';
 import { FoodService } from '../../services/food.service';
+import { RideService } from '../../services/ride.service';
 
 interface CategorySection {
   category: FoodCategory;
   label: string;
   emoji: string;
   items: FoodItem[];
+  totalServings: number;
+  minMultiplier: number;
+  maxMultiplier: number;
+}
+
+interface FoodPageData {
+  sections: CategorySection[];
+  attendees: number;
 }
 
 @Component({
@@ -16,30 +25,41 @@ interface CategorySection {
   styleUrls: ['./food-signup.component.scss'],
 })
 export class FoodSignupComponent {
-  sections$: Observable<CategorySection[]>;
+  data$: Observable<FoodPageData>;
 
   addCategory: FoodCategory = 'bbq';
   addItem = '';
   addName = '';
   addServings: number | null = null;
+  addNotes = '';
 
   readonly categories: { value: FoodCategory; label: string; emoji: string }[] = [
-    { value: 'bbq',      label: 'BBQ',                  emoji: '🔥' },
-    { value: 'sides',    label: 'Sides',                emoji: '🥗' },
-    { value: 'drinks',   label: 'Alcoholic Drinks',      emoji: '🍺' },
-    { value: 'na-drinks', label: 'Non-Alcoholic Drinks', emoji: '🥤' },
+    { value: 'bbq',       label: 'BBQ',                  emoji: '🔥' },
+    { value: 'sides',     label: 'Sides',                emoji: '🥗' },
+    { value: 'drinks',    label: 'Alcoholic Drinks',      emoji: '🍺' },
+    { value: 'na-drinks', label: 'Non-Alcoholic Drinks',  emoji: '🥤' },
   ];
 
-  constructor(private foodService: FoodService) {
-    this.sections$ = foodService.items$.pipe(
-      map(items =>
-        this.categories.map(c => ({
+  constructor(private foodService: FoodService, rideService: RideService) {
+    this.data$ = combineLatest([foodService.items$, rideService.rides$]).pipe(
+      map(([items, rides]) => {
+        const attendees = rides.flatMap(r => r.riders)
+          .reduce((sum, r) => sum + 1 + (r.additionalGuests ?? 0), 0);
+
+        const sections = this.categories.map(c => ({
           category: c.value,
           label: c.label,
           emoji: c.emoji,
           items: items.filter(i => i.category === c.value),
-        }))
-      )
+          totalServings: items
+            .filter(i => i.category === c.value)
+            .reduce((sum, i) => sum + (i.servings ?? 0), 0),
+          minMultiplier: c.value === 'bbq' ? 3 : 2,
+          maxMultiplier: c.value === 'bbq' ? 4 : 3,
+        }));
+
+        return { sections, attendees };
+      })
     );
   }
 
@@ -57,11 +77,13 @@ export class FoodSignupComponent {
       this.addCategory,
       this.addItem,
       this.addName,
-      this.addServings ?? undefined
+      this.addServings ?? undefined,
+      this.addNotes || undefined
     );
     this.addItem = '';
     this.addName = '';
     this.addServings = null;
+    this.addNotes = '';
   }
 
   remove(id: string): void {

@@ -2,12 +2,18 @@
   <h1>BBQ Food & Drinks</h1>
   <p class="subtitle">Sign up for what you're bringing to the celebration.</p>
 
-  <div class="food-grid" *ngIf="sections$ | async as sections">
-    <div *ngFor="let section of sections" class="food-category">
-      <h2>{{ section.emoji }} {{ section.label }}</h2>
+  <div class="food-grid" *ngIf="data$ | async as data">
+    <div *ngFor="let section of data.sections" class="food-category">
+      <h2>
+        {{ section.emoji }} {{ section.label }}
+        <span class="servings-tally" [class.servings-tally--met]="section.totalServings >= data.attendees * section.minMultiplier">
+          {{ section.totalServings }} / {{ data.attendees * section.minMultiplier }}–{{ data.attendees * section.maxMultiplier }} servings
+        </span>
+      </h2>
       <ul class="food-list">
         <li *ngFor="let item of section.items" class="food-item">
           <span class="food-item__name">{{ item.item }}</span>
+          <span class="food-item__name" *ngIf="item.notes">{{ item.notes }}</span>
           <span class="food-item__servings" *ngIf="item.servings">{{ item.servings }} servings</span>
           <span class="food-item__who">{{ item.broughtBy }}</span>
           <button class="btn-remove" (click)="remove(item.id)" title="Remove">✕</button>
@@ -31,6 +37,10 @@
       <div class="form-group">
         <label for="addItem">What are you bringing?</label>
         <input id="addItem" type="text" [(ngModel)]="addItem" name="addItem" placeholder="e.g. Pasta salad" />
+      </div>
+      <div class="form-group">
+        <label for="addNotes">Notes (optional)</label>
+        <input id="addNotes" type="text" [(ngModel)]="addNotes" name="addNotes" placeholder="e.g. gluten-free, nut allergy, secret ingredient?" />
       </div>
       <div class="form-group">
         <label for="addServings">Servings (optional)</label>

@@ -14,13 +14,14 @@ export class FoodService {
   private itemsSubject = new BehaviorSubject<FoodItem[]>(MOCK_ITEMS);
   items$: Observable<FoodItem[]> = this.itemsSubject.asObservable();
 
-  addItem(category: FoodCategory, item: string, broughtBy: string, servings?: number): void {
+  addItem(category: FoodCategory, item: string, broughtBy: string, servings?: number, notes?: string): void {
     const newItem: FoodItem = {
       id: Date.now().toString(),
       category,
       item: item.trim(),
       broughtBy: broughtBy.trim(),
       servings: servings ?? undefined,
+      notes: notes?.trim() || undefined,
     };
     this.itemsSubject.next([...this.itemsSubject.value, newItem]);
   }

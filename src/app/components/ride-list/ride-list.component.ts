@@ -12,6 +12,9 @@ import { RideService } from '../../services/ride.service';
 export class RideListComponent {
   rides$: Observable<Ride[]>;
   bbqLocation: string;
+  bikeEmoji: Record<string, string> = {
+    road: '⚡', mountain: '🌲', gravel: '🪨', city: '🏙️',
+  };
 
   constructor(private rideService: RideService, private router: Router) {
     this.rides$ = rideService.rides$;

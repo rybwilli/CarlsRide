@@ -3,7 +3,7 @@
     <div class="destination-banner">
       All rides end should attempt to end at 2pm May 9 2026: <strong>{{ bbqLocation }}</strong>
     </div>
-    <button class="btn-primary" (click)="addRide()">+ Add a Ride</button>
+    <button class="btn-primary" title="If you don't see a ride you can join, create a new one and invite your friends!" (click)="addRide()">+ Add a Ride</button>
   </div>
 
   <div class="rides-grid" *ngIf="rides$ | async as rides">
@@ -15,19 +15,32 @@
       <div class="ride-card__header">
         <h2>{{ ride.name }}</h2>
         <div class="ride-card__badges">
-          <span class="badge badge--{{ ride.difficulty }}">{{ ride.difficulty }}</span>
-          <span class="badge badge--bike">{{ ride.bikeType }}</span>
+          <span class="badge" [ngClass]="'badge--' + ride.difficulty.replaceAll(' ', '-')">{{ ride.difficulty }}</span>
+          <span class="badge" [ngClass]="'badge--bike-' + ride.bikeType">{{ bikeEmoji[ride.bikeType] }} {{ ride.bikeType }}</span>
         </div>
       </div>
       <p class="ride-card__description">{{ ride.description }}</p>
       <div class="ride-card__meta">
-        <span>Start: {{ ride.startLocation }}</span>
-        <span>{{ ride.distanceMiles }} mi</span>
-        <span>Led by {{ ride.leader }}</span>
-        <span>{{ ride.riders.length }} rider{{ ride.riders.length !== 1 ? 's' : '' }}</span>
-      </div>
-      <div class="ride-card__time">
-        Departs: {{ ride.departureTime }}
+        <span>Start: <strong>{{ ride.startLocation }}</strong></span>
+        <span>Departs: <strong>{{ ride.departureTime }}</strong></span>
+        <span>Distance:<strong>~{{ ride.distanceMiles }} mi</strong></span>
+        <span>Led by <strong>{{ ride.leader }}</strong></span>
+    <div class="info-row" *ngIf="ride.routeLinks?.length">
+      <label>Route</label>
+      <span class="route-links">
+        <a *ngFor="let link of ride.routeLinks"
+           [href]="link.url"
+           target="_blank"
+           rel="noopener noreferrer"
+           class="link-type-badge link-type-badge--{{ link.type }}">
+          {{ link.type | titlecase }}
+        </a>
+      </span>
+    </div>
+        <span><strong>Riders ({{ride.riders.length}})</strong></span>
+        <div class="ride-card__riders" *ngIf="ride.riders.length">
+          <span *ngFor="let rider of ride.riders" class="ride-card__rider-chip">{{ rider.name }}</span>
+        </div>
       </div>
     </div>
 
