@@ -273,7 +273,7 @@ nav a {
   margin-right: calc(50% - 800px);
   padding: 0 1.5rem;
 
-  @media (max-width: 1024px) {
+  @media (max-width: 1600px) {
     width: 100%;
     margin-left: 0;
     margin-right: 0;
@@ -599,7 +599,7 @@ nav a {
   margin-right: calc(50% - 800px);
   padding: 0 1.5rem;
 
-  @media (max-width: 1024px) {
+  @media (max-width: 1600px) {
     width: 100%;
     margin-left: 0;
     margin-right: 0;
@@ -666,6 +666,10 @@ nav a {
     font-style: italic;
     flex: 1;
     font-weight: 500;
+
+    @media (max-width: 900px) {
+      display: none;
+    }
   }
 
   &__servings {
