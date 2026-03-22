@@ -1,11 +1,14 @@
 <header class="app-header">
   <div class="app-header__inner">
-    <a routerLink="/" class="app-title">Carl's Ride</a>
-    <nav>
-      <a routerLink="/about" routerLinkActive="active">About Carl</a>
-      <a routerLink="/rides" routerLinkActive="active" [routerLinkActiveOptions]="{ exact: true }">Rides</a>
-      <a routerLink="/food" routerLinkActive="active">Food & Drinks</a>
-      <a routerLink="/rides/new" routerLinkActive="active">+ Add Ride</a>
+    <a routerLink="/" class="app-title" (click)="closeMenu()">Carl's Ride</a>
+    <button class="hamburger" (click)="toggleMenu()" [class.hamburger--open]="menuOpen" aria-label="Toggle menu">
+      <span></span><span></span><span></span>
+    </button>
+    <nav [class.nav--open]="menuOpen">
+      <a routerLink="/about" routerLinkActive="active" (click)="closeMenu()">About Carl</a>
+      <a routerLink="/rides" routerLinkActive="active" [routerLinkActiveOptions]="{ exact: true }" (click)="closeMenu()">Rides</a>
+      <a routerLink="/food" routerLinkActive="active" (click)="closeMenu()">Food & Drinks</a>
+      <a routerLink="/rides/new" routerLinkActive="active" (click)="closeMenu()">+ Add Ride</a>
     </nav>
   </div>
 </header>
