@@ -42,6 +42,25 @@ body {
     display: flex;
     align-items: center;
     justify-content: space-between;
+
+    @media (max-width: 480px) {
+      height: auto;
+      flex-direction: column;
+      align-items: flex-start;
+      padding: 0.5rem 0;
+      gap: 0.25rem;
+    }
+  }
+}
+
+@media (max-width: 480px) {
+  nav {
+    display: flex;
+    flex-wrap: wrap;
+    gap: 0.25rem 0;
+    padding-bottom: 0.4rem;
+
+    a { margin-left: 0; margin-right: 1rem; font-size: 1rem; }
   }
 }
 
@@ -193,6 +212,10 @@ nav a {
   display: grid;
   grid-template-columns: 1fr 1fr;
   gap: 1rem;
+
+  @media (max-width: 480px) {
+    grid-template-columns: 1fr;
+  }
 }
 
 .form-actions {
@@ -209,6 +232,13 @@ nav a {
   margin-left: calc(50% - 800px);
   margin-right: calc(50% - 800px);
   padding: 0 1.5rem;
+
+  @media (max-width: 768px) {
+    width: 100%;
+    margin-left: 0;
+    margin-right: 0;
+    padding: 0 1rem;
+  }
   .hero {
     display: flex;
     justify-content: center;
@@ -237,6 +267,10 @@ nav a {
   display: grid;
   grid-template-columns: repeat(auto-fill, minmax(400px, 1fr));
   gap: 1rem;
+
+  @media (max-width: 480px) {
+    grid-template-columns: 1fr;
+  }
 }
 
 .ride-card {
@@ -525,6 +559,13 @@ nav a {
   margin-right: calc(50% - 800px);
   padding: 0 1.5rem;
 
+  @media (max-width: 768px) {
+    width: 100%;
+    margin-left: 0;
+    margin-right: 0;
+    padding: 0 1rem;
+  }
+
   h1 { margin-bottom: 0.25rem; }
 
   .subtitle {
@@ -539,6 +580,10 @@ nav a {
   grid-template-columns: repeat(2, 1fr);
   gap: 1.25rem;
   margin-bottom: 2rem;
+
+  @media (max-width: 640px) {
+    grid-template-columns: 1fr;
+  }
 }
 
 .food-category {
@@ -640,5 +685,9 @@ nav a {
 
   .form-row {
     grid-template-columns: 1fr 2fr 2fr 0.4fr 1fr;
+
+    @media (max-width: 640px) {
+      grid-template-columns: 1fr;
+    }
   }
 }
