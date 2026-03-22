@@ -2,12 +2,12 @@ import { Injectable } from '@angular/core';
 import { BehaviorSubject, Observable } from 'rxjs';
 import { Ride, Rider } from '../models/ride.model';
 
-const BBQ_LOCATION = '4209 Branson St.';
+const BBQ_LOCATION = '4320 France Ave S.';
 
 const MOCK_RIDES: Ride[] = [
   {
     id: '1',
-    name: 'River Trail Route',
+    name: 'Super Looper Duper',
     startLocation: 'Morningside & Grimes',
     departureTime: '09:30',
     distanceMiles: 74,
@@ -67,7 +67,24 @@ const MOCK_RIDES: Ride[] = [
       url: 'https://www.strava.com/routes/3470584088854308878'
     }],
     riders: [{ name: 'Andre', email:  'andre@example.com'}, { name: 'Orvil' }, { name: 'Lana', additionalGuests: 2 }, { name: 'Rachel', additionalGuests: 3 }],
-  },
+  },  
+  {
+    id: '5',
+    name: 'Novice Branson Loop',
+    startLocation: 'Theo Trailhead',
+    departureTime: '11:00',
+    distanceMiles: 29,
+    difficulty: 'moderate',
+    bikeType: 'gravel',
+    description: 'A scenic loop through the neighborhoods.',
+    leader: 'Andre',
+    leaderContact: 'andre@example.com',
+    routeLinks: [{
+      type: 'strava',
+      url: 'https://www.strava.com/routes/3470584088854308878'
+    }],
+    riders: [{ name: 'Andre', email:  'andre@example.com'}, { name: 'Orvil' }, { name: 'Lana', additionalGuests: 2 }, { name: 'Rachel', additionalGuests: 3 }],
+  }
 ];
 
 @Injectable({ providedIn: 'root' })
