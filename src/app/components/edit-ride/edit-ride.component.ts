@@ -26,7 +26,7 @@ export class EditRideComponent implements OnInit {
   newLinkType: RouteLinkType = 'strava';
   newLinkUrl = '';
 
-  difficulties: Difficulty[] = ['easy', 'moderately easy', 'moderate', 'moderately hard', 'hard'];
+  difficulties: Difficulty[] = ['very easy', 'easy', 'moderately easy', 'moderate', 'moderately hard', 'hard'];
   bikeTypes: BikeType[] = ['road', 'gravel', 'mountain', 'city'];
   linkTypes: RouteLinkType[] = ['strava', 'gpx', 'maps', 'other'];
 

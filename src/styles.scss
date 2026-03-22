@@ -133,6 +133,7 @@ nav a {
   font-weight: 600;
   text-transform: capitalize;
 
+  &--very-easy        { background: #eaf7ec; color: #1a6b30; }
   &--easy             { background: #d4edda; color: #1a6b30; }
   &--moderately-easy  { background: #e8f5d0; color: #4a7a1a; }
   &--moderate         { background: #fff3cd; color: #7d4e00; }
@@ -153,6 +154,7 @@ nav a {
   select { flex: 1; }
 }
 
+.difficulty-select--very-easy       { background: #eaf7ec; }
 .difficulty-select--easy            { background: #d4edda; }
 .difficulty-select--moderately-easy { background: #e8f5d0; }
 .difficulty-select--moderate        { background: #fff3cd; }

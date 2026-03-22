@@ -71,19 +71,19 @@ const MOCK_RIDES: Ride[] = [
   {
     id: '5',
     name: 'Novice Branson Loop',
-    startLocation: 'Theo Trailhead',
-    departureTime: '11:00',
-    distanceMiles: 29,
-    difficulty: 'moderate',
-    bikeType: 'gravel',
-    description: 'A scenic loop through the neighborhoods.',
-    leader: 'Andre',
-    leaderContact: 'andre@example.com',
+    startLocation: 'France 44',
+    departureTime: '1:00',
+    distanceMiles: 2.3,
+    difficulty: 'very easy',
+    bikeType: 'city',
+    description: 'Riade around the neighboorhood on whatever bike you want and come join the fun.',
+    leader: 'Lisa',
+    leaderContact: 'lisa@example.com',
     routeLinks: [{
-      type: 'strava',
-      url: 'https://www.strava.com/routes/3470584088854308878'
+      type: 'maps',
+      url: 'https://www.google.com/maps/dir/France+44+Wines+%26+Spirits,+4351+France+Ave+S,+Minneapolis,+MN+55410/44.9214445,-93.3342987/44.9221244,-93.3390344/44.9268527,-93.3341896/44.9249985,-93.3307975/44.9234069,-93.3304795/@44.9223716,-93.3378996,15.98z/data=!4m13!4m12!1m5!1m1!1s0x87f6272ff65608e9:0xc68c5bc0a9d0c538!2m2!1d-93.3289088!2d44.9227869!1m0!1m0!1m0!1m0!1m0!3e0?entry=ttu&g_ep=EgoyMDI2MDMxOC4xIKXMDSoASAFQAw%3D%3D'
     }],
-    riders: [{ name: 'Andre', email:  'andre@example.com'}, { name: 'Orvil' }, { name: 'Lana', additionalGuests: 2 }, { name: 'Rachel', additionalGuests: 3 }],
+    riders: [{ name: 'Lisa', email:  'lisa@example.com'}, { name: 'Sarah' }, { name: 'Brett', additionalGuests: 3 }, { name: 'Bob C', additionalGuests: 1 }],
   }
 ];
 

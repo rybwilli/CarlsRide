@@ -1,4 +1,4 @@
-export type Difficulty = 'easy' | 'moderately easy' | 'moderate' | 'moderately hard' | 'hard';
+export type Difficulty = 'very easy' | 'easy' | 'moderately easy' | 'moderate' | 'moderately hard' | 'hard';
 export type BikeType = 'road' | 'gravel' | 'mountain' | 'city';
 export type RouteLinkType = 'strava' | 'gpx' | 'maps' | 'other';
 
