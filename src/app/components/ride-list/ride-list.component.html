@@ -1,9 +1,16 @@
 <div class="ride-list-page">
   <div class="page-header">
-    <div class="destination-banner">
-      All rides end should attempt to end at 2pm May 9 2026: <strong>{{ bbqLocation }}</strong>
+    <div class="destination-banners">
+      <div class="destination-banner">
+        Click a ride below to view details and sign up to join the ride.
+      </div>
+      <div class="destination-banner">
+        If you don't see the ride for you below, <button class="btn-primary" title="If you don't see a ride you can join, create a new one and invite your friends!" (click)="addRide()">Add a Ride</button>
+      </div>
+      <div class="destination-banner">
+        All rides end around 2pm.
+      </div>
     </div>
-    <button class="btn-primary" title="If you don't see a ride you can join, create a new one and invite your friends!" (click)="addRide()">+ Add a Ride</button>
   </div>
 
   <div class="rides-grid" *ngIf="rides$ | async as rides">

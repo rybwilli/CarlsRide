@@ -82,9 +82,15 @@ body {
 
   .app-header__inner {
     height: auto;
+    flex-direction: row;
     flex-wrap: wrap;
+    align-items: center;
     padding: 0.5rem 0;
     gap: 0;
+  }
+
+  .app-title {
+    flex: 1;
   }
 
   nav {
@@ -295,6 +301,12 @@ nav a {
     align-items: center;
     justify-content: space-between;
     margin-bottom: 1.5rem;
+  }
+
+  .destination-banners {
+    display: flex;
+    flex-direction: column;
+    gap: 0.5rem;
   }
 
   .destination-banner {
