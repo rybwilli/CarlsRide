@@ -12,8 +12,7 @@
       </h2>
       <ul class="food-list">
         <li *ngFor="let item of section.items" class="food-item">
-          <span class="food-item__name">{{ item.item }}</span>
-          <span class="food-item__name" *ngIf="item.notes">{{ item.notes }}</span>
+          <span class="food-item__name" [attr.data-tooltip]="item.notes || null">{{ item.item }}<span *ngIf="item.notes" class="food-item__notes-indicator"> ℹ️</span></span>
           <span class="food-item__servings" *ngIf="item.servings">{{ item.servings }} servings</span>
           <span class="food-item__who">{{ item.broughtBy }}</span>
           <button class="btn-remove" (click)="remove(item.id)" title="Remove">✕</button>
