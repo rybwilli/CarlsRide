@@ -17,8 +17,10 @@ interface Stats {
 })
 export class HomeComponent {
   stats$: Observable<Stats>;
+  bbqLocation: string;
 
   constructor(rideService: RideService, foodService: FoodService) {
+    this.bbqLocation = rideService.bbqLocation;
     this.stats$ = combineLatest([rideService.rides$, foodService.items$]).pipe(
       map(([rides, items]) => {
         const allRiders = rides.flatMap(r => r.riders);
