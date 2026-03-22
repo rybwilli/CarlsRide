@@ -2,7 +2,7 @@ import { Injectable } from '@angular/core';
 import { BehaviorSubject, Observable } from 'rxjs';
 import { Ride, Rider } from '../models/ride.model';
 
-const BBQ_LOCATION = '4320 France Ave S.';
+const BBQ_LOCATION = '4209 Branson St.';
 
 const MOCK_RIDES: Ride[] = [
   {
