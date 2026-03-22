@@ -28,7 +28,7 @@ export class EditRideComponent implements OnInit {
 
   difficulties: Difficulty[] = ['easy', 'moderately easy', 'moderate', 'moderately hard', 'hard'];
   bikeTypes: BikeType[] = ['road', 'gravel', 'mountain', 'city'];
-  linkTypes: RouteLinkType[] = ['strava', 'gpx', 'maps'];
+  linkTypes: RouteLinkType[] = ['strava', 'gpx', 'maps', 'other'];
 
   constructor(private route: ActivatedRoute, private router: Router, private rideService: RideService) {
     this.bbqLocation = rideService.bbqLocation;

@@ -1,6 +1,6 @@
 export type Difficulty = 'easy' | 'moderately easy' | 'moderate' | 'moderately hard' | 'hard';
 export type BikeType = 'road' | 'gravel' | 'mountain' | 'city';
-export type RouteLinkType = 'strava' | 'gpx' | 'maps';
+export type RouteLinkType = 'strava' | 'gpx' | 'maps' | 'other';
 
 export interface RouteLink {
   type: RouteLinkType;

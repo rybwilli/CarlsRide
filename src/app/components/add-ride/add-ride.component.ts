@@ -24,7 +24,7 @@ export class AddRideComponent {
 
   difficulties: Difficulty[] = ['easy', 'moderately easy', 'moderate', 'moderately hard', 'hard'];
   bikeTypes: BikeType[] = ['road', 'gravel', 'mountain', 'city'];
-  linkTypes: RouteLinkType[] = ['strava', 'gpx', 'maps'];
+  linkTypes: RouteLinkType[] = ['strava', 'gpx', 'maps', 'other'];
   routeLinks: RouteLink[] = [];
   newLinkType: RouteLinkType = 'strava';
   newLinkUrl = '';
