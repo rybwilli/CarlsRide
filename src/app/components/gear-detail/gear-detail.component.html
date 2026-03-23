@@ -30,12 +30,23 @@
     {{ item.status === 'pending' ? '⏳ Sale Pending' : '✅ Sold' }}
   </div>
 
-  <p class="gear-detail__description">{{ item.description }}</p>
-
   <div class="gear-detail__meta">
-    <span *ngIf="item.activities?.length">Activity: <strong>{{ item.activities!.join(', ') | titlecase }}</strong></span>
-    <span *ngIf="item.condition">Condition: <strong>{{ item.condition | titlecase }}</strong></span>
-    <span>Listed by <strong>{{ item.seller }}</strong></span>
+    <div *ngIf="item.activities?.length" class="gear-detail__meta-row">
+      <span class="gear-detail__meta-label">Activity</span>
+      <strong>{{ item.activities!.join(', ') | titlecase }}</strong>
+    </div>
+    <div *ngIf="item.condition" class="gear-detail__meta-row">
+      <span class="gear-detail__meta-label">Condition</span>
+      <strong>{{ item.condition | titlecase }}</strong>
+    </div>
+    <div class="gear-detail__meta-row">
+      <span class="gear-detail__meta-label">Listed by</span>
+      <strong>{{ item.seller }}</strong>
+    </div>
+    <div *ngIf="item.description" class="gear-detail__meta-row">
+      <span class="gear-detail__meta-label">Notes</span>
+      <span>{{ item.description }}</span>
+    </div>
   </div>
 
   <div class="gear-detail__actions">
