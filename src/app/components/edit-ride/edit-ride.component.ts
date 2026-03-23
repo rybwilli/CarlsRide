@@ -67,9 +67,9 @@ export class EditRideComponent implements OnInit {
     this.routeLinks.splice(index, 1);
   }
 
-  submit(): void {
+  async submit(): Promise<void> {
     if (!this.isValid || this.distanceMiles === null) return;
-    this.rideService.updateRide(this.rideId, {
+    await this.rideService.updateRide(this.rideId, {
       name: this.name.trim(),
       startLocation: this.startLocation.trim(),
       departureTime: this.startTime,

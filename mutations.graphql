@@ -1,0 +1,289 @@
+# this is an auto generated file. This will be overwritten
+
+mutation CreateEvent(
+  $input: CreateEventInput!
+  $condition: ModelEventConditionInput
+) {
+  createEvent(input: $input, condition: $condition) {
+    id
+    name
+    date
+    gatheringTime
+    location
+    description
+    rides {
+      nextToken
+      __typename
+    }
+    foodItems {
+      nextToken
+      __typename
+    }
+    createdAt
+    updatedAt
+    __typename
+  }
+}
+
+mutation UpdateEvent(
+  $input: UpdateEventInput!
+  $condition: ModelEventConditionInput
+) {
+  updateEvent(input: $input, condition: $condition) {
+    id
+    name
+    date
+    gatheringTime
+    location
+    description
+    rides {
+      nextToken
+      __typename
+    }
+    foodItems {
+      nextToken
+      __typename
+    }
+    createdAt
+    updatedAt
+    __typename
+  }
+}
+
+mutation DeleteEvent(
+  $input: DeleteEventInput!
+  $condition: ModelEventConditionInput
+) {
+  deleteEvent(input: $input, condition: $condition) {
+    id
+    name
+    date
+    gatheringTime
+    location
+    description
+    rides {
+      nextToken
+      __typename
+    }
+    foodItems {
+      nextToken
+      __typename
+    }
+    createdAt
+    updatedAt
+    __typename
+  }
+}
+
+mutation CreateRide(
+  $input: CreateRideInput!
+  $condition: ModelRideConditionInput
+) {
+  createRide(input: $input, condition: $condition) {
+    id
+    eventId
+    name
+    startLocation
+    departureTime
+    distanceMiles
+    difficulty
+    bikeType
+    description
+    leader
+    leaderContact
+    notes
+    routeLinks {
+      linkType
+      url
+      __typename
+    }
+    riders {
+      name
+      email
+      additionalGuests
+      __typename
+    }
+    createdAt
+    updatedAt
+    __typename
+  }
+}
+
+mutation UpdateRide(
+  $input: UpdateRideInput!
+  $condition: ModelRideConditionInput
+) {
+  updateRide(input: $input, condition: $condition) {
+    id
+    eventId
+    name
+    startLocation
+    departureTime
+    distanceMiles
+    difficulty
+    bikeType
+    description
+    leader
+    leaderContact
+    notes
+    routeLinks {
+      linkType
+      url
+      __typename
+    }
+    riders {
+      name
+      email
+      additionalGuests
+      __typename
+    }
+    createdAt
+    updatedAt
+    __typename
+  }
+}
+
+mutation DeleteRide(
+  $input: DeleteRideInput!
+  $condition: ModelRideConditionInput
+) {
+  deleteRide(input: $input, condition: $condition) {
+    id
+    eventId
+    name
+    startLocation
+    departureTime
+    distanceMiles
+    difficulty
+    bikeType
+    description
+    leader
+    leaderContact
+    notes
+    routeLinks {
+      linkType
+      url
+      __typename
+    }
+    riders {
+      name
+      email
+      additionalGuests
+      __typename
+    }
+    createdAt
+    updatedAt
+    __typename
+  }
+}
+
+mutation CreateFoodItem(
+  $input: CreateFoodItemInput!
+  $condition: ModelFoodItemConditionInput
+) {
+  createFoodItem(input: $input, condition: $condition) {
+    id
+    eventId
+    category
+    item
+    notes
+    servings
+    broughtBy
+    createdAt
+    updatedAt
+    __typename
+  }
+}
+
+mutation UpdateFoodItem(
+  $input: UpdateFoodItemInput!
+  $condition: ModelFoodItemConditionInput
+) {
+  updateFoodItem(input: $input, condition: $condition) {
+    id
+    eventId
+    category
+    item
+    notes
+    servings
+    broughtBy
+    createdAt
+    updatedAt
+    __typename
+  }
+}
+
+mutation DeleteFoodItem(
+  $input: DeleteFoodItemInput!
+  $condition: ModelFoodItemConditionInput
+) {
+  deleteFoodItem(input: $input, condition: $condition) {
+    id
+    eventId
+    category
+    item
+    notes
+    servings
+    broughtBy
+    createdAt
+    updatedAt
+    __typename
+  }
+}
+
+mutation CreateSaleItem(
+  $input: CreateSaleItemInput!
+  $condition: ModelSaleItemConditionInput
+) {
+  createSaleItem(input: $input, condition: $condition) {
+    id
+    name
+    description
+    price
+    category
+    status
+    seller
+    images
+    createdAt
+    updatedAt
+    __typename
+  }
+}
+
+mutation UpdateSaleItem(
+  $input: UpdateSaleItemInput!
+  $condition: ModelSaleItemConditionInput
+) {
+  updateSaleItem(input: $input, condition: $condition) {
+    id
+    name
+    description
+    price
+    category
+    status
+    seller
+    images
+    createdAt
+    updatedAt
+    __typename
+  }
+}
+
+mutation DeleteSaleItem(
+  $input: DeleteSaleItemInput!
+  $condition: ModelSaleItemConditionInput
+) {
+  deleteSaleItem(input: $input, condition: $condition) {
+    id
+    name
+    description
+    price
+    category
+    status
+    seller
+    images
+    createdAt
+    updatedAt
+    __typename
+  }
+}

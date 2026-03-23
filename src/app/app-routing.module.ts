@@ -11,6 +11,7 @@ import { GearSaleComponent } from './components/gear-sale/gear-sale.component';
 import { GearAddComponent } from './components/gear-add/gear-add.component';
 import { GearEditComponent } from './components/gear-edit/gear-edit.component';
 import { GearDetailComponent } from './components/gear-detail/gear-detail.component';
+import { AdminComponent } from './components/admin/admin.component';
 
 const routes: Routes = [
   { path: '', component: HomeComponent },
@@ -24,6 +25,7 @@ const routes: Routes = [
   { path: 'gear/:id/edit', component: GearEditComponent },
   { path: 'gear/:id', component: GearDetailComponent },
   { path: 'about', component: AboutComponent },
+  { path: 'admin', component: AdminComponent },
 ];
 
 @NgModule({

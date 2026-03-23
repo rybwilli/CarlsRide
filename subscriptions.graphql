@@ -1,0 +1,253 @@
+# this is an auto generated file. This will be overwritten
+
+subscription OnCreateEvent($filter: ModelSubscriptionEventFilterInput) {
+  onCreateEvent(filter: $filter) {
+    id
+    name
+    date
+    gatheringTime
+    location
+    description
+    rides {
+      nextToken
+      __typename
+    }
+    foodItems {
+      nextToken
+      __typename
+    }
+    createdAt
+    updatedAt
+    __typename
+  }
+}
+
+subscription OnUpdateEvent($filter: ModelSubscriptionEventFilterInput) {
+  onUpdateEvent(filter: $filter) {
+    id
+    name
+    date
+    gatheringTime
+    location
+    description
+    rides {
+      nextToken
+      __typename
+    }
+    foodItems {
+      nextToken
+      __typename
+    }
+    createdAt
+    updatedAt
+    __typename
+  }
+}
+
+subscription OnDeleteEvent($filter: ModelSubscriptionEventFilterInput) {
+  onDeleteEvent(filter: $filter) {
+    id
+    name
+    date
+    gatheringTime
+    location
+    description
+    rides {
+      nextToken
+      __typename
+    }
+    foodItems {
+      nextToken
+      __typename
+    }
+    createdAt
+    updatedAt
+    __typename
+  }
+}
+
+subscription OnCreateRide($filter: ModelSubscriptionRideFilterInput) {
+  onCreateRide(filter: $filter) {
+    id
+    eventId
+    name
+    startLocation
+    departureTime
+    distanceMiles
+    difficulty
+    bikeType
+    description
+    leader
+    leaderContact
+    notes
+    routeLinks {
+      linkType
+      url
+      __typename
+    }
+    riders {
+      name
+      email
+      additionalGuests
+      __typename
+    }
+    createdAt
+    updatedAt
+    __typename
+  }
+}
+
+subscription OnUpdateRide($filter: ModelSubscriptionRideFilterInput) {
+  onUpdateRide(filter: $filter) {
+    id
+    eventId
+    name
+    startLocation
+    departureTime
+    distanceMiles
+    difficulty
+    bikeType
+    description
+    leader
+    leaderContact
+    notes
+    routeLinks {
+      linkType
+      url
+      __typename
+    }
+    riders {
+      name
+      email
+      additionalGuests
+      __typename
+    }
+    createdAt
+    updatedAt
+    __typename
+  }
+}
+
+subscription OnDeleteRide($filter: ModelSubscriptionRideFilterInput) {
+  onDeleteRide(filter: $filter) {
+    id
+    eventId
+    name
+    startLocation
+    departureTime
+    distanceMiles
+    difficulty
+    bikeType
+    description
+    leader
+    leaderContact
+    notes
+    routeLinks {
+      linkType
+      url
+      __typename
+    }
+    riders {
+      name
+      email
+      additionalGuests
+      __typename
+    }
+    createdAt
+    updatedAt
+    __typename
+  }
+}
+
+subscription OnCreateFoodItem($filter: ModelSubscriptionFoodItemFilterInput) {
+  onCreateFoodItem(filter: $filter) {
+    id
+    eventId
+    category
+    item
+    notes
+    servings
+    broughtBy
+    createdAt
+    updatedAt
+    __typename
+  }
+}
+
+subscription OnUpdateFoodItem($filter: ModelSubscriptionFoodItemFilterInput) {
+  onUpdateFoodItem(filter: $filter) {
+    id
+    eventId
+    category
+    item
+    notes
+    servings
+    broughtBy
+    createdAt
+    updatedAt
+    __typename
+  }
+}
+
+subscription OnDeleteFoodItem($filter: ModelSubscriptionFoodItemFilterInput) {
+  onDeleteFoodItem(filter: $filter) {
+    id
+    eventId
+    category
+    item
+    notes
+    servings
+    broughtBy
+    createdAt
+    updatedAt
+    __typename
+  }
+}
+
+subscription OnCreateSaleItem($filter: ModelSubscriptionSaleItemFilterInput) {
+  onCreateSaleItem(filter: $filter) {
+    id
+    name
+    description
+    price
+    category
+    status
+    seller
+    images
+    createdAt
+    updatedAt
+    __typename
+  }
+}
+
+subscription OnUpdateSaleItem($filter: ModelSubscriptionSaleItemFilterInput) {
+  onUpdateSaleItem(filter: $filter) {
+    id
+    name
+    description
+    price
+    category
+    status
+    seller
+    images
+    createdAt
+    updatedAt
+    __typename
+  }
+}
+
+subscription OnDeleteSaleItem($filter: ModelSubscriptionSaleItemFilterInput) {
+  onDeleteSaleItem(filter: $filter) {
+    id
+    name
+    description
+    price
+    category
+    status
+    seller
+    images
+    createdAt
+    updatedAt
+    __typename
+  }
+}

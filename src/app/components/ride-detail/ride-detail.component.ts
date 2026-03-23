@@ -37,9 +37,9 @@ export class RideDetailComponent implements OnInit {
     return this.ride.riders.reduce((sum, r) => sum + 1 + (r.additionalGuests ?? 0), 0);
   }
 
-  joinRide(): void {
+  async joinRide(): Promise<void> {
     if (!this.ride || !this.joinName.trim()) return;
-    this.rideService.joinRide(this.ride.id, {
+    await this.rideService.joinRide(this.ride.id, {
       name: this.joinName.trim(),
       email: this.joinEmail.trim() || undefined,
       additionalGuests: this.joinGuests ?? undefined,
@@ -51,9 +51,9 @@ export class RideDetailComponent implements OnInit {
     this.joinGuests = null;
   }
 
-  removeRider(riderName: string): void {
+  async removeRider(riderName: string): Promise<void> {
     if (!this.ride) return;
-    this.rideService.removeRider(this.ride.id, riderName);
+    await this.rideService.removeRider(this.ride.id, riderName);
     this.ride = this.rideService.getRide(this.ride.id);
   }
 

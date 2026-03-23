@@ -1,0 +1,118 @@
+<div class="admin-page">
+  <h1>Admin</h1>
+  <p class="subtitle">Manage events for Carl's Ride.</p>
+
+  <!-- Event List -->
+  <section class="admin-section">
+    <h2>Events</h2>
+
+    <div class="admin-events" *ngIf="allEvents$ | async as events">
+      <div *ngIf="events.length === 0" class="empty-state">No events yet — create one below.</div>
+
+      <div *ngFor="let event of events" class="admin-event-card"
+           [class.admin-event-card--active]="(activeEvent$ | async)?.id === event.id">
+
+        <div *ngIf="editingId !== event.id">
+          <div class="admin-event-card__header">
+            <div>
+              <h3>{{ event.name }}</h3>
+              <div class="admin-event-card__meta">
+                📅 {{ event.date }} &nbsp;·&nbsp; ⏰ {{ event.gatheringTime }} &nbsp;·&nbsp; 📍 {{ event.location }}
+              </div>
+              <p *ngIf="event.description" class="admin-event-card__desc">{{ event.description }}</p>
+            </div>
+            <span class="admin-active-badge" *ngIf="(activeEvent$ | async)?.id === event.id">✅ Active</span>
+          </div>
+          <div class="admin-event-card__actions">
+            <button class="btn-primary btn-sm" (click)="setActive(event)"
+                    *ngIf="(activeEvent$ | async)?.id !== event.id">Set as Active</button>
+            <button class="btn-secondary btn-sm" (click)="startEdit(event)">Edit</button>
+            <button class="btn-delete btn-sm" (click)="deleteEvent(event)"
+                    *ngIf="(activeEvent$ | async)?.id !== event.id">Delete</button>
+          </div>
+        </div>
+
+        <!-- Inline edit form -->
+        <div *ngIf="editingId === event.id" class="admin-edit-form">
+          <div class="form-row">
+            <div class="form-group">
+              <label>Event Name</label>
+              <input type="text" [(ngModel)]="editName" />
+            </div>
+            <div class="form-group">
+              <label>Date</label>
+              <input type="date" [(ngModel)]="editDate" />
+            </div>
+          </div>
+          <div class="form-row">
+            <div class="form-group">
+              <label>Gathering Time</label>
+              <input type="text" [(ngModel)]="editGatheringTime" placeholder="e.g. 2:00 PM" />
+            </div>
+            <div class="form-group">
+              <label>Location</label>
+              <input type="text" [(ngModel)]="editLocation" />
+            </div>
+          </div>
+          <div class="form-group">
+            <label>Description (optional)</label>
+            <textarea [(ngModel)]="editDescription" rows="2"></textarea>
+          </div>
+          <div class="form-actions">
+            <button class="btn-secondary" (click)="cancelEdit()">Cancel</button>
+            <button class="btn-primary" (click)="saveEdit()">Save</button>
+          </div>
+        </div>
+
+      </div>
+    </div>
+  </section>
+
+  <hr class="section-divider" />
+
+  <!-- Create Event -->
+  <section class="admin-section">
+    <h2>Create New Event</h2>
+    <div class="form-card">
+      <div class="form-row">
+        <div class="form-group">
+          <label>Event Name</label>
+          <input type="text" [(ngModel)]="newName" placeholder="e.g. Carl's Ride 2027" />
+        </div>
+        <div class="form-group">
+          <label>Date</label>
+          <input type="date" [(ngModel)]="newDate" />
+        </div>
+      </div>
+      <div class="form-row">
+        <div class="form-group">
+          <label>Gathering Time</label>
+          <input type="text" [(ngModel)]="newGatheringTime" placeholder="e.g. 2:00 PM" />
+        </div>
+        <div class="form-group">
+          <label>Location</label>
+          <input type="text" [(ngModel)]="newLocation" placeholder="Address" />
+        </div>
+      </div>
+      <div class="form-group">
+        <label>Description (optional)</label>
+        <textarea [(ngModel)]="newDescription" rows="2" placeholder="Brief description of the event"></textarea>
+      </div>
+      <div class="form-actions">
+        <button class="btn-primary" (click)="createEvent()" [disabled]="!isCreateValid">Create Event</button>
+      </div>
+    </div>
+  </section>
+</div>
+
+<!-- Delete confirmation modal -->
+<div class="modal-backdrop" *ngIf="deletingEvent" (click)="cancelDelete()">
+  <div class="modal" (click)="$event.stopPropagation()">
+    <h3>Delete "{{ deletingEvent.name }}"?</h3>
+    <p>Are you sure you want to proceed with deleting this event? This might lead to the loss of a lot of data.</p>
+    <div class="modal__actions">
+      <button class="btn-secondary" (click)="cancelDelete()">Cancel</button>
+      <button class="btn-delete" (click)="confirmDelete()">Yes, Delete</button>
+    </div>
+  </div>
+</div>

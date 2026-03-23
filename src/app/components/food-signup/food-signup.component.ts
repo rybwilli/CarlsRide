@@ -71,9 +71,9 @@ export class FoodSignupComponent {
     return !!(this.addItem.trim() && this.addName.trim());
   }
 
-  submit(): void {
+  async submit(): Promise<void> {
     if (!this.isValid) return;
-    this.foodService.addItem(
+    await this.foodService.addItem(
       this.addCategory,
       this.addItem,
       this.addName,

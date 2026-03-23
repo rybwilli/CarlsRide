@@ -1,43 +1,18 @@
 import { Injectable } from '@angular/core';
 import { BehaviorSubject, Observable } from 'rxjs';
 import { SaleItem, SaleCategory } from '../models/sale-item.model';
+import { generateClient } from 'aws-amplify/api';
 
-const MOCK_ITEMS: SaleItem[] = [
-  {
-    id: '1',
-    name: 'Trek Domane SL 5',
-    description: '2021 road bike, 56cm, lightly used. Great condition, new bar tape.',
-    price: 2200,
-    category: 'bikes',
-    status: 'available',
-    seller: 'Ryan',
-  },
-  {
-    id: '2',
-    name: 'Shimano 105 Groupset',
-    description: 'R7000 series, 11-speed. Removed from above bike upgrade.',
-    price: 350,
-    category: 'parts',
-    status: 'available',
-    seller: 'Ryan',
-  },
-  {
-    id: '3',
-    name: 'Pearl Izumi Bib Shorts',
-    description: 'Size medium, black. Worn a handful of times.',
-    price: 45,
-    category: 'clothing',
-    status: 'pending',
-    seller: 'Sarah',
-  },
-];
+const client = generateClient();
+
+const SALE_FIELDS = `id name description price category status seller images`;
 
 @Injectable({ providedIn: 'root' })
 export class SaleService {
-  private itemsSubject = new BehaviorSubject<SaleItem[]>(MOCK_ITEMS);
+  private itemsSubject = new BehaviorSubject<SaleItem[]>([]);
   items$: Observable<SaleItem[]> = this.itemsSubject.asObservable();
 
-  readonly venmoUsername = 'Ryan-Williams-09432';
+  readonly venmoUsername = 'YourVenmoUsername';
   readonly sellerToken = 'carlsride2026';
 
   readonly categories: { value: SaleCategory; label: string; emoji: string }[] = [
@@ -51,39 +26,51 @@ export class SaleService {
     { value: 'other',       label: 'Other',       emoji: '📦' },
   ];
 
-  addItem(item: Omit<SaleItem, 'id' | 'status'>): SaleItem {
-    const newItem: SaleItem = { ...item, id: Date.now().toString(), status: 'available' };
+  constructor() {
+    this.loadItems();
+  }
+
+  private async loadItems(): Promise<void> {
+    try {
+      const result: any = await client.graphql({
+        query: `query ListSaleItems { listSaleItems { items { ${SALE_FIELDS} } } }`
+      });
+      this.itemsSubject.next(result.data.listSaleItems.items);
+    } catch (e) {
+      console.warn('Could not load sale items from API.', e);
+    }
+  }
+
+  async addItem(item: Omit<SaleItem, 'id' | 'status'>): Promise<SaleItem> {
+    const input = { ...item, status: 'available' };
+    const result: any = await client.graphql({
+      query: `mutation CreateSaleItem($input: CreateSaleItemInput!) {
+        createSaleItem(input: $input) { ${SALE_FIELDS} }
+      }`,
+      variables: { input }
+    });
+    const newItem = result.data.createSaleItem;
     this.itemsSubject.next([...this.itemsSubject.value, newItem]);
     return newItem;
   }
 
-  markPending(id: string): void {
-    this.itemsSubject.next(
-      this.itemsSubject.value.map(i => i.id === id ? { ...i, status: 'pending' } : i)
-    );
-  }
-
-  markSold(id: string): void {
-    this.itemsSubject.next(
-      this.itemsSubject.value.map(i => i.id === id ? { ...i, status: 'sold' } : i)
-    );
+  async updateItem(id: string, changes: Partial<Omit<SaleItem, 'id'>>): Promise<void> {
+    await client.graphql({
+      query: `mutation UpdateSaleItem($input: UpdateSaleItemInput!) {
+        updateSaleItem(input: $input) { ${SALE_FIELDS} }
+      }`,
+      variables: { input: { id, ...changes } }
+    });
+    this.itemsSubject.next(this.itemsSubject.value.map(i => i.id === id ? { ...i, ...changes } : i));
   }
 
   getItem(id: string): SaleItem | undefined {
     return this.itemsSubject.value.find(i => i.id === id);
   }
 
-  updateItem(id: string, changes: Partial<Omit<SaleItem, 'id'>>): void {
-    this.itemsSubject.next(
-      this.itemsSubject.value.map(i => i.id === id ? { ...i, ...changes } : i)
-    );
-  }
-
-  markAvailable(id: string): void {
-    this.itemsSubject.next(
-      this.itemsSubject.value.map(i => i.id === id ? { ...i, status: 'available' } : i)
-    );
-  }
+  markPending(id: string): void { this.updateItem(id, { status: 'pending' }); }
+  markSold(id: string): void { this.updateItem(id, { status: 'sold' }); }
+  markAvailable(id: string): void { this.updateItem(id, { status: 'available' }); }
 
   getVenmoUrl(item: SaleItem): string {
     return `https://venmo.com/${this.venmoUsername}?txn=pay&amount=${item.price}&note=${encodeURIComponent(item.name)}`;

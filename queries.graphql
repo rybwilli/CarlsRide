@@ -1,0 +1,249 @@
+# this is an auto generated file. This will be overwritten
+
+query GetEvent($id: ID!) {
+  getEvent(id: $id) {
+    id
+    name
+    date
+    gatheringTime
+    location
+    description
+    rides {
+      nextToken
+      __typename
+    }
+    foodItems {
+      nextToken
+      __typename
+    }
+    createdAt
+    updatedAt
+    __typename
+  }
+}
+
+query ListEvents(
+  $filter: ModelEventFilterInput
+  $limit: Int
+  $nextToken: String
+) {
+  listEvents(filter: $filter, limit: $limit, nextToken: $nextToken) {
+    items {
+      id
+      name
+      date
+      gatheringTime
+      location
+      description
+      createdAt
+      updatedAt
+      __typename
+    }
+    nextToken
+    __typename
+  }
+}
+
+query GetRide($id: ID!) {
+  getRide(id: $id) {
+    id
+    eventId
+    name
+    startLocation
+    departureTime
+    distanceMiles
+    difficulty
+    bikeType
+    description
+    leader
+    leaderContact
+    notes
+    routeLinks {
+      linkType
+      url
+      __typename
+    }
+    riders {
+      name
+      email
+      additionalGuests
+      __typename
+    }
+    createdAt
+    updatedAt
+    __typename
+  }
+}
+
+query ListRides(
+  $filter: ModelRideFilterInput
+  $limit: Int
+  $nextToken: String
+) {
+  listRides(filter: $filter, limit: $limit, nextToken: $nextToken) {
+    items {
+      id
+      eventId
+      name
+      startLocation
+      departureTime
+      distanceMiles
+      difficulty
+      bikeType
+      description
+      leader
+      leaderContact
+      notes
+      createdAt
+      updatedAt
+      __typename
+    }
+    nextToken
+    __typename
+  }
+}
+
+query GetFoodItem($id: ID!) {
+  getFoodItem(id: $id) {
+    id
+    eventId
+    category
+    item
+    notes
+    servings
+    broughtBy
+    createdAt
+    updatedAt
+    __typename
+  }
+}
+
+query ListFoodItems(
+  $filter: ModelFoodItemFilterInput
+  $limit: Int
+  $nextToken: String
+) {
+  listFoodItems(filter: $filter, limit: $limit, nextToken: $nextToken) {
+    items {
+      id
+      eventId
+      category
+      item
+      notes
+      servings
+      broughtBy
+      createdAt
+      updatedAt
+      __typename
+    }
+    nextToken
+    __typename
+  }
+}
+
+query GetSaleItem($id: ID!) {
+  getSaleItem(id: $id) {
+    id
+    name
+    description
+    price
+    category
+    status
+    seller
+    images
+    createdAt
+    updatedAt
+    __typename
+  }
+}
+
+query ListSaleItems(
+  $filter: ModelSaleItemFilterInput
+  $limit: Int
+  $nextToken: String
+) {
+  listSaleItems(filter: $filter, limit: $limit, nextToken: $nextToken) {
+    items {
+      id
+      name
+      description
+      price
+      category
+      status
+      seller
+      images
+      createdAt
+      updatedAt
+      __typename
+    }
+    nextToken
+    __typename
+  }
+}
+
+query RidesByEventId(
+  $eventId: ID!
+  $sortDirection: ModelSortDirection
+  $filter: ModelRideFilterInput
+  $limit: Int
+  $nextToken: String
+) {
+  ridesByEventId(
+    eventId: $eventId
+    sortDirection: $sortDirection
+    filter: $filter
+    limit: $limit
+    nextToken: $nextToken
+  ) {
+    items {
+      id
+      eventId
+      name
+      startLocation
+      departureTime
+      distanceMiles
+      difficulty
+      bikeType
+      description
+      leader
+      leaderContact
+      notes
+      createdAt
+      updatedAt
+      __typename
+    }
+    nextToken
+    __typename
+  }
+}
+
+query FoodItemsByEventId(
+  $eventId: ID!
+  $sortDirection: ModelSortDirection
+  $filter: ModelFoodItemFilterInput
+  $limit: Int
+  $nextToken: String
+) {
+  foodItemsByEventId(
+    eventId: $eventId
+    sortDirection: $sortDirection
+    filter: $filter
+    limit: $limit
+    nextToken: $nextToken
+  ) {
+    items {
+      id
+      eventId
+      category
+      item
+      notes
+      servings
+      broughtBy
+      createdAt
+      updatedAt
+      __typename
+    }
+    nextToken
+    __typename
+  }
+}

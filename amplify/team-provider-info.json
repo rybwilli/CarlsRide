@@ -1,0 +1,20 @@
+{
+  "dev": {
+    "awscloudformation": {
+      "AuthRoleName": "amplify-carlsride-dev-3162d-authRole",
+      "UnauthRoleArn": "arn:aws:iam::963108102266:role/amplify-carlsride-dev-3162d-unauthRole",
+      "AuthRoleArn": "arn:aws:iam::963108102266:role/amplify-carlsride-dev-3162d-authRole",
+      "Region": "us-east-1",
+      "DeploymentBucketName": "amplify-carlsride-dev-3162d-deployment",
+      "UnauthRoleName": "amplify-carlsride-dev-3162d-unauthRole",
+      "StackName": "amplify-carlsride-dev-3162d",
+      "StackId": "arn:aws:cloudformation:us-east-1:963108102266:stack/amplify-carlsride-dev-3162d/eec441b0-26c8-11f1-892c-12abeb9ed3ef",
+      "AmplifyAppId": "d2nxxwx7gf9se1"
+    },
+    "categories": {
+      "api": {
+        "carlsride": {}
+      }
+    }
+  }
+}

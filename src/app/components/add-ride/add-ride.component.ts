@@ -45,9 +45,9 @@ export class AddRideComponent {
     );
   }
 
-  submit(): void {
+  async submit(): Promise<void> {
     if (!this.isValid || this.distanceMiles === null) return;
-    const ride = this.rideService.addRide({
+    const ride = await this.rideService.addRide({
       name: this.name.trim(),
       startLocation: this.startLocation.trim(),
       departureTime: this.startTime,

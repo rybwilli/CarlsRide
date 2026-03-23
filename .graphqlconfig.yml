@@ -1,0 +1,12 @@
+projects:
+  carlsride:
+    schemaPath: src/graphql/schema.json
+    includes:
+      - gql
+    excludes:
+      - ./amplify/**
+    extensions:
+      amplify:
+        codeGenTarget: angular
+        generatedFileName: gengql
+        docsFilePath: .
