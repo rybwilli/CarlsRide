@@ -19,6 +19,7 @@ export class GearEditComponent implements OnInit {
   seller = '';
   status: SaleItemStatus = 'available';
   selectedActivities: SaleActivity[] = [];
+  comparableSite = '';
   condition: SaleCondition | '' = '';
   images: string[] = [];
 
@@ -62,6 +63,7 @@ export class GearEditComponent implements OnInit {
     this.seller = item.seller;
     this.status = item.status;
     this.selectedActivities = item.activities ? [...item.activities] : [];
+    this.comparableSite = item.comparableSite ?? '';
     this.condition = item.condition ?? '';
     this.images = item.images ? [...item.images] : [];
   }
@@ -120,6 +122,7 @@ export class GearEditComponent implements OnInit {
       images: this.images.length ? [...this.images] : undefined,
       activities: this.selectedActivities.length ? [...this.selectedActivities] : undefined,
       condition: this.condition || undefined,
+      comparableSite: this.comparableSite.trim() || undefined,
     });
     this.router.navigate(['/gear'], { queryParams: { seller: this.sellerToken } });
   }

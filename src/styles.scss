@@ -801,6 +801,13 @@ nav a {
     letter-spacing: 0.4px;
   }
 
+  &__compare-link {
+    color: var(--color-primary);
+    font-weight: 600;
+    text-decoration: none;
+    &:hover { text-decoration: underline; }
+  }
+
   &__actions {
     display: flex;
     gap: 0.75rem;

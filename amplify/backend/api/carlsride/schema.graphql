@@ -51,6 +51,7 @@ type SaleItem @model {
   images: [String]
   activities: [String]
   condition: String
+  comparableSite: String
 }
 
 type RouteLink {

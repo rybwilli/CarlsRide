@@ -17,6 +17,7 @@ export class GearAddComponent {
   category: SaleCategory = 'bikes';
   selectedActivities: SaleActivity[] = [];
   condition: SaleCondition | '' = '';
+  comparableSite = '';
   seller = '';
   images: string[] = [];
 
@@ -101,6 +102,7 @@ export class GearAddComponent {
       images: this.images.length ? [...this.images] : undefined,
       activities: this.selectedActivities.length ? [...this.selectedActivities] : undefined,
       condition: this.condition || undefined,
+      comparableSite: this.comparableSite.trim() || undefined,
     });
     this.router.navigate(['/gear'], { queryParams: { seller: this.sellerToken } });
   }

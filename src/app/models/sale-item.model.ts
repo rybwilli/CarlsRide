@@ -15,4 +15,5 @@ export interface SaleItem {
   quantity?: number;
   activities?: SaleActivity[];
   condition?: SaleCondition;
+  comparableSite?: string;
 }

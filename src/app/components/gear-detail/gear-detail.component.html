@@ -46,6 +46,10 @@
     <div *ngIf="item.description" class="gear-detail__meta-row">
       <span>{{ item.description }}</span>
     </div>
+    <div *ngIf="item.comparableSite" class="gear-detail__meta-row">
+      <span class="gear-detail__meta-label">Compare: </span>
+      <a [href]="item.comparableSite" target="_blank" rel="noopener noreferrer" class="gear-detail__compare-link">View comparable item ↗</a>
+    </div>
   </div>
 
   <div class="gear-detail__actions">
