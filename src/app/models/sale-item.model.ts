@@ -1,5 +1,5 @@
 export type SaleItemStatus = 'available' | 'pending' | 'sold';
-export type SaleCategory = 'bikes' | 'parts' | 'wheels' | 'tires' | 'tools' | 'clothing' | 'accessories' | 'other';
+export type SaleCategory = 'bikes' | 'parts' | 'wheels' | 'tires' | 'tools' | 'helmets' | 'clothing' | 'accessories' | 'other';
 
 export interface SaleItem {
   id: string;

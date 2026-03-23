@@ -12,7 +12,7 @@ export class SaleService {
   private itemsSubject = new BehaviorSubject<SaleItem[]>([]);
   items$: Observable<SaleItem[]> = this.itemsSubject.asObservable();
 
-  readonly venmoUsername = 'YourVenmoUsername';
+  readonly venmoUsername = 'Ryan-Williams-09432';
   readonly sellerToken = 'carlsride2026';
 
   readonly categories: { value: SaleCategory; label: string; emoji: string }[] = [
@@ -21,6 +21,7 @@ export class SaleService {
     { value: 'wheels',      label: 'Wheels',      emoji: '⭕' },
     { value: 'tires',       label: 'Tires',       emoji: '🏎️' },
     { value: 'tools',       label: 'Tools',       emoji: '🛠️' },
+    { value: 'helmets',     label: 'Helmets',     emoji: '⛑️' },
     { value: 'clothing',    label: 'Clothing',    emoji: '👕' },
     { value: 'accessories', label: 'Accessories', emoji: '🎒' },
     { value: 'other',       label: 'Other',       emoji: '📦' },
