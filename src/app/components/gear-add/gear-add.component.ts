@@ -55,11 +55,25 @@ export class GearAddComponent {
   onImagesSelected(event: Event): void {
     const files = (event.target as HTMLInputElement).files;
     if (!files) return;
-    Array.from(files).forEach(file => {
-      const reader = new FileReader();
-      reader.onload = () => this.images.push(reader.result as string);
-      reader.readAsDataURL(file);
-    });
+    Array.from(files).forEach(file => this.compressAndAdd(file));
+  }
+
+  private compressAndAdd(file: File): void {
+    const reader = new FileReader();
+    reader.onload = (e) => {
+      const img = new Image();
+      img.onload = () => {
+        const MAX = 800;
+        const scale = Math.min(1, MAX / Math.max(img.width, img.height));
+        const canvas = document.createElement('canvas');
+        canvas.width = Math.round(img.width * scale);
+        canvas.height = Math.round(img.height * scale);
+        canvas.getContext('2d')!.drawImage(img, 0, 0, canvas.width, canvas.height);
+        this.images.push(canvas.toDataURL('image/jpeg', 0.7));
+      };
+      img.src = e.target!.result as string;
+    };
+    reader.readAsDataURL(file);
   }
 
   removeImage(index: number): void {
