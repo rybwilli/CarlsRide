@@ -214,7 +214,7 @@ subscription OnCreateSaleItem($filter: ModelSubscriptionSaleItemFilterInput) {
     status
     seller
     images
-    activity
+    activities
     condition
     createdAt
     updatedAt
@@ -232,7 +232,7 @@ subscription OnUpdateSaleItem($filter: ModelSubscriptionSaleItemFilterInput) {
     status
     seller
     images
-    activity
+    activities
     condition
     createdAt
     updatedAt
@@ -250,7 +250,7 @@ subscription OnDeleteSaleItem($filter: ModelSubscriptionSaleItemFilterInput) {
     status
     seller
     images
-    activity
+    activities
     condition
     createdAt
     updatedAt

@@ -11,13 +11,36 @@
   </div>
 
   <div class="gear-filters">
-    <button
-      *ngFor="let f of filters"
-      class="gear-filter-btn"
-      [class.gear-filter-btn--active]="(filter$ | async) === f.value"
-      (click)="setFilter(f.value)">
-      {{ f.emoji }} {{ f.label }}
-    </button>
+    <div class="gear-filters__row">
+      <span class="gear-filters__label">Category</span>
+      <button
+        *ngFor="let f of categoryFilters"
+        class="gear-filter-btn"
+        [class.gear-filter-btn--active]="(activeCategoryFilter$ | async) === f.value"
+        (click)="setCategoryFilter(f.value)">
+        {{ f.emoji }} {{ f.label }}
+      </button>
+    </div>
+    <div class="gear-filters__row">
+      <span class="gear-filters__label">Activity</span>
+      <button
+        *ngFor="let f of activityFilters"
+        class="gear-filter-btn"
+        [class.gear-filter-btn--active]="(activeActivityFilter$ | async) === f.value"
+        (click)="setActivityFilter(f.value)">
+        {{ f.label }}
+      </button>
+    </div>
+    <div class="gear-filters__row">
+      <span class="gear-filters__label">Condition</span>
+      <button
+        *ngFor="let f of conditionFilters"
+        class="gear-filter-btn"
+        [class.gear-filter-btn--active]="(activeConditionFilter$ | async) === f.value"
+        (click)="setConditionFilter(f.value)">
+        {{ f.label }}
+      </button>
+    </div>
   </div>
 
   <div class="gear-grid" *ngIf="filtered$ | async as items">
