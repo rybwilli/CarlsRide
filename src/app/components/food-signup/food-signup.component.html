@@ -38,16 +38,18 @@
         <input id="addItem" type="text" [(ngModel)]="addItem" name="addItem" placeholder="e.g. Pasta salad" />
       </div>
       <div class="form-group">
+        <label for="addName">Your name</label>
+        <input id="addName" type="text" [(ngModel)]="addName" name="addName" placeholder="Your name" />
+      </div>
+    </div>
+    <div class="form-row">
+      <div class="form-group">
         <label for="addNotes">Notes (optional)</label>
         <input id="addNotes" type="text" [(ngModel)]="addNotes" name="addNotes" placeholder="e.g. gluten-free, nut allergy, secret ingredient?" />
       </div>
       <div class="form-group">
         <label for="addServings">Servings (optional)</label>
         <input id="addServings" type="number" [(ngModel)]="addServings" name="addServings" min="1" [placeholder]="servingsPlaceholder" />
-      </div>
-      <div class="form-group">
-        <label for="addName">Your name</label>
-        <input id="addName" type="text" [(ngModel)]="addName" name="addName" placeholder="Your name" />
       </div>
     </div>
     <div class="form-actions">
