@@ -23,22 +23,22 @@
         </button>
       </div>
       <div class="gear-filters__section">
-        <span class="gear-filters__label">Activity</span>
-        <button
-          *ngFor="let f of activityFilters"
-          class="gear-filter-btn"
-          [class.gear-filter-btn--active]="(activeActivityFilter$ | async) === f.value"
-          (click)="setActivityFilter(f.value)">
-          {{ f.label }}
-        </button>
-      </div>
-      <div class="gear-filters__section">
         <span class="gear-filters__label">Condition</span>
         <button
           *ngFor="let f of conditionFilters"
           class="gear-filter-btn"
           [class.gear-filter-btn--active]="(activeConditionFilter$ | async) === f.value"
           (click)="setConditionFilter(f.value)">
+          {{ f.label }}
+        </button>
+      </div>
+      <div class="gear-filters__section">
+        <span class="gear-filters__label">Activity</span>
+        <button
+          *ngFor="let f of activityFilters"
+          class="gear-filter-btn"
+          [class.gear-filter-btn--active]="(activeActivityFilter$ | async) === f.value"
+          (click)="setActivityFilter(f.value)">
           {{ f.label }}
         </button>
       </div>
