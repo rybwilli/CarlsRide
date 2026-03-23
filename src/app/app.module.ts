@@ -11,6 +11,10 @@ import { FoodSignupComponent } from './components/food-signup/food-signup.compon
 import { HomeComponent } from './components/home/home.component';
 import { AboutComponent } from './components/about/about.component';
 import { EditRideComponent } from './components/edit-ride/edit-ride.component';
+import { GearSaleComponent } from './components/gear-sale/gear-sale.component';
+import { GearAddComponent } from './components/gear-add/gear-add.component';
+import { GearEditComponent } from './components/gear-edit/gear-edit.component';
+import { GearDetailComponent } from './components/gear-detail/gear-detail.component';
 
 @NgModule({
   declarations: [
@@ -21,7 +25,11 @@ import { EditRideComponent } from './components/edit-ride/edit-ride.component';
     FoodSignupComponent,
     HomeComponent,
     AboutComponent,
-    EditRideComponent
+    EditRideComponent,
+    GearSaleComponent,
+    GearAddComponent,
+    GearEditComponent,
+    GearDetailComponent,
   ],
   imports: [
     BrowserModule,

@@ -1,0 +1,47 @@
+<div class="gear-form-page">
+  <button class="btn-back" (click)="cancel()">← Back to Gear Sale</button>
+  <h1>List an Item</h1>
+
+  <div class="form-card">
+    <div class="form-group">
+      <label>Category</label>
+      <select [(ngModel)]="category">
+        <option *ngFor="let c of saleService.categories" [value]="c.value">{{ c.emoji }} {{ c.label }}</option>
+      </select>
+    </div>
+    <div class="form-row">
+      <div class="form-group">
+        <label>Item Name</label>
+        <input type="text" [(ngModel)]="name" placeholder="e.g. Trek Domane 56cm" />
+      </div>
+      <div class="form-group">
+        <label>Price ($)</label>
+        <input type="number" [(ngModel)]="price" min="1" placeholder="0" />
+      </div>
+    </div>
+    <div class="form-group">
+      <label>Description</label>
+      <textarea [(ngModel)]="description" rows="3" placeholder="Condition, size, details..."></textarea>
+    </div>
+    <div class="form-group">
+      <label>Your Name</label>
+      <input type="text" [(ngModel)]="seller" placeholder="Your name" />
+    </div>
+
+    <div class="form-group">
+      <label>Photos (optional)</label>
+      <input type="file" accept="image/*" multiple (change)="onImagesSelected($event)" />
+    </div>
+    <div class="image-preview-row" *ngIf="images.length">
+      <div *ngFor="let img of images; let i = index" class="image-preview">
+        <img [src]="img" alt="Preview" />
+        <button class="image-preview__remove" (click)="removeImage(i)">✕</button>
+      </div>
+    </div>
+
+    <div class="form-actions">
+      <button class="btn-secondary" (click)="cancel()">Cancel</button>
+      <button class="btn-primary" (click)="submit()" [disabled]="!isValid">List Item</button>
+    </div>
+  </div>
+</div>

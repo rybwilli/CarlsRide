@@ -7,6 +7,10 @@ import { FoodSignupComponent } from './components/food-signup/food-signup.compon
 import { HomeComponent } from './components/home/home.component';
 import { AboutComponent } from './components/about/about.component';
 import { EditRideComponent } from './components/edit-ride/edit-ride.component';
+import { GearSaleComponent } from './components/gear-sale/gear-sale.component';
+import { GearAddComponent } from './components/gear-add/gear-add.component';
+import { GearEditComponent } from './components/gear-edit/gear-edit.component';
+import { GearDetailComponent } from './components/gear-detail/gear-detail.component';
 
 const routes: Routes = [
   { path: '', component: HomeComponent },
@@ -15,6 +19,10 @@ const routes: Routes = [
   { path: 'rides/:id/edit', component: EditRideComponent },
   { path: 'rides/:id', component: RideDetailComponent },
   { path: 'food', component: FoodSignupComponent },
+  { path: 'gear', component: GearSaleComponent },
+  { path: 'gear/new', component: GearAddComponent },
+  { path: 'gear/:id/edit', component: GearEditComponent },
+  { path: 'gear/:id', component: GearDetailComponent },
   { path: 'about', component: AboutComponent },
 ];
 

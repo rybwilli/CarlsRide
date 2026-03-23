@@ -1,0 +1,51 @@
+<div class="gear-detail-page" *ngIf="item">
+  <div class="gear-detail__topbar">
+    <button class="btn-back" (click)="goBack()">← Back to Gear Sale</button>
+    <button *ngIf="canSell" class="btn-secondary btn-sm" (click)="editItem()">Edit Listing</button>
+  </div>
+
+  <!-- Image gallery -->
+  <div class="gear-gallery" *ngIf="item.images?.length">
+    <img class="gear-gallery__main" [src]="item.images![selectedImage]" [alt]="item.name" />
+    <div class="gear-gallery__thumbs" *ngIf="item.images!.length > 1">
+      <img
+        *ngFor="let img of item.images; let i = index"
+        [src]="img"
+        [alt]="item.name + ' ' + (i + 1)"
+        class="gear-gallery__thumb"
+        [class.gear-gallery__thumb--active]="i === selectedImage"
+        (click)="selectedImage = i" />
+    </div>
+  </div>
+
+  <div class="gear-detail__header">
+    <div>
+      <div class="gear-detail__category">{{ getCategoryEmoji(item.category) }} {{ item.category }}</div>
+      <h1>{{ item.name }}</h1>
+    </div>
+    <div class="gear-detail__price">${{ item.price | number:'1.0-0' }}</div>
+  </div>
+
+  <div class="gear-detail__status" *ngIf="item.status !== 'available'">
+    {{ item.status === 'pending' ? '⏳ Sale Pending' : '✅ Sold' }}
+  </div>
+
+  <p class="gear-detail__description">{{ item.description }}</p>
+
+  <div class="gear-detail__meta">
+    <span>Listed by <strong>{{ item.seller }}</strong></span>
+  </div>
+
+  <div class="gear-detail__actions">
+    <a *ngIf="item.status === 'available'"
+       [href]="saleService.getVenmoUrl(item)"
+       target="_blank"
+       rel="noopener noreferrer"
+       class="btn-venmo">
+      💸 Pay with Venmo
+    </a>
+    <button *ngIf="canSell && item.status === 'available'" class="btn-secondary" (click)="saleService.markPending(item.id)">Mark Pending</button>
+    <button *ngIf="canSell && item.status === 'pending'" class="btn-primary" (click)="saleService.markSold(item.id)">Mark Sold</button>
+    <button *ngIf="canSell && item.status === 'pending'" class="btn-secondary" (click)="saleService.markAvailable(item.id)">Unmark Pending</button>
+  </div>
+</div>

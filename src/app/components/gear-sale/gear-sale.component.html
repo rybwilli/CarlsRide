@@ -1,0 +1,56 @@
+<div class="gear-sale-page">
+  <div class="gear-sale-header">
+    <div>
+      <h1>Gear Sale</h1>
+      <p class="subtitle">Bikes, parts, clothing and more from the Carl's Ride community. Pay via Venmo: <strong>@{{ venmoUsername }}</strong></p>
+    </div>
+    <button *ngIf="canSell" class="btn-primary" (click)="addItem()">+ List an Item</button>
+  </div>
+
+  <div class="gear-filters">
+    <button
+      *ngFor="let f of filters"
+      class="gear-filter-btn"
+      [class.gear-filter-btn--active]="(filter$ | async) === f.value"
+      (click)="setFilter(f.value)">
+      {{ f.emoji }} {{ f.label }}
+    </button>
+  </div>
+
+  <div class="gear-grid" *ngIf="filtered$ | async as items">
+    <div *ngFor="let item of items" class="gear-card" (click)="viewItem(item.id)" [class.gear-card--pending]="item.status === 'pending'" [class.gear-card--sold]="item.status === 'sold'">
+      <div class="gear-card__status-badge" *ngIf="item.status !== 'available'">
+        {{ item.status === 'pending' ? '⏳ Pending' : '✅ Sold' }}
+      </div>
+      <div class="gear-card__image" *ngIf="item.images?.length">
+        <img [src]="item.images![0]" [alt]="item.name" />
+      </div>
+      <div class="gear-card__body">
+        <div class="gear-card__category">{{ getCategoryEmoji(item.category) }} {{ item.category }}</div>
+        <h2 class="gear-card__name">{{ item.name }}</h2>
+        <p class="gear-card__description">{{ item.description }}</p>
+        <div class="gear-card__footer">
+          <span class="gear-card__price">${{ item.price | number:'1.0-0' }}</span>
+          <span class="gear-card__seller">by {{ item.seller }}</span>
+        </div>
+      </div>
+      <div class="gear-card__actions" (click)="$event.stopPropagation()">
+        <a *ngIf="item.status === 'available'"
+           [href]="saleService.getVenmoUrl(item)"
+           target="_blank"
+           rel="noopener noreferrer"
+           class="btn-venmo">
+          💸 Pay with Venmo
+        </a>
+        <button *ngIf="canSell && item.status === 'available'" class="btn-secondary btn-sm" (click)="saleService.markPending(item.id)">Mark Pending</button>
+        <button *ngIf="canSell && item.status === 'pending'" class="btn-primary btn-sm" (click)="saleService.markSold(item.id)">Mark Sold</button>
+        <button *ngIf="canSell && item.status === 'pending'" class="btn-secondary btn-sm" (click)="saleService.markAvailable(item.id)">Unmark</button>
+        <button *ngIf="canSell" class="btn-secondary btn-sm" (click)="editItem(item.id)">Edit</button>
+      </div>
+    </div>
+
+    <div *ngIf="items.length === 0" class="empty-state">
+      No items in this category yet.
+    </div>
+  </div>
+</div>

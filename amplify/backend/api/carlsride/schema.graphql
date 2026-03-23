@@ -1,0 +1,61 @@
+type Event @model {
+  id: ID!
+  name: String!
+  date: AWSDate!
+  gatheringTime: String!
+  location: String!
+  description: String
+  rides: [Ride] @hasMany(indexName: "byEvent", fields: ["id"])
+  foodItems: [FoodItem] @hasMany(indexName: "byEvent", fields: ["id"])
+}
+
+type Ride @model {
+  id: ID!
+  eventId: ID! @index(name: "byEvent")
+  event: Event @belongsTo(fields: ["eventId"])
+  name: String!
+  startLocation: String!
+  departureTime: String!
+  distanceMiles: Float!
+  difficulty: String!
+  bikeType: String!
+  description: String!
+  leader: String!
+  leaderContact: String
+  notes: String
+  routeLinks: [RouteLinkInput]
+  riders: [RiderInput]
+}
+
+type FoodItem @model {
+  id: ID!
+  eventId: ID! @index(name: "byEvent")
+  event: Event @belongsTo(fields: ["eventId"])
+  category: String!
+  item: String!
+  notes: String
+  servings: Int
+  broughtBy: String!
+}
+
+type SaleItem @model {
+  id: ID!
+  name: String!
+  description: String!
+  price: Float!
+  category: String!
+  status: String!
+  seller: String!
+  images: [String]
+}
+
+type RouteLinkInput {
+  type: String!
+  url: String!
+}
+
+type RiderInput {
+  name: String!
+  email: String
+  additionalGuests: Int
+}
