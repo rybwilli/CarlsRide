@@ -1,6 +1,6 @@
 import { Component, OnInit } from '@angular/core';
 import { ActivatedRoute, Router } from '@angular/router';
-import { SaleCategory, SaleItemStatus } from '../../models/sale-item.model';
+import { SaleActivity, SaleCategory, SaleCondition, SaleItemStatus } from '../../models/sale-item.model';
 import { SaleService } from '../../services/sale.service';
 
 @Component({
@@ -18,7 +18,28 @@ export class GearEditComponent implements OnInit {
   category: SaleCategory = 'bikes';
   seller = '';
   status: SaleItemStatus = 'available';
+  activity: SaleActivity | '' = '';
+  condition: SaleCondition | '' = '';
   images: string[] = [];
+
+  readonly activities: { value: SaleActivity; label: string }[] = [
+    { value: 'road',       label: 'Road' },
+    { value: 'mountain',   label: 'Mountain' },
+    { value: 'gravel',     label: 'Gravel' },
+    { value: 'cyclocross', label: 'Cyclocross' },
+    { value: 'commuter',   label: 'Commuter' },
+    { value: 'bmx',        label: 'BMX' },
+    { value: 'kids',       label: 'Kids' },
+    { value: 'general',    label: 'General' },
+  ];
+
+  readonly conditions: { value: SaleCondition; label: string }[] = [
+    { value: 'new',       label: 'New' },
+    { value: 'like new',  label: 'Like New' },
+    { value: 'good',      label: 'Good' },
+    { value: 'fair',      label: 'Fair' },
+    { value: 'poor',      label: 'Poor' },
+  ];
 
   constructor(public saleService: SaleService, private router: Router, private route: ActivatedRoute) {}
 
@@ -38,6 +59,8 @@ export class GearEditComponent implements OnInit {
     this.category = item.category;
     this.seller = item.seller;
     this.status = item.status;
+    this.activity = item.activity ?? '';
+    this.condition = item.condition ?? '';
     this.images = item.images ? [...item.images] : [];
   }
 
@@ -69,6 +92,8 @@ export class GearEditComponent implements OnInit {
       seller: this.seller.trim(),
       status: this.status,
       images: this.images.length ? [...this.images] : undefined,
+      activity: this.activity || undefined,
+      condition: this.condition || undefined,
     });
     this.router.navigate(['/gear'], { queryParams: { seller: this.sellerToken } });
   }

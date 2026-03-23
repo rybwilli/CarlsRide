@@ -904,6 +904,22 @@ nav a {
     margin-bottom: 0.75rem;
   }
 
+  &__badges {
+    display: flex;
+    flex-wrap: wrap;
+    gap: 0.3rem;
+    margin-bottom: 0.5rem;
+  }
+
+  &__badge {
+    font-size: 0.7rem;
+    font-weight: 600;
+    padding: 0.15rem 0.5rem;
+    border-radius: 999px;
+    background: var(--color-border);
+    color: var(--color-text-muted);
+  }
+
   &__footer {
     display: flex;
     align-items: baseline;

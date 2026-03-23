@@ -49,6 +49,8 @@ type SaleItem @model {
   status: String!
   seller: String!
   images: [String]
+  activity: String
+  condition: String
 }
 
 type RouteLink {
