@@ -1,8 +1,11 @@
 <div class="gear-sale-page">
   <div class="gear-sale-header">
-    <div>
-      <h1>Gear Sale</h1>
-      <p class="subtitle">Bikes, parts, clothing and more from the Carl's Ride community. Pay via Venmo: <strong>@{{ venmoUsername }}</strong></p>
+    <div class="gear-sale-header__title-row">
+      <img src="assets/ride-on-carl.png" alt="Ride On Carl" class="gear-sale-header__logo" />
+      <div>
+        <h1>Gear Sale</h1>
+        <p class="subtitle">Bikes, parts, clothing and more from the Carl's Ride community. Pay via Venmo: <strong>@{{ venmoUsername }}</strong></p>
+      </div>
     </div>
     <button *ngIf="canSell" class="btn-primary" (click)="addItem()">+ List an Item</button>
   </div>

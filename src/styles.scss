@@ -634,6 +634,17 @@ nav a {
     display: flex;
     align-items: flex-start;
     justify-content: space-between;
+
+    &__title-row {
+      display: flex;
+      align-items: center;
+      gap: 1rem;
+    }
+
+    &__logo {
+      height: 80px;
+      width: auto;
+    }
     gap: 1rem;
     margin-bottom: 1.25rem;
   }
