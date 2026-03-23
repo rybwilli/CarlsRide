@@ -10,39 +10,41 @@
     <button *ngIf="canSell" class="btn-primary" (click)="addItem()">+ List an Item</button>
   </div>
 
-  <div class="gear-filters">
-    <div class="gear-filters__row">
-      <span class="gear-filters__label">Category</span>
-      <button
-        *ngFor="let f of categoryFilters"
-        class="gear-filter-btn"
-        [class.gear-filter-btn--active]="(activeCategoryFilter$ | async) === f.value"
-        (click)="setCategoryFilter(f.value)">
-        {{ f.emoji }} {{ f.label }}
-      </button>
-    </div>
-    <div class="gear-filters__row">
-      <span class="gear-filters__label">Activity</span>
-      <button
-        *ngFor="let f of activityFilters"
-        class="gear-filter-btn"
-        [class.gear-filter-btn--active]="(activeActivityFilter$ | async) === f.value"
-        (click)="setActivityFilter(f.value)">
-        {{ f.label }}
-      </button>
-    </div>
-    <div class="gear-filters__row">
-      <span class="gear-filters__label">Condition</span>
-      <button
-        *ngFor="let f of conditionFilters"
-        class="gear-filter-btn"
-        [class.gear-filter-btn--active]="(activeConditionFilter$ | async) === f.value"
-        (click)="setConditionFilter(f.value)">
-        {{ f.label }}
-      </button>
-    </div>
-  </div>
+  <div class="gear-sale-body">
+    <aside class="gear-filters">
+      <div class="gear-filters__section">
+        <span class="gear-filters__label">Category</span>
+        <button
+          *ngFor="let f of categoryFilters"
+          class="gear-filter-btn"
+          [class.gear-filter-btn--active]="(activeCategoryFilter$ | async) === f.value"
+          (click)="setCategoryFilter(f.value)">
+          {{ f.emoji }} {{ f.label }}
+        </button>
+      </div>
+      <div class="gear-filters__section">
+        <span class="gear-filters__label">Activity</span>
+        <button
+          *ngFor="let f of activityFilters"
+          class="gear-filter-btn"
+          [class.gear-filter-btn--active]="(activeActivityFilter$ | async) === f.value"
+          (click)="setActivityFilter(f.value)">
+          {{ f.label }}
+        </button>
+      </div>
+      <div class="gear-filters__section">
+        <span class="gear-filters__label">Condition</span>
+        <button
+          *ngFor="let f of conditionFilters"
+          class="gear-filter-btn"
+          [class.gear-filter-btn--active]="(activeConditionFilter$ | async) === f.value"
+          (click)="setConditionFilter(f.value)">
+          {{ f.label }}
+        </button>
+      </div>
+    </aside>
 
+  <div class="gear-sale-content">
   <div class="gear-grid" *ngIf="filtered$ | async as items">
     <div *ngFor="let item of items" class="gear-card" (click)="viewItem(item.id)" [class.gear-card--pending]="item.status === 'pending'" [class.gear-card--sold]="item.status === 'sold'">
       <div class="gear-card__status-badge" *ngIf="item.status !== 'available'">
@@ -83,4 +85,6 @@
       No items in this category yet.
     </div>
   </div>
+  </div> <!-- gear-sale-content -->
+  </div> <!-- gear-sale-body -->
 </div>

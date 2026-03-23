@@ -216,6 +216,7 @@ subscription OnCreateSaleItem($filter: ModelSubscriptionSaleItemFilterInput) {
     images
     activities
     condition
+    comparableSite
     createdAt
     updatedAt
     __typename
@@ -234,6 +235,7 @@ subscription OnUpdateSaleItem($filter: ModelSubscriptionSaleItemFilterInput) {
     images
     activities
     condition
+    comparableSite
     createdAt
     updatedAt
     __typename
@@ -252,6 +254,7 @@ subscription OnDeleteSaleItem($filter: ModelSubscriptionSaleItemFilterInput) {
     images
     activities
     condition
+    comparableSite
     createdAt
     updatedAt
     __typename

@@ -153,6 +153,7 @@ query GetSaleItem($id: ID!) {
     images
     activities
     condition
+    comparableSite
     createdAt
     updatedAt
     __typename
@@ -176,6 +177,7 @@ query ListSaleItems(
       images
       activities
       condition
+      comparableSite
       createdAt
       updatedAt
       __typename

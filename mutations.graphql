@@ -246,6 +246,7 @@ mutation CreateSaleItem(
     images
     activities
     condition
+    comparableSite
     createdAt
     updatedAt
     __typename
@@ -267,6 +268,7 @@ mutation UpdateSaleItem(
     images
     activities
     condition
+    comparableSite
     createdAt
     updatedAt
     __typename
@@ -288,6 +290,7 @@ mutation DeleteSaleItem(
     images
     activities
     condition
+    comparableSite
     createdAt
     updatedAt
     __typename
