@@ -32,19 +32,18 @@
 
   <div class="gear-detail__meta">
     <div *ngIf="item.activities?.length" class="gear-detail__meta-row">
-      <span class="gear-detail__meta-label">Activity</span>
+      <span class="gear-detail__meta-label">Activity: </span>
       <strong>{{ item.activities!.join(', ') | titlecase }}</strong>
     </div>
     <div *ngIf="item.condition" class="gear-detail__meta-row">
-      <span class="gear-detail__meta-label">Condition</span>
+      <span class="gear-detail__meta-label">Condition: </span>
       <strong>{{ item.condition | titlecase }}</strong>
     </div>
     <div class="gear-detail__meta-row">
-      <span class="gear-detail__meta-label">Listed by</span>
+      <span class="gear-detail__meta-label">Listed by: </span>
       <strong>{{ item.seller }}</strong>
     </div>
     <div *ngIf="item.description" class="gear-detail__meta-row">
-      <span class="gear-detail__meta-label">Notes</span>
       <span>{{ item.description }}</span>
     </div>
   </div>
