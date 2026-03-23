@@ -18,7 +18,7 @@ export class GearEditComponent implements OnInit {
   category: SaleCategory = 'bikes';
   seller = '';
   status: SaleItemStatus = 'available';
-  activity: SaleActivity | '' = '';
+  selectedActivities: SaleActivity[] = [];
   condition: SaleCondition | '' = '';
   images: string[] = [];
 
@@ -30,6 +30,8 @@ export class GearEditComponent implements OnInit {
     { value: 'commuter',   label: 'Commuter' },
     { value: 'bmx',        label: 'BMX' },
     { value: 'kids',       label: 'Kids' },
+    { value: 'ski',        label: 'Ski' },
+    { value: 'skate',      label: 'Skate' },
     { value: 'general',    label: 'General' },
   ];
 
@@ -59,13 +61,23 @@ export class GearEditComponent implements OnInit {
     this.category = item.category;
     this.seller = item.seller;
     this.status = item.status;
-    this.activity = item.activity ?? '';
+    this.selectedActivities = item.activities ? [...item.activities] : [];
     this.condition = item.condition ?? '';
     this.images = item.images ? [...item.images] : [];
   }
 
   get isValid(): boolean {
     return !!(this.name.trim() && this.description.trim() && this.price && this.price > 0 && this.seller.trim());
+  }
+
+  toggleActivity(value: SaleActivity): void {
+    const idx = this.selectedActivities.indexOf(value);
+    if (idx >= 0) this.selectedActivities.splice(idx, 1);
+    else this.selectedActivities.push(value);
+  }
+
+  isActivitySelected(value: SaleActivity): boolean {
+    return this.selectedActivities.includes(value);
   }
 
   onImagesSelected(event: Event): void {
@@ -92,7 +104,7 @@ export class GearEditComponent implements OnInit {
       seller: this.seller.trim(),
       status: this.status,
       images: this.images.length ? [...this.images] : undefined,
-      activity: this.activity || undefined,
+      activities: this.selectedActivities.length ? [...this.selectedActivities] : undefined,
       condition: this.condition || undefined,
     });
     this.router.navigate(['/gear'], { queryParams: { seller: this.sellerToken } });

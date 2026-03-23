@@ -1,6 +1,6 @@
 export type SaleItemStatus = 'available' | 'pending' | 'sold';
 export type SaleCategory = 'bikes' | 'parts' | 'wheels' | 'tires' | 'tools' | 'helmets' | 'clothing' | 'accessories' | 'other';
-export type SaleActivity = 'road' | 'mountain' | 'gravel' | 'cyclocross' | 'commuter' | 'bmx' | 'kids' | 'general';
+export type SaleActivity = 'road' | 'mountain' | 'gravel' | 'cyclocross' | 'commuter' | 'bmx' | 'kids' | 'ski' | 'skate' | 'general';
 export type SaleCondition = 'new' | 'like new' | 'good' | 'fair' | 'poor';
 
 export interface SaleItem {
@@ -13,6 +13,6 @@ export interface SaleItem {
   seller: string;
   images?: string[];
   quantity?: number;
-  activity?: SaleActivity;
+  activities?: SaleActivity[];
   condition?: SaleCondition;
 }

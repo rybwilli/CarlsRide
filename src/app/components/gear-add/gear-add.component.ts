@@ -15,7 +15,7 @@ export class GearAddComponent {
   description = '';
   price: number | null = null;
   category: SaleCategory = 'bikes';
-  activity: SaleActivity | '' = '';
+  selectedActivities: SaleActivity[] = [];
   condition: SaleCondition | '' = '';
   seller = '';
   images: string[] = [];
@@ -28,6 +28,8 @@ export class GearAddComponent {
     { value: 'commuter',   label: 'Commuter' },
     { value: 'bmx',        label: 'BMX' },
     { value: 'kids',       label: 'Kids' },
+    { value: 'ski',        label: 'Ski' },
+    { value: 'skate',      label: 'Skate' },
     { value: 'general',    label: 'General' },
   ];
 
@@ -64,6 +66,16 @@ export class GearAddComponent {
     this.images.splice(index, 1);
   }
 
+  toggleActivity(value: SaleActivity): void {
+    const idx = this.selectedActivities.indexOf(value);
+    if (idx >= 0) this.selectedActivities.splice(idx, 1);
+    else this.selectedActivities.push(value);
+  }
+
+  isActivitySelected(value: SaleActivity): boolean {
+    return this.selectedActivities.includes(value);
+  }
+
   submit(): void {
     if (!this.isValid || this.price === null) return;
     this.saleService.addItem({
@@ -73,7 +85,7 @@ export class GearAddComponent {
       category: this.category,
       seller: this.seller.trim(),
       images: this.images.length ? [...this.images] : undefined,
-      activity: this.activity || undefined,
+      activities: this.selectedActivities.length ? [...this.selectedActivities] : undefined,
       condition: this.condition || undefined,
     });
     this.router.navigate(['/gear'], { queryParams: { seller: this.sellerToken } });

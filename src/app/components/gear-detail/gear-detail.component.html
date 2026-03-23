@@ -33,7 +33,7 @@
   <p class="gear-detail__description">{{ item.description }}</p>
 
   <div class="gear-detail__meta">
-    <span *ngIf="item.activity">Activity: <strong>{{ item.activity | titlecase }}</strong></span>
+    <span *ngIf="item.activities?.length">Activity: <strong>{{ item.activities!.join(', ') | titlecase }}</strong></span>
     <span *ngIf="item.condition">Condition: <strong>{{ item.condition | titlecase }}</strong></span>
     <span>Listed by <strong>{{ item.seller }}</strong></span>
   </div>

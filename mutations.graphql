@@ -244,6 +244,8 @@ mutation CreateSaleItem(
     status
     seller
     images
+    activity
+    condition
     createdAt
     updatedAt
     __typename
@@ -263,6 +265,8 @@ mutation UpdateSaleItem(
     status
     seller
     images
+    activity
+    condition
     createdAt
     updatedAt
     __typename
@@ -282,6 +286,8 @@ mutation DeleteSaleItem(
     status
     seller
     images
+    activity
+    condition
     createdAt
     updatedAt
     __typename

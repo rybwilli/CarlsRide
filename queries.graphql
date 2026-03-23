@@ -151,6 +151,8 @@ query GetSaleItem($id: ID!) {
     status
     seller
     images
+    activity
+    condition
     createdAt
     updatedAt
     __typename
@@ -172,6 +174,8 @@ query ListSaleItems(
       status
       seller
       images
+      activity
+      condition
       createdAt
       updatedAt
       __typename

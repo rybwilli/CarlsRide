@@ -33,7 +33,7 @@
         <h2 class="gear-card__name">{{ item.name }}</h2>
         <p class="gear-card__description">{{ item.description }}</p>
         <div class="gear-card__badges">
-          <span *ngIf="item.activity" class="gear-card__badge">{{ item.activity | titlecase }}</span>
+          <span *ngFor="let a of item.activities" class="gear-card__badge">{{ a | titlecase }}</span>
           <span *ngIf="item.condition" class="gear-card__badge">{{ item.condition | titlecase }}</span>
         </div>
         <div class="gear-card__footer">
