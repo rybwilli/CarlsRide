@@ -2,15 +2,15 @@
   <div class="home-hero">
     <div class="home-hero__content">
       <img src="assets/carls-ride-logo.png" alt="Carl's Ride" class="home-hero__logo" />
-      <h1 class="home-hero__title">A Day of Memorial Rides for Carl</h1>
-      <h1 class="home-hero__title">May 9 2026</h1>
-      <h1 class="home-hero__detail">Join a ride | Create a ride | Come to the celebration</h1>
-      <p class="home-hero__subtitle">All rides should try to finish around 2pm and meet for a celebration with BBQ, drinks, and games at {{ bbqLocation }}</p>
+      <p class="home-hero__community">A Day Of Community &amp; Biking To Celebrate Carl</p>
+      <h1 class="home-hero__date">Saturday, May 9<sup>th</sup> 2026</h1>
+      <p class="home-hero__detail">JOIN A RIDE &nbsp;|&nbsp; CREATE A RIDE &nbsp;|&nbsp; COME TO THE CELEBRATION</p>
+      <p class="home-hero__subtitle">All rides finish around 2pm and meet for a celebration with BBQ, drinks, and games at {{ bbqLocation }}</p>
       <p class="home-hero__subtitle">Carl would not care how far you rode or how fast you went, he would just want you to get out and ride with friends.</p>
       <div class="home-hero__actions">
         <a routerLink="/rides" class="btn-hero-primary">View Rides</a>
         <a routerLink="/rides/new" class="btn-hero-secondary">+ Add a Ride</a>
-        <a routerLink="/food" class="btn-hero-primary">Food & Drinks</a>
+        <a routerLink="/food" class="btn-hero-primary">Food &amp; Drinks</a>
       </div>
 
       <div class="home-stats" *ngIf="stats$ | async as stats">
