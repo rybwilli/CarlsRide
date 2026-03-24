@@ -72,6 +72,15 @@ type ItemShowingEvent @model {
   contactEmail: String
 }
 
+type ShowingRequest @model {
+  id: ID!
+  showingEventId: ID! @index(name: "byShowingEvent")
+  saleItemId: ID
+  name: String!
+  contact: String!
+  status: String!
+}
+
 type RouteLink {
   linkType: String!
   url: String!

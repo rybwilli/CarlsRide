@@ -1,16 +1,19 @@
-import { Component } from '@angular/core';
+import { Component, OnInit } from '@angular/core';
 import { ActivatedRoute, Router } from '@angular/router';
 import { Observable, combineLatest, map, BehaviorSubject } from 'rxjs';
 import { SaleItem, SaleActivity, SaleCategory, SaleCondition, SaleItemStatus } from '../../models/sale-item.model';
 import { SaleService } from '../../services/sale.service';
 import { SaleCatalogService } from '../../services/sale-catalog.service';
+import { ItemShowingService } from '../../services/item-showing.service';
+import { ItemShowingEvent } from '../../models/item-showing.model';
+import { ShowingRequestService } from '../../services/showing-request.service';
 
 @Component({
   selector: 'app-gear-sale',
   templateUrl: './gear-sale.component.html',
   styleUrls: ['./gear-sale.component.scss'],
 })
-export class GearSaleComponent {
+export class GearSaleComponent implements OnInit {
   private categoryFilter$ = new BehaviorSubject<SaleCategory | 'all'>('all');
   private activityFilter$ = new BehaviorSubject<SaleActivity | 'all'>('all');
   private conditionFilter$ = new BehaviorSubject<SaleCondition | 'all'>('all');
@@ -59,7 +62,23 @@ export class GearSaleComponent {
 
   activeSaleName$ = this.saleCatalogService.activeSale$.pipe(map(s => s.name));
 
-  constructor(public saleService: SaleService, public saleCatalogService: SaleCatalogService, private router: Router, route: ActivatedRoute) {
+  // Full inventory showing request
+  showings: ItemShowingEvent[] = [];
+  showInventoryModal = false;
+  inventoryModalStep: 'list' | 'form' | 'confirm' | 'success' = 'list';
+  inventoryRequestName = '';
+  inventoryRequestContact = '';
+  inventoryRequestShowingEventId = '';
+  inventoryRequestError = '';
+
+  constructor(
+    public saleService: SaleService,
+    public saleCatalogService: SaleCatalogService,
+    public itemShowingService: ItemShowingService,
+    public showingRequestService: ShowingRequestService,
+    private router: Router,
+    route: ActivatedRoute,
+  ) {
     this.venmoUsername = saleService.venmoUsername;
     this.sellerToken = route.snapshot.queryParamMap.get('seller') ?? '';
     this.canSell = this.sellerToken === saleService.sellerToken;
@@ -79,6 +98,32 @@ export class GearSaleComponent {
         return true;
       }))
     );
+  }
+
+  ngOnInit(): void {
+    Promise.all([
+      this.itemShowingService.loadShowings(),
+      this.showingRequestService.loadRequests(),
+    ]).then(() => {
+      const activeSale = this.saleCatalogService.activeSale;
+      if (activeSale) {
+        this.showings = this.itemShowingService.showingsForSale(activeSale.id);
+      }
+    });
+  }
+
+  inventoryRequestsForShowing(showingEventId: string) {
+    return this.showingRequestService.requestsForShowing(showingEventId)
+      .filter(r => !r.saleItemId && (r.status === 'pending' || r.status === 'confirmed'));
+  }
+
+  get futureShowings() {
+    const now = new Date();
+    return this.showings.filter(s => new Date(s.dateTime) > now);
+  }
+
+  get showingsWithInventoryRequests() {
+    return this.showings.filter(s => this.inventoryRequestsForShowing(s.id).length > 0);
   }
 
   setCategoryFilter(f: SaleCategory | 'all'): void { this.categoryFilter$.next(f); }
@@ -106,5 +151,60 @@ export class GearSaleComponent {
 
   editItem(id: string): void {
     this.router.navigate(['/gear', id, 'edit'], { queryParams: { seller: this.sellerToken } });
+  }
+
+  // ── Full inventory showing request ──────────────────
+
+  openInventoryModal(): void {
+    this.showInventoryModal = true;
+    this.inventoryModalStep = 'list';
+    this.inventoryRequestName = '';
+    this.inventoryRequestContact = '';
+    this.inventoryRequestShowingEventId = '';
+    this.inventoryRequestError = '';
+  }
+
+  closeInventoryModal(): void {
+    this.showInventoryModal = false;
+  }
+
+  startInventoryRequest(showingId: string): void {
+    this.inventoryRequestShowingEventId = showingId;
+    this.inventoryRequestName = '';
+    this.inventoryRequestContact = '';
+    this.inventoryRequestError = '';
+    this.inventoryModalStep = 'form';
+  }
+
+  backToList(): void {
+    this.inventoryModalStep = 'list';
+  }
+
+  get inventorySelectedShowing(): ItemShowingEvent | null {
+    return this.showings.find(s => s.id === this.inventoryRequestShowingEventId) ?? null;
+  }
+
+  get isInventoryRequestValid(): boolean {
+    return !!(this.inventoryRequestName.trim() && this.inventoryRequestContact.trim() && this.inventoryRequestShowingEventId);
+  }
+
+  async submitInventoryRequest(): Promise<void> {
+    if (!this.isInventoryRequestValid) return;
+    this.inventoryModalStep = 'confirm';
+  }
+
+  async confirmInventoryRequest(): Promise<void> {
+    this.inventoryRequestError = '';
+    try {
+      await this.showingRequestService.createRequest({
+        showingEventId: this.inventoryRequestShowingEventId,
+        name: this.inventoryRequestName.trim(),
+        contact: this.inventoryRequestContact.trim(),
+      });
+      this.inventoryModalStep = 'success';
+    } catch {
+      this.inventoryRequestError = 'Something went wrong. Please try again.';
+      this.inventoryModalStep = 'form';
+    }
   }
 }

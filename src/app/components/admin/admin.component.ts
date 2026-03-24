@@ -6,6 +6,9 @@ import { Sale } from '../../models/sale.model';
 import { SaleCatalogService } from '../../services/sale-catalog.service';
 import { ItemShowingEvent } from '../../models/item-showing.model';
 import { ItemShowingService } from '../../services/item-showing.service';
+import { ShowingRequest, ShowingRequestStatus } from '../../models/showing-request.model';
+import { ShowingRequestService } from '../../services/showing-request.service';
+import { SaleService } from '../../services/sale.service';
 
 @Component({
   selector: 'app-admin',
@@ -62,10 +65,16 @@ export class AdminComponent implements OnInit {
   editShowingContactName = '';
   editShowingContactEmail = '';
 
+  // Showing Requests
+  deletingRequestId: string | null = null;
+  viewingRequestsForShowing: ItemShowingEvent | null = null;
+
   constructor(
     public eventService: EventService,
     public saleCatalogService: SaleCatalogService,
     public itemShowingService: ItemShowingService,
+    public showingRequestService: ShowingRequestService,
+    public saleService: SaleService,
     private router: Router,
     route: ActivatedRoute
   ) {
@@ -84,6 +93,7 @@ export class AdminComponent implements OnInit {
     this.eventService.loadOrCreateEvent();
     this.saleCatalogService.loadOrCreateSale();
     this.itemShowingService.loadShowings();
+    this.showingRequestService.loadRequests();
   }
 
   // ── Events ──────────────────────────────────────────
@@ -242,5 +252,22 @@ export class AdminComponent implements OnInit {
     if (!this.deletingShowing) return;
     await this.itemShowingService.deleteShowing(this.deletingShowing.id);
     this.deletingShowing = null;
+  }
+
+  // ── Showing Requests ──────────────────────────────────────────
+
+  openRequestsModal(showing: ItemShowingEvent): void { this.viewingRequestsForShowing = showing; }
+  closeRequestsModal(): void { this.viewingRequestsForShowing = null; }
+
+  async setRequestStatus(request: ShowingRequest, status: ShowingRequestStatus): Promise<void> {
+    await this.showingRequestService.setStatus(request.id, status);
+  }
+
+  deleteRequest(request: ShowingRequest): void { this.deletingRequestId = request.id; }
+  cancelDeleteRequest(): void { this.deletingRequestId = null; }
+
+  async confirmDeleteRequest(id: string): Promise<void> {
+    await this.showingRequestService.deleteRequest(id);
+    this.deletingRequestId = null;
   }
 }

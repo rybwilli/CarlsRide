@@ -398,3 +398,54 @@ mutation DeleteItemShowingEvent(
     __typename
   }
 }
+
+mutation CreateShowingRequest(
+  $input: CreateShowingRequestInput!
+  $condition: ModelShowingRequestConditionInput
+) {
+  createShowingRequest(input: $input, condition: $condition) {
+    id
+    showingEventId
+    saleItemId
+    name
+    contact
+    status
+    createdAt
+    updatedAt
+    __typename
+  }
+}
+
+mutation UpdateShowingRequest(
+  $input: UpdateShowingRequestInput!
+  $condition: ModelShowingRequestConditionInput
+) {
+  updateShowingRequest(input: $input, condition: $condition) {
+    id
+    showingEventId
+    saleItemId
+    name
+    contact
+    status
+    createdAt
+    updatedAt
+    __typename
+  }
+}
+
+mutation DeleteShowingRequest(
+  $input: DeleteShowingRequestInput!
+  $condition: ModelShowingRequestConditionInput
+) {
+  deleteShowingRequest(input: $input, condition: $condition) {
+    id
+    showingEventId
+    saleItemId
+    name
+    contact
+    status
+    createdAt
+    updatedAt
+    __typename
+  }
+}

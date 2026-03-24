@@ -53,15 +53,176 @@
   </div>
 
   <div class="gear-detail__actions">
-    <a *ngIf="item.status === 'available'"
-       [href]="saleService.getVenmoUrl(item)"
-       target="_blank"
-       rel="noopener noreferrer"
-       class="btn-venmo">
-      💸 Pay with Venmo
-    </a>
     <button *ngIf="canSell && item.status === 'available'" class="btn-secondary" (click)="saleService.markPending(item.id)">Mark Pending</button>
     <button *ngIf="canSell && item.status === 'pending'" class="btn-primary" (click)="saleService.markSold(item.id)">Mark Sold</button>
     <button *ngIf="canSell && item.status === 'pending'" class="btn-secondary" (click)="saleService.markAvailable(item.id)">Unmark Pending</button>
+  </div>
+
+  <!-- ── Request a Showing ── -->
+  <div class="gear-detail__request-section">
+
+    <h2>Request Pickup or Showing</h2>
+
+    <!-- ① Just submitted this session: show read-only confirmation -->
+    <ng-container *ngIf="submittedRequest">
+      <div class="gear-detail__request-submitted">
+        <div class="gear-detail__request-submitted__badge">
+          <span class="modal-request-row__status-badge modal-request-row__status-badge--pending">Pending</span>
+        </div>
+        <div class="gear-detail__showing-info">
+          <div class="gear-detail__showing-info-row">
+            <span class="gear-detail__meta-label">👤 Name:</span>
+            <span>{{ submittedRequest.name }}</span>
+          </div>
+          <div class="gear-detail__showing-info-row">
+            <span class="gear-detail__meta-label">📞 Contact:</span>
+            <span>{{ submittedRequest.contact }}</span>
+          </div>
+          <ng-container *ngIf="submittedRequest.showing as s">
+            <div class="gear-detail__showing-info-row">
+              <span class="gear-detail__meta-label">📅 Showing:</span>
+              <span>{{ s.dateTime | date:'EEE, MMM d, y h:mm a' }}</span>
+            </div>
+            <div class="gear-detail__showing-info-row">
+              <span class="gear-detail__meta-label">📍 Where:</span>
+              <span>{{ s.location }}</span>
+            </div>
+            <div *ngIf="s.details" class="gear-detail__showing-info-row">
+              <span class="gear-detail__meta-label">ℹ️ Details:</span>
+              <span>{{ s.details }}</span>
+            </div>
+            <div class="gear-detail__showing-info-row">
+              <span class="gear-detail__meta-label">👤 Contact:</span>
+              <span>{{ s.contactName }}<span *ngIf="s.contactEmail"> — {{ s.contactEmail }}</span></span>
+            </div>
+          </ng-container>
+        </div>
+        <p class="gear-detail__request-pending-note">
+          Your request has been submitted and this item is now pending. We'll be in touch!
+        </p>
+      </div>
+    </ng-container>
+
+    <!-- ② Item already pending (not submitted this session) -->
+    <ng-container *ngIf="!submittedRequest && item.status === 'pending'">
+      <div class="gear-detail__request-submitted">
+        <ng-container *ngIf="existingRequestForItem as req">
+          <div class="gear-detail__request-submitted__badge">
+            <span class="modal-request-row__status-badge modal-request-row__status-badge--{{ req.status }}">
+              {{ req.status | titlecase }}
+            </span>
+          </div>
+          <div class="gear-detail__showing-info">
+            <div class="gear-detail__showing-info-row">
+              <span class="gear-detail__meta-label">👤 Name:</span>
+              <span>{{ req.name }}</span>
+            </div>
+            <div class="gear-detail__showing-info-row">
+              <span class="gear-detail__meta-label">📞 Contact:</span>
+              <span>{{ req.contact }}</span>
+            </div>
+            <ng-container *ngIf="showingForRequest(req.showingEventId) as s">
+              <div class="gear-detail__showing-info-row">
+                <span class="gear-detail__meta-label">📅 Showing:</span>
+                <span>{{ s.dateTime | date:'EEE, MMM d, y h:mm a' }}</span>
+              </div>
+              <div class="gear-detail__showing-info-row">
+                <span class="gear-detail__meta-label">📍 Where:</span>
+                <span>{{ s.location }}</span>
+              </div>
+              <div *ngIf="s.details" class="gear-detail__showing-info-row">
+                <span class="gear-detail__meta-label">ℹ️ Details:</span>
+                <span>{{ s.details }}</span>
+              </div>
+              <div class="gear-detail__showing-info-row">
+                <span class="gear-detail__meta-label">👤 Organizer:</span>
+                <span>{{ s.contactName }}<span *ngIf="s.contactEmail"> — {{ s.contactEmail }}</span></span>
+              </div>
+            </ng-container>
+          </div>
+        </ng-container>
+        <ng-container *ngIf="!existingRequestForItem">
+          <div class="gear-detail__request-submitted__badge">
+            <span class="modal-request-row__status-badge modal-request-row__status-badge--pending">Pending</span>
+          </div>
+        </ng-container>
+        <p class="gear-detail__request-pending-note">
+          This item has a pending showing request. Contact the seller if you're still interested.
+        </p>
+      </div>
+    </ng-container>
+
+    <!-- ③ Item available: show the form -->
+    <ng-container *ngIf="!submittedRequest && item.status === 'available'">
+      <div *ngIf="futureShowings.length === 0" class="empty-state" style="margin-bottom: 1rem">
+        No scheduled showings yet. Check back soon or contact the seller directly.
+      </div>
+
+      <div *ngIf="futureShowings.length > 0" class="form-card">
+        <div class="form-group">
+          <label>Select a Showing Date</label>
+          <select [(ngModel)]="requestShowingEventId">
+            <option value="">— Pick a date —</option>
+            <option *ngFor="let s of futureShowings" [value]="s.id">
+              {{ s.dateTime | date:'EEE, MMM d, y h:mm a' }} — {{ s.location }}
+            </option>
+          </select>
+        </div>
+
+        <!-- Showing details when a date is selected -->
+        <div *ngIf="selectedShowing" class="gear-detail__showing-info">
+          <div class="gear-detail__showing-info-row">
+            <span class="gear-detail__meta-label">📅 When:</span>
+            <span>{{ selectedShowing.dateTime | date:"EEEE, MMMM d, y 'at' h:mm a" }}</span>
+          </div>
+          <div class="gear-detail__showing-info-row">
+            <span class="gear-detail__meta-label">📍 Where:</span>
+            <span>{{ selectedShowing.location }}</span>
+          </div>
+          <div *ngIf="selectedShowing.details" class="gear-detail__showing-info-row">
+            <span class="gear-detail__meta-label">ℹ️ Details:</span>
+            <span>{{ selectedShowing.details }}</span>
+          </div>
+          <div class="gear-detail__showing-info-row">
+            <span class="gear-detail__meta-label">👤 Contact:</span>
+            <span>{{ selectedShowing.contactName }}<span *ngIf="selectedShowing.contactEmail"> — {{ selectedShowing.contactEmail }}</span></span>
+          </div>
+        </div>
+
+        <div class="form-group">
+          <label>Your Name</label>
+          <input type="text" [(ngModel)]="requestName" placeholder="Full name" />
+        </div>
+        <div class="form-group">
+          <label>Contact (phone or email)</label>
+          <input type="text" [(ngModel)]="requestContact" placeholder="e.g. 555-867-5309 or you@example.com" />
+        </div>
+        <div *ngIf="requestError" class="gear-detail__request-error">{{ requestError }}</div>
+        <div class="form-actions">
+          <button class="btn-primary" (click)="openSubmitConfirm()" [disabled]="!isRequestValid">
+            Submit Request
+          </button>
+          <a [href]="saleService.getVenmoUrl(item)"
+             target="_blank"
+             rel="noopener noreferrer"
+             class="btn-venmo">
+            💸 Pay with Venmo
+          </a>
+        </div>
+      </div>
+    </ng-container>
+
+  </div>
+</div>
+
+<!-- Submit request confirmation popup -->
+<div class="modal-backdrop" *ngIf="showConfirmPopup" (click)="cancelSubmitConfirm()">
+  <div class="modal" (click)="$event.stopPropagation()">
+    <h3>Submit Showing Request?</h3>
+    <p>Check back before your showing to make sure your request is confirmed.</p>
+    <div class="modal__actions">
+      <button class="btn-secondary" (click)="cancelSubmitConfirm()">Cancel</button>
+      <button class="btn-primary" (click)="submitRequest()">Submit</button>
+    </div>
   </div>
 </div>

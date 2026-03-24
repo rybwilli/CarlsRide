@@ -259,6 +259,42 @@ query ListItemShowingEvents(
   }
 }
 
+query GetShowingRequest($id: ID!) {
+  getShowingRequest(id: $id) {
+    id
+    showingEventId
+    saleItemId
+    name
+    contact
+    status
+    createdAt
+    updatedAt
+    __typename
+  }
+}
+
+query ListShowingRequests(
+  $filter: ModelShowingRequestFilterInput
+  $limit: Int
+  $nextToken: String
+) {
+  listShowingRequests(filter: $filter, limit: $limit, nextToken: $nextToken) {
+    items {
+      id
+      showingEventId
+      saleItemId
+      name
+      contact
+      status
+      createdAt
+      updatedAt
+      __typename
+    }
+    nextToken
+    __typename
+  }
+}
+
 query RidesByEventId(
   $eventId: ID!
   $sortDirection: ModelSortDirection
@@ -384,6 +420,36 @@ query ItemShowingEventsBySaleId(
       details
       contactName
       contactEmail
+      createdAt
+      updatedAt
+      __typename
+    }
+    nextToken
+    __typename
+  }
+}
+
+query ShowingRequestsByShowingEventId(
+  $showingEventId: ID!
+  $sortDirection: ModelSortDirection
+  $filter: ModelShowingRequestFilterInput
+  $limit: Int
+  $nextToken: String
+) {
+  showingRequestsByShowingEventId(
+    showingEventId: $showingEventId
+    sortDirection: $sortDirection
+    filter: $filter
+    limit: $limit
+    nextToken: $nextToken
+  ) {
+    items {
+      id
+      showingEventId
+      saleItemId
+      name
+      contact
+      status
       createdAt
       updatedAt
       __typename

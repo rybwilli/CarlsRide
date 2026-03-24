@@ -94,6 +94,11 @@
               </div>
             </div>
             <div class="admin-event-card__actions">
+              <button class="btn-primary btn-sm"
+                      (click)="openRequestsModal(showing)">
+                📋 {{ showingRequestService.activeRequestsForShowing(showing.id).length }}
+                Request{{ showingRequestService.activeRequestsForShowing(showing.id).length !== 1 ? 's' : '' }}
+              </button>
               <button class="btn-secondary btn-sm" (click)="startEditShowing(showing)">Edit</button>
               <button class="btn-delete btn-sm" (click)="deleteShowing(showing)">Delete</button>
             </div>
@@ -289,6 +294,61 @@
       </div>
     </div>
   </section>
+
+  <hr class="section-divider" />
+
+  <!-- ── Showing Requests ── -->
+  <section class="admin-section">
+    <h2>Showing Requests</h2>
+
+    <ng-container *ngIf="showingRequestService.requests$ | async as allReqs">
+      <div *ngIf="allReqs.length === 0" class="empty-state">No showing requests yet.</div>
+
+      <ng-container *ngIf="allSales$ | async as sales">
+        <ng-container *ngFor="let sale of sales">
+          <ng-container *ngFor="let showing of itemShowingService.showingsForSale(sale.id)">
+            <ng-container *ngIf="showingRequestService.requestsForShowing(showing.id) as reqs">
+              <ng-container *ngIf="reqs.length > 0">
+
+                <h3 class="admin-showing-sale-title">
+                  {{ showing.dateTime | date:'EEE, MMM d, y h:mm a' }}
+                  <span class="admin-showing-sale-title__sub">📍 {{ showing.location }}</span>
+                </h3>
+
+                <div *ngFor="let req of reqs">
+                  <div class="admin-request-row"
+                       [class.admin-request-row--confirmed]="req.status === 'confirmed'"
+                       [class.admin-request-row--dismissed]="req.status === 'dismissed'">
+                    <div class="admin-request-row__info">
+                      <strong>{{ req.name }}</strong>
+                      <span class="admin-request-row__contact">{{ req.contact }}</span>
+                    </div>
+                    <div class="admin-request-row__status">
+                      <span class="modal-request-row__status-badge modal-request-row__status-badge--{{ req.status }}">
+                        {{ req.status | titlecase }}
+                      </span>
+                    </div>
+                    <div class="admin-request-row__actions">
+                      <button class="btn-primary btn-sm"   (click)="setRequestStatus(req, 'confirmed')"  *ngIf="req.status !== 'confirmed'">Confirm</button>
+                      <button class="btn-secondary btn-sm" (click)="setRequestStatus(req, 'pending')"    *ngIf="req.status !== 'pending'">Pending</button>
+                      <button class="btn-secondary btn-sm" (click)="setRequestStatus(req, 'dismissed')"  *ngIf="req.status !== 'dismissed'">Dismiss</button>
+                      <button class="btn-delete btn-sm"    (click)="deleteRequest(req)" *ngIf="deletingRequestId !== req.id">Delete</button>
+                      <button class="btn-secondary btn-sm" (click)="cancelDeleteRequest()"               *ngIf="deletingRequestId === req.id">Cancel</button>
+                    </div>
+                  </div>
+                  <div *ngIf="deletingRequestId === req.id" class="modal-request-row__delete-confirm">
+                    <span>Delete request from <strong>{{ req.name }}</strong>?</span>
+                    <button class="btn-delete btn-sm" (click)="confirmDeleteRequest(req.id)">Yes, Delete</button>
+                  </div>
+                </div>
+
+              </ng-container>
+            </ng-container>
+          </ng-container>
+        </ng-container>
+      </ng-container>
+    </ng-container>
+  </section>
 </div>
 
 <!-- Delete showing modal -->
@@ -311,6 +371,69 @@
     <div class="modal__actions">
       <button class="btn-secondary" (click)="cancelDeleteSale()">Cancel</button>
       <button class="btn-delete" (click)="confirmDeleteSale()">Yes, Delete</button>
+    </div>
+  </div>
+</div>
+
+<!-- Showing requests modal -->
+<div class="modal-backdrop" *ngIf="viewingRequestsForShowing" (click)="closeRequestsModal()">
+  <div class="modal modal--wide" (click)="$event.stopPropagation()">
+    <div class="modal__header">
+      <h3>Requests for {{ viewingRequestsForShowing.dateTime | date:'medium' }}</h3>
+      <span class="modal__subtitle">📍 {{ viewingRequestsForShowing.location }}</span>
+    </div>
+
+    <ng-container *ngIf="showingRequestService.requestsForShowing(viewingRequestsForShowing.id) as reqs">
+      <div *ngIf="reqs.length === 0" class="empty-state" style="margin: 1rem 0">
+        No requests yet for this showing.
+      </div>
+      <div *ngFor="let req of reqs">
+        <div class="modal-request-row"
+             [class.modal-request-row--confirmed]="req.status === 'confirmed'"
+             [class.modal-request-row--dismissed]="req.status === 'dismissed'">
+
+          <!-- Item thumbnail -->
+          <ng-container *ngIf="req.saleItemId && saleService.getItem(req.saleItemId) as saleItem">
+            <img *ngIf="saleItem.images?.length"
+                 [src]="saleItem.images![0]"
+                 [alt]="saleItem.name"
+                 class="modal-request-row__thumb" />
+            <div *ngIf="!saleItem.images?.length" class="modal-request-row__thumb modal-request-row__thumb--placeholder">📦</div>
+          </ng-container>
+
+          <div class="modal-request-row__info">
+            <strong>{{ req.name }}</strong>
+            <span class="modal-request-row__contact">{{ req.contact }}</span>
+            <ng-container *ngIf="req.saleItemId && saleService.getItem(req.saleItemId) as saleItem">
+              <span class="modal-request-row__item">
+                {{ saleItem.name }}
+                <span class="modal-request-row__item-cat">{{ saleItem.category | titlecase }}</span>
+              </span>
+            </ng-container>
+            <span class="modal-request-row__status-badge modal-request-row__status-badge--{{ req.status }}">
+              {{ req.status | titlecase }}
+            </span>
+          </div>
+
+          <div class="modal-request-row__actions">
+            <button class="btn-primary btn-sm"   (click)="setRequestStatus(req, 'confirmed')"  *ngIf="req.status !== 'confirmed'">Confirm</button>
+            <button class="btn-secondary btn-sm" (click)="setRequestStatus(req, 'pending')"    *ngIf="req.status !== 'pending'">Pending</button>
+            <button class="btn-secondary btn-sm" (click)="setRequestStatus(req, 'dismissed')"  *ngIf="req.status !== 'dismissed'">Dismiss</button>
+            <button class="btn-delete btn-sm"    (click)="deleteRequest(req)" *ngIf="deletingRequestId !== req.id">Delete</button>
+            <button class="btn-secondary btn-sm" (click)="cancelDeleteRequest()"               *ngIf="deletingRequestId === req.id">Cancel</button>
+          </div>
+        </div>
+
+        <!-- Inline delete confirm -->
+        <div *ngIf="deletingRequestId === req.id" class="modal-request-row__delete-confirm">
+          <span>Delete request from <strong>{{ req.name }}</strong>?</span>
+          <button class="btn-delete btn-sm" (click)="confirmDeleteRequest(req.id)">Yes, Delete</button>
+        </div>
+      </div>
+    </ng-container>
+
+    <div class="modal__actions" style="margin-top: 1.5rem">
+      <button class="btn-secondary" (click)="closeRequestsModal()">Close</button>
     </div>
   </div>
 </div>

@@ -7,8 +7,12 @@
         <p class="subtitle">Bikes, gear, parts, tools, etc. from Carl's extensive and well maintained collection. All proceeds go to Lisa and Chloe. Pay via Venmo: <strong>@{{ venmoUsername }}</strong></p>
       </div>
     </div>
-    <button *ngIf="canSell" class="btn-primary" (click)="addItem()">+ List an Item</button>
+    <div class="gear-sale-header__actions">
+      <button class="btn-secondary" (click)="openInventoryModal()">📋 Full Inventory Showings</button>
+      <button *ngIf="canSell" class="btn-primary" (click)="addItem()">+ List an Item</button>
+    </div>
   </div>
+
 
   <div class="gear-sale-body">
     <aside class="gear-filters">
@@ -78,13 +82,9 @@
         </div>
       </div>
       <div class="gear-card__actions" (click)="$event.stopPropagation()">
-        <a *ngIf="item.status === 'available'"
-           [href]="saleService.getVenmoUrl(item)"
-           target="_blank"
-           rel="noopener noreferrer"
-           class="btn-venmo">
-          💸 Pay with Venmo
-        </a>
+        <button *ngIf="item.status === 'available'" class="btn-primary btn-sm" (click)="viewItem(item.id)">
+          📅 Request Pickup or Showing
+        </button>
         <button *ngIf="canSell && item.status === 'available'" class="btn-secondary btn-sm" (click)="saleService.markPending(item.id)">Mark Pending</button>
         <button *ngIf="canSell && item.status === 'pending'" class="btn-primary btn-sm" (click)="saleService.markSold(item.id)">Mark Sold</button>
         <button *ngIf="canSell && item.status === 'pending'" class="btn-secondary btn-sm" (click)="saleService.markAvailable(item.id)">Unmark</button>
@@ -98,4 +98,107 @@
   </div>
   </div> <!-- gear-sale-content -->
   </div> <!-- gear-sale-body -->
+</div>
+
+<!-- Full inventory showings modal -->
+<div class="modal-backdrop" *ngIf="showInventoryModal" (click)="closeInventoryModal()">
+  <div class="modal modal--wide" (click)="$event.stopPropagation()">
+
+    <!-- List step -->
+    <ng-container *ngIf="inventoryModalStep === 'list'">
+      <h3>Full Inventory Showings</h3>
+
+      <div *ngIf="futureShowings.length === 0" class="empty-state" style="margin: 1rem 0">
+        No upcoming showings are scheduled yet. Check back soon.
+      </div>
+
+      <div class="inventory-modal-showings-grid">
+        <div *ngFor="let s of futureShowings" class="inventory-modal-showing">
+          <div class="inventory-modal-showing__header">
+            <div class="inventory-modal-showing__datetime">📅 {{ s.dateTime | date:'EEE, MMM d, y h:mm a' }}</div>
+            <div class="inventory-modal-showing__location">📍 {{ s.location }}</div>
+            <div *ngIf="s.details" class="inventory-modal-showing__details">ℹ️ {{ s.details }}</div>
+            <div class="inventory-modal-showing__contact">👤 {{ s.contactName }}<span *ngIf="s.contactEmail"> — {{ s.contactEmail }}</span></div>
+          </div>
+
+          <div class="inventory-modal-showing__requests" *ngIf="inventoryRequestsForShowing(s.id).length > 0">
+            <div *ngFor="let req of inventoryRequestsForShowing(s.id)" class="inventory-modal-showing__request-row">
+              <span class="inventory-modal-showing__req-name">{{ req.name }}</span>
+              <span class="modal-request-row__status-badge modal-request-row__status-badge--{{ req.status }}">
+                {{ req.status | titlecase }}
+              </span>
+            </div>
+          </div>
+
+          <div class="inventory-modal-showing__actions">
+            <button class="btn-primary btn-sm" (click)="startInventoryRequest(s.id)">+ Request This Showing</button>
+          </div>
+        </div>
+      </div>
+
+      <div class="modal__actions" style="margin-top: 1.25rem">
+        <button class="btn-secondary" (click)="closeInventoryModal()">Close</button>
+      </div>
+    </ng-container>
+
+    <!-- Form step -->
+    <ng-container *ngIf="inventoryModalStep === 'form'">
+      <h3>Request Full Inventory Showing</h3>
+
+      <div *ngIf="inventorySelectedShowing as s" class="gear-detail__showing-info" style="margin: 1rem 0">
+        <div class="gear-detail__showing-info-row">
+          <span class="gear-detail__meta-label">📅 When:</span>
+          <span>{{ s.dateTime | date:"EEEE, MMMM d, y 'at' h:mm a" }}</span>
+        </div>
+        <div class="gear-detail__showing-info-row">
+          <span class="gear-detail__meta-label">📍 Where:</span>
+          <span>{{ s.location }}</span>
+        </div>
+        <div *ngIf="s.details" class="gear-detail__showing-info-row">
+          <span class="gear-detail__meta-label">ℹ️ Details:</span>
+          <span>{{ s.details }}</span>
+        </div>
+        <div class="gear-detail__showing-info-row">
+          <span class="gear-detail__meta-label">👤 Contact:</span>
+          <span>{{ s.contactName }}<span *ngIf="s.contactEmail"> — {{ s.contactEmail }}</span></span>
+        </div>
+      </div>
+
+      <div class="form-group">
+        <label>Your Name</label>
+        <input type="text" [(ngModel)]="inventoryRequestName" placeholder="Full name" />
+      </div>
+      <div class="form-group">
+        <label>Contact (phone or email)</label>
+        <input type="text" [(ngModel)]="inventoryRequestContact" placeholder="e.g. 555-867-5309 or you@example.com" />
+      </div>
+      <div *ngIf="inventoryRequestError" class="gear-detail__request-error">{{ inventoryRequestError }}</div>
+      <div class="modal__actions" style="margin-top: 1.25rem">
+        <button class="btn-secondary" (click)="backToList()">← Back</button>
+        <button class="btn-primary" (click)="submitInventoryRequest()" [disabled]="!isInventoryRequestValid">
+          Submit Request
+        </button>
+      </div>
+    </ng-container>
+
+    <!-- Confirm step -->
+    <ng-container *ngIf="inventoryModalStep === 'confirm'">
+      <h3>Submit Request?</h3>
+      <p style="margin-top: 1rem">Check back before your showing to make sure your request is confirmed.</p>
+      <div class="modal__actions" style="margin-top: 1.25rem">
+        <button class="btn-secondary" (click)="inventoryModalStep = 'form'">Back</button>
+        <button class="btn-primary" (click)="confirmInventoryRequest()">Submit</button>
+      </div>
+    </ng-container>
+
+    <!-- Success step -->
+    <ng-container *ngIf="inventoryModalStep === 'success'">
+      <h3>Request Submitted!</h3>
+      <p style="margin-top: 0.75rem">Check back before your showing to make sure your request is confirmed.</p>
+      <div class="modal__actions" style="margin-top: 1.25rem">
+        <button class="btn-primary" (click)="closeInventoryModal()">Close</button>
+      </div>
+    </ng-container>
+
+  </div>
 </div>
