@@ -253,6 +253,24 @@ nav a {
       box-shadow: 0 0 0 3px rgba(232,93,4,0.15);
     }
   }
+
+  input[type="datetime-local"],
+  input[type="date"],
+  input[type="time"] {
+    padding: 0.55rem 0.75rem;
+    color: var(--color-text);
+    cursor: pointer;
+    min-height: 2.5rem;
+
+    &::-webkit-calendar-picker-indicator {
+      opacity: 0.5;
+      cursor: pointer;
+      filter: invert(40%) sepia(80%) saturate(600%) hue-rotate(340deg);
+      padding-left: 0.25rem;
+
+      &:hover { opacity: 1; }
+    }
+  }
 }
 
 .form-row {
