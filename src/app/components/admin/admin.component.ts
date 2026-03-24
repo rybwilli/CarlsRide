@@ -48,13 +48,15 @@ export class AdminComponent implements OnInit {
   deletingShowing: ItemShowingEvent | null = null;
 
   newShowingSaleId = '';
-  newShowingDateTime = '';
+  newShowingDate = '';
+  newShowingTime = '';
   newShowingLocation = '';
   newShowingDetails = '';
   newShowingContactName = '';
   newShowingContactEmail = '';
 
-  editShowingDateTime = '';
+  editShowingDate = '';
+  editShowingTime = '';
   editShowingLocation = '';
   editShowingDetails = '';
   editShowingContactName = '';
@@ -186,21 +188,22 @@ export class AdminComponent implements OnInit {
   // ── Showings ──────────────────────────────────────────
 
   get isCreateShowingValid(): boolean {
-    return !!(this.newShowingSaleId && this.newShowingDateTime && this.newShowingLocation.trim() && this.newShowingContactName.trim());
+    return !!(this.newShowingSaleId && this.newShowingDate && this.newShowingTime && this.newShowingLocation.trim() && this.newShowingContactName.trim());
   }
 
   async createShowing(): Promise<void> {
     if (!this.isCreateShowingValid) return;
     await this.itemShowingService.createShowing({
       saleId: this.newShowingSaleId,
-      dateTime: this.newShowingDateTime,
+      dateTime: `${this.newShowingDate}T${this.newShowingTime}`,
       location: this.newShowingLocation.trim(),
       details: this.newShowingDetails.trim() || undefined,
       contactName: this.newShowingContactName.trim(),
       contactEmail: this.newShowingContactEmail.trim() || undefined,
     });
     this.newShowingSaleId = '';
-    this.newShowingDateTime = '';
+    this.newShowingDate = '';
+    this.newShowingTime = '';
     this.newShowingLocation = '';
     this.newShowingDetails = '';
     this.newShowingContactName = '';
@@ -209,7 +212,9 @@ export class AdminComponent implements OnInit {
 
   startEditShowing(showing: ItemShowingEvent): void {
     this.editingShowingId = showing.id;
-    this.editShowingDateTime = showing.dateTime;
+    const [date, time] = showing.dateTime.split('T');
+    this.editShowingDate = date ?? '';
+    this.editShowingTime = time?.substring(0, 5) ?? '';
     this.editShowingLocation = showing.location;
     this.editShowingDetails = showing.details ?? '';
     this.editShowingContactName = showing.contactName;
@@ -221,7 +226,7 @@ export class AdminComponent implements OnInit {
   async saveEditShowing(): Promise<void> {
     if (!this.editingShowingId) return;
     await this.itemShowingService.updateShowing(this.editingShowingId, {
-      dateTime: this.editShowingDateTime,
+      dateTime: `${this.editShowingDate}T${this.editShowingTime}`,
       location: this.editShowingLocation.trim(),
       details: this.editShowingDetails.trim() || undefined,
       contactName: this.editShowingContactName.trim(),

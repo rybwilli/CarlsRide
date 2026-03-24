@@ -221,6 +221,44 @@ query ListSaleItems(
   }
 }
 
+query GetItemShowingEvent($id: ID!) {
+  getItemShowingEvent(id: $id) {
+    id
+    saleId
+    dateTime
+    location
+    details
+    contactName
+    contactEmail
+    createdAt
+    updatedAt
+    __typename
+  }
+}
+
+query ListItemShowingEvents(
+  $filter: ModelItemShowingEventFilterInput
+  $limit: Int
+  $nextToken: String
+) {
+  listItemShowingEvents(filter: $filter, limit: $limit, nextToken: $nextToken) {
+    items {
+      id
+      saleId
+      dateTime
+      location
+      details
+      contactName
+      contactEmail
+      createdAt
+      updatedAt
+      __typename
+    }
+    nextToken
+    __typename
+  }
+}
+
 query RidesByEventId(
   $eventId: ID!
   $sortDirection: ModelSortDirection
@@ -315,6 +353,37 @@ query SaleItemsBySaleId(
       activities
       condition
       comparableSite
+      createdAt
+      updatedAt
+      __typename
+    }
+    nextToken
+    __typename
+  }
+}
+
+query ItemShowingEventsBySaleId(
+  $saleId: ID!
+  $sortDirection: ModelSortDirection
+  $filter: ModelItemShowingEventFilterInput
+  $limit: Int
+  $nextToken: String
+) {
+  itemShowingEventsBySaleId(
+    saleId: $saleId
+    sortDirection: $sortDirection
+    filter: $filter
+    limit: $limit
+    nextToken: $nextToken
+  ) {
+    items {
+      id
+      saleId
+      dateTime
+      location
+      details
+      contactName
+      contactEmail
       createdAt
       updatedAt
       __typename

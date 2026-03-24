@@ -344,3 +344,57 @@ mutation DeleteSaleItem(
     __typename
   }
 }
+
+mutation CreateItemShowingEvent(
+  $input: CreateItemShowingEventInput!
+  $condition: ModelItemShowingEventConditionInput
+) {
+  createItemShowingEvent(input: $input, condition: $condition) {
+    id
+    saleId
+    dateTime
+    location
+    details
+    contactName
+    contactEmail
+    createdAt
+    updatedAt
+    __typename
+  }
+}
+
+mutation UpdateItemShowingEvent(
+  $input: UpdateItemShowingEventInput!
+  $condition: ModelItemShowingEventConditionInput
+) {
+  updateItemShowingEvent(input: $input, condition: $condition) {
+    id
+    saleId
+    dateTime
+    location
+    details
+    contactName
+    contactEmail
+    createdAt
+    updatedAt
+    __typename
+  }
+}
+
+mutation DeleteItemShowingEvent(
+  $input: DeleteItemShowingEventInput!
+  $condition: ModelItemShowingEventConditionInput
+) {
+  deleteItemShowingEvent(input: $input, condition: $condition) {
+    id
+    saleId
+    dateTime
+    location
+    details
+    contactName
+    contactEmail
+    createdAt
+    updatedAt
+    __typename
+  }
+}
