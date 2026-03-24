@@ -40,8 +40,16 @@ type FoodItem @model {
   broughtBy: String!
 }
 
+type Sale @model {
+  id: ID!
+  name: String!
+  description: String
+  isActive: Boolean!
+}
+
 type SaleItem @model {
   id: ID!
+  saleId: ID @index(name: "bySale")
   name: String!
   description: String!
   price: Float!

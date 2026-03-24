@@ -1,11 +1,12 @@
 import { Injectable } from '@angular/core';
 import { BehaviorSubject, Observable } from 'rxjs';
 import { SaleItem, SaleCategory } from '../models/sale-item.model';
+import { SaleCatalogService } from './sale-catalog.service';
 import { generateClient } from 'aws-amplify/api';
 
 const client = generateClient();
 
-const SALE_FIELDS = `id name description price category status seller images activities condition comparableSite`;
+const SALE_FIELDS = `id saleId name description price category status seller images activities condition comparableSite`;
 
 @Injectable({ providedIn: 'root' })
 export class SaleService {
@@ -27,8 +28,8 @@ export class SaleService {
     { value: 'other',       label: 'Other',       emoji: '📦' },
   ];
 
-  constructor() {
-    this.loadItems();
+  constructor(private saleCatalogService: SaleCatalogService) {
+    this.saleCatalogService.loadOrCreateSale().then(() => this.loadItems());
   }
 
   private async loadItems(): Promise<void> {
@@ -43,7 +44,7 @@ export class SaleService {
   }
 
   async addItem(item: Omit<SaleItem, 'id' | 'status'>): Promise<SaleItem> {
-    const input = { ...item, status: 'available' };
+    const input = { ...item, status: 'available', saleId: this.saleCatalogService.activeSale.id };
     const result: any = await client.graphql({
       query: `mutation CreateSaleItem($input: CreateSaleItemInput!) {
         createSaleItem(input: $input) { ${SALE_FIELDS} }

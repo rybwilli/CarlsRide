@@ -1,8 +1,75 @@
 <div class="admin-page">
   <h1>Admin</h1>
-  <p class="subtitle">Manage events for Carl's Ride.</p>
+  <p class="subtitle">Manage events and gear sales for Carl's Ride.</p>
 
-  <!-- Event List -->
+  <!-- ── Sales ── -->
+  <section class="admin-section">
+    <h2>Gear Sales</h2>
+
+    <div class="admin-events" *ngIf="allSales$ | async as sales">
+      <div *ngIf="sales.length === 0" class="empty-state">No sales yet — create one below.</div>
+
+      <div *ngFor="let sale of sales" class="admin-event-card"
+           [class.admin-event-card--active]="sale.isActive">
+
+        <div *ngIf="editingSaleId !== sale.id">
+          <div class="admin-event-card__header">
+            <div>
+              <h3>{{ sale.name }}</h3>
+              <p *ngIf="sale.description" class="admin-event-card__desc">{{ sale.description }}</p>
+            </div>
+            <span class="admin-active-badge" *ngIf="sale.isActive">✅ Active</span>
+          </div>
+          <div class="admin-event-card__actions">
+            <button class="btn-primary btn-sm" (click)="setActiveSale(sale)" *ngIf="!sale.isActive">Set as Active</button>
+            <button class="btn-secondary btn-sm" (click)="startEditSale(sale)">Edit</button>
+            <button class="btn-delete btn-sm" (click)="deleteSale(sale)" *ngIf="!sale.isActive">Delete</button>
+          </div>
+        </div>
+
+        <!-- Inline edit form -->
+        <div *ngIf="editingSaleId === sale.id" class="admin-edit-form">
+          <div class="form-group">
+            <label>Sale Name</label>
+            <input type="text" [(ngModel)]="editSaleName" />
+          </div>
+          <div class="form-group">
+            <label>Description (optional)</label>
+            <textarea [(ngModel)]="editSaleDescription" rows="2"></textarea>
+          </div>
+          <div class="form-actions">
+            <button class="btn-secondary" (click)="cancelEditSale()">Cancel</button>
+            <button class="btn-primary" (click)="saveEditSale()">Save</button>
+          </div>
+        </div>
+
+      </div>
+    </div>
+  </section>
+
+  <hr class="section-divider" />
+
+  <!-- Create Sale -->
+  <section class="admin-section">
+    <h2>Create New Sale</h2>
+    <div class="form-card">
+      <div class="form-group">
+        <label>Sale Name</label>
+        <input type="text" [(ngModel)]="newSaleName" placeholder="e.g. Carl's Ride 2027" />
+      </div>
+      <div class="form-group">
+        <label>Description (optional)</label>
+        <textarea [(ngModel)]="newSaleDescription" rows="2" placeholder="Brief description of the sale"></textarea>
+      </div>
+      <div class="form-actions">
+        <button class="btn-primary" (click)="createSale()" [disabled]="!isCreateSaleValid">Create Sale</button>
+      </div>
+    </div>
+  </section>
+
+  <hr class="section-divider" />
+
+  <!-- ── Events ── -->
   <section class="admin-section">
     <h2>Events</h2>
 
@@ -12,7 +79,7 @@
       <div *ngFor="let event of events" class="admin-event-card"
            [class.admin-event-card--active]="(activeEvent$ | async)?.id === event.id">
 
-        <div *ngIf="editingId !== event.id">
+        <div *ngIf="editingEventId !== event.id">
           <div class="admin-event-card__header">
             <div>
               <h3>{{ event.name }}</h3>
@@ -24,20 +91,20 @@
             <span class="admin-active-badge" *ngIf="(activeEvent$ | async)?.id === event.id">✅ Active</span>
           </div>
           <div class="admin-event-card__actions">
-            <button class="btn-primary btn-sm" (click)="setActive(event)"
+            <button class="btn-primary btn-sm" (click)="setActiveEvent(event)"
                     *ngIf="(activeEvent$ | async)?.id !== event.id">Set as Active</button>
-            <button class="btn-secondary btn-sm" (click)="startEdit(event)">Edit</button>
+            <button class="btn-secondary btn-sm" (click)="startEditEvent(event)">Edit</button>
             <button class="btn-delete btn-sm" (click)="deleteEvent(event)"
                     *ngIf="(activeEvent$ | async)?.id !== event.id">Delete</button>
           </div>
         </div>
 
         <!-- Inline edit form -->
-        <div *ngIf="editingId === event.id" class="admin-edit-form">
+        <div *ngIf="editingEventId === event.id" class="admin-edit-form">
           <div class="form-row">
             <div class="form-group">
               <label>Event Name</label>
-              <input type="text" [(ngModel)]="editName" />
+              <input type="text" [(ngModel)]="editEventName" />
             </div>
             <div class="form-group">
               <label>Date</label>
@@ -56,11 +123,11 @@
           </div>
           <div class="form-group">
             <label>Description (optional)</label>
-            <textarea [(ngModel)]="editDescription" rows="2"></textarea>
+            <textarea [(ngModel)]="editEventDescription" rows="2"></textarea>
           </div>
           <div class="form-actions">
-            <button class="btn-secondary" (click)="cancelEdit()">Cancel</button>
-            <button class="btn-primary" (click)="saveEdit()">Save</button>
+            <button class="btn-secondary" (click)="cancelEditEvent()">Cancel</button>
+            <button class="btn-primary" (click)="saveEditEvent()">Save</button>
           </div>
         </div>
 
@@ -77,7 +144,7 @@
       <div class="form-row">
         <div class="form-group">
           <label>Event Name</label>
-          <input type="text" [(ngModel)]="newName" placeholder="e.g. Carl's Ride 2027" />
+          <input type="text" [(ngModel)]="newEventName" placeholder="e.g. Carl's Ride 2027" />
         </div>
         <div class="form-group">
           <label>Date</label>
@@ -96,23 +163,35 @@
       </div>
       <div class="form-group">
         <label>Description (optional)</label>
-        <textarea [(ngModel)]="newDescription" rows="2" placeholder="Brief description of the event"></textarea>
+        <textarea [(ngModel)]="newEventDescription" rows="2" placeholder="Brief description of the event"></textarea>
       </div>
       <div class="form-actions">
-        <button class="btn-primary" (click)="createEvent()" [disabled]="!isCreateValid">Create Event</button>
+        <button class="btn-primary" (click)="createEvent()" [disabled]="!isCreateEventValid">Create Event</button>
       </div>
     </div>
   </section>
 </div>
 
-<!-- Delete confirmation modal -->
-<div class="modal-backdrop" *ngIf="deletingEvent" (click)="cancelDelete()">
+<!-- Delete sale modal -->
+<div class="modal-backdrop" *ngIf="deletingSale" (click)="cancelDeleteSale()">
+  <div class="modal" (click)="$event.stopPropagation()">
+    <h3>Delete "{{ deletingSale.name }}"?</h3>
+    <p>Are you sure? Items attached to this sale will be unlinked.</p>
+    <div class="modal__actions">
+      <button class="btn-secondary" (click)="cancelDeleteSale()">Cancel</button>
+      <button class="btn-delete" (click)="confirmDeleteSale()">Yes, Delete</button>
+    </div>
+  </div>
+</div>
+
+<!-- Delete event modal -->
+<div class="modal-backdrop" *ngIf="deletingEvent" (click)="cancelDeleteEvent()">
   <div class="modal" (click)="$event.stopPropagation()">
     <h3>Delete "{{ deletingEvent.name }}"?</h3>
     <p>Are you sure you want to proceed with deleting this event? This might lead to the loss of a lot of data.</p>
     <div class="modal__actions">
-      <button class="btn-secondary" (click)="cancelDelete()">Cancel</button>
-      <button class="btn-delete" (click)="confirmDelete()">Yes, Delete</button>
+      <button class="btn-secondary" (click)="cancelDeleteEvent()">Cancel</button>
+      <button class="btn-delete" (click)="confirmDeleteEvent()">Yes, Delete</button>
     </div>
   </div>
 </div>

@@ -5,6 +5,7 @@ export type SaleCondition = 'new' | 'like new' | 'good' | 'fair' | 'poor';
 
 export interface SaleItem {
   id: string;
+  saleId?: string;
   name: string;
   description: string;
   price: number;

@@ -3,7 +3,7 @@
     <div class="gear-sale-header__title-row">
       <img src="assets/ride-on-carl.png" alt="Ride On Carl" class="gear-sale-header__logo" />
       <div>
-        <h1>Gear Sale</h1>
+        <h1>Gear Sale <span class="gear-sale-header__sale-name" *ngIf="activeSaleName$ | async as name">— {{ name }}</span></h1>
         <p class="subtitle">Bikes, gear, parts, tools, etc. from Carl's extensive and well maintained collection. All proceeds go to Lisa and Chloe. Pay via Venmo: <strong>@{{ venmoUsername }}</strong></p>
       </div>
     </div>

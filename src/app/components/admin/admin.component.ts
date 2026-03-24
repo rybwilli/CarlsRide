@@ -2,6 +2,8 @@ import { Component, OnInit } from '@angular/core';
 import { ActivatedRoute, Router } from '@angular/router';
 import { Observable } from 'rxjs';
 import { AppEvent, EventService } from '../../services/event.service';
+import { Sale } from '../../models/sale.model';
+import { SaleCatalogService } from '../../services/sale-catalog.service';
 
 @Component({
   selector: 'app-admin',
@@ -9,29 +11,46 @@ import { AppEvent, EventService } from '../../services/event.service';
   styleUrls: ['./admin.component.scss'],
 })
 export class AdminComponent implements OnInit {
+  // Events
   allEvents$: Observable<AppEvent[]>;
   activeEvent$: Observable<AppEvent>;
-
-  editingId: string | null = null;
+  editingEventId: string | null = null;
   deletingEvent: AppEvent | null = null;
 
-  // Create form
-  newName = '';
+  newEventName = '';
   newDate = '';
   newGatheringTime = '';
   newLocation = '';
-  newDescription = '';
+  newEventDescription = '';
 
-  // Edit form
-  editName = '';
+  editEventName = '';
   editDate = '';
   editGatheringTime = '';
   editLocation = '';
-  editDescription = '';
+  editEventDescription = '';
 
-  constructor(public eventService: EventService, private router: Router, route: ActivatedRoute) {
+  // Sales
+  allSales$: Observable<Sale[]>;
+  activeSale$: Observable<Sale>;
+  editingSaleId: string | null = null;
+  deletingSale: Sale | null = null;
+
+  newSaleName = '';
+  newSaleDescription = '';
+
+  editSaleName = '';
+  editSaleDescription = '';
+
+  constructor(
+    public eventService: EventService,
+    public saleCatalogService: SaleCatalogService,
+    private router: Router,
+    route: ActivatedRoute
+  ) {
     this.allEvents$ = eventService.allEvents$;
     this.activeEvent$ = eventService.event$;
+    this.allSales$ = saleCatalogService.allSales$;
+    this.activeSale$ = saleCatalogService.activeSale$;
 
     const token = route.snapshot.queryParamMap.get('admin') ?? '';
     if (token !== eventService.adminToken) {
@@ -41,68 +60,105 @@ export class AdminComponent implements OnInit {
 
   ngOnInit(): void {
     this.eventService.loadOrCreateEvent();
+    this.saleCatalogService.loadOrCreateSale();
   }
 
-  get isCreateValid(): boolean {
-    return !!(this.newName.trim() && this.newDate && this.newGatheringTime.trim() && this.newLocation.trim());
+  // ── Events ──────────────────────────────────────────
+
+  get isCreateEventValid(): boolean {
+    return !!(this.newEventName.trim() && this.newDate && this.newGatheringTime.trim() && this.newLocation.trim());
   }
 
   async createEvent(): Promise<void> {
-    if (!this.isCreateValid) return;
+    if (!this.isCreateEventValid) return;
     await this.eventService.createEvent({
-      name: this.newName.trim(),
+      name: this.newEventName.trim(),
       date: this.newDate,
       gatheringTime: this.newGatheringTime.trim(),
       location: this.newLocation.trim(),
-      description: this.newDescription.trim() || undefined,
+      description: this.newEventDescription.trim() || undefined,
     });
-    this.newName = '';
+    this.newEventName = '';
     this.newDate = '';
     this.newGatheringTime = '';
     this.newLocation = '';
-    this.newDescription = '';
+    this.newEventDescription = '';
   }
 
-  startEdit(event: AppEvent): void {
-    this.editingId = event.id;
-    this.editName = event.name;
+  startEditEvent(event: AppEvent): void {
+    this.editingEventId = event.id;
+    this.editEventName = event.name;
     this.editDate = event.date;
     this.editGatheringTime = event.gatheringTime;
     this.editLocation = event.location;
-    this.editDescription = event.description ?? '';
+    this.editEventDescription = event.description ?? '';
   }
 
-  cancelEdit(): void {
-    this.editingId = null;
-  }
+  cancelEditEvent(): void { this.editingEventId = null; }
 
-  async saveEdit(): Promise<void> {
-    if (!this.editingId) return;
-    await this.eventService.updateEvent(this.editingId, {
-      name: this.editName.trim(),
+  async saveEditEvent(): Promise<void> {
+    if (!this.editingEventId) return;
+    await this.eventService.updateEvent(this.editingEventId, {
+      name: this.editEventName.trim(),
       date: this.editDate,
       gatheringTime: this.editGatheringTime.trim(),
       location: this.editLocation.trim(),
-      description: this.editDescription.trim() || undefined,
+      description: this.editEventDescription.trim() || undefined,
     });
-    this.editingId = null;
+    this.editingEventId = null;
   }
 
-  setActive(event: AppEvent): void {
-    this.eventService.setActiveEvent(event);
-  }
+  setActiveEvent(event: AppEvent): void { this.eventService.setActiveEvent(event); }
+  deleteEvent(event: AppEvent): void { this.deletingEvent = event; }
+  cancelDeleteEvent(): void { this.deletingEvent = null; }
 
-  deleteEvent(event: AppEvent): void {
-    this.deletingEvent = event;
-  }
-
-  cancelDelete(): void {
-    this.deletingEvent = null;
-  }
-
-  async confirmDelete(): Promise<void> {
+  async confirmDeleteEvent(): Promise<void> {
     if (!this.deletingEvent) return;
     await this.eventService.deleteEvent(this.deletingEvent.id);
     this.deletingEvent = null;
+  }
+
+  // ── Sales ──────────────────────────────────────────
+
+  get isCreateSaleValid(): boolean {
+    return !!this.newSaleName.trim();
+  }
+
+  async createSale(): Promise<void> {
+    if (!this.isCreateSaleValid) return;
+    await this.saleCatalogService.createSale({
+      name: this.newSaleName.trim(),
+      description: this.newSaleDescription.trim() || undefined,
+      isActive: false,
+    });
+    this.newSaleName = '';
+    this.newSaleDescription = '';
+  }
+
+  startEditSale(sale: Sale): void {
+    this.editingSaleId = sale.id;
+    this.editSaleName = sale.name;
+    this.editSaleDescription = sale.description ?? '';
+  }
+
+  cancelEditSale(): void { this.editingSaleId = null; }
+
+  async saveEditSale(): Promise<void> {
+    if (!this.editingSaleId) return;
+    await this.saleCatalogService.updateSale(this.editingSaleId, {
+      name: this.editSaleName.trim(),
+      description: this.editSaleDescription.trim() || undefined,
+    });
+    this.editingSaleId = null;
+  }
+
+  async setActiveSale(sale: Sale): Promise<void> { await this.saleCatalogService.setActiveSale(sale); }
+  deleteSale(sale: Sale): void { this.deletingSale = sale; }
+  cancelDeleteSale(): void { this.deletingSale = null; }
+
+  async confirmDeleteSale(): Promise<void> {
+    if (!this.deletingSale) return;
+    await this.saleCatalogService.deleteSale(this.deletingSale.id);
+    this.deletingSale = null;
   }
 }

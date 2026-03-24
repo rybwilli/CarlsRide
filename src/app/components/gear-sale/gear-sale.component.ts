@@ -3,6 +3,7 @@ import { ActivatedRoute, Router } from '@angular/router';
 import { Observable, combineLatest, map, BehaviorSubject } from 'rxjs';
 import { SaleItem, SaleActivity, SaleCategory, SaleCondition, SaleItemStatus } from '../../models/sale-item.model';
 import { SaleService } from '../../services/sale.service';
+import { SaleCatalogService } from '../../services/sale-catalog.service';
 
 @Component({
   selector: 'app-gear-sale',
@@ -56,7 +57,9 @@ export class GearSaleComponent {
   canSell = false;
   sellerToken = '';
 
-  constructor(public saleService: SaleService, private router: Router, route: ActivatedRoute) {
+  activeSaleName$ = this.saleCatalogService.activeSale$.pipe(map(s => s.name));
+
+  constructor(public saleService: SaleService, public saleCatalogService: SaleCatalogService, private router: Router, route: ActivatedRoute) {
     this.venmoUsername = saleService.venmoUsername;
     this.sellerToken = route.snapshot.queryParamMap.get('seller') ?? '';
     this.canSell = this.sellerToken === saleService.sellerToken;
