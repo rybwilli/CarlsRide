@@ -204,9 +204,46 @@ subscription OnDeleteFoodItem($filter: ModelSubscriptionFoodItemFilterInput) {
   }
 }
 
+subscription OnCreateSale($filter: ModelSubscriptionSaleFilterInput) {
+  onCreateSale(filter: $filter) {
+    id
+    name
+    description
+    isActive
+    createdAt
+    updatedAt
+    __typename
+  }
+}
+
+subscription OnUpdateSale($filter: ModelSubscriptionSaleFilterInput) {
+  onUpdateSale(filter: $filter) {
+    id
+    name
+    description
+    isActive
+    createdAt
+    updatedAt
+    __typename
+  }
+}
+
+subscription OnDeleteSale($filter: ModelSubscriptionSaleFilterInput) {
+  onDeleteSale(filter: $filter) {
+    id
+    name
+    description
+    isActive
+    createdAt
+    updatedAt
+    __typename
+  }
+}
+
 subscription OnCreateSaleItem($filter: ModelSubscriptionSaleItemFilterInput) {
   onCreateSaleItem(filter: $filter) {
     id
+    saleId
     name
     description
     price
@@ -226,6 +263,7 @@ subscription OnCreateSaleItem($filter: ModelSubscriptionSaleItemFilterInput) {
 subscription OnUpdateSaleItem($filter: ModelSubscriptionSaleItemFilterInput) {
   onUpdateSaleItem(filter: $filter) {
     id
+    saleId
     name
     description
     price
@@ -245,6 +283,7 @@ subscription OnUpdateSaleItem($filter: ModelSubscriptionSaleItemFilterInput) {
 subscription OnDeleteSaleItem($filter: ModelSubscriptionSaleItemFilterInput) {
   onDeleteSaleItem(filter: $filter) {
     id
+    saleId
     name
     description
     price

@@ -231,12 +231,58 @@ mutation DeleteFoodItem(
   }
 }
 
+mutation CreateSale(
+  $input: CreateSaleInput!
+  $condition: ModelSaleConditionInput
+) {
+  createSale(input: $input, condition: $condition) {
+    id
+    name
+    description
+    isActive
+    createdAt
+    updatedAt
+    __typename
+  }
+}
+
+mutation UpdateSale(
+  $input: UpdateSaleInput!
+  $condition: ModelSaleConditionInput
+) {
+  updateSale(input: $input, condition: $condition) {
+    id
+    name
+    description
+    isActive
+    createdAt
+    updatedAt
+    __typename
+  }
+}
+
+mutation DeleteSale(
+  $input: DeleteSaleInput!
+  $condition: ModelSaleConditionInput
+) {
+  deleteSale(input: $input, condition: $condition) {
+    id
+    name
+    description
+    isActive
+    createdAt
+    updatedAt
+    __typename
+  }
+}
+
 mutation CreateSaleItem(
   $input: CreateSaleItemInput!
   $condition: ModelSaleItemConditionInput
 ) {
   createSaleItem(input: $input, condition: $condition) {
     id
+    saleId
     name
     description
     price
@@ -259,6 +305,7 @@ mutation UpdateSaleItem(
 ) {
   updateSaleItem(input: $input, condition: $condition) {
     id
+    saleId
     name
     description
     price
@@ -281,6 +328,7 @@ mutation DeleteSaleItem(
 ) {
   deleteSaleItem(input: $input, condition: $condition) {
     id
+    saleId
     name
     description
     price

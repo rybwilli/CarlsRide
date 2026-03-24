@@ -141,9 +141,42 @@ query ListFoodItems(
   }
 }
 
+query GetSale($id: ID!) {
+  getSale(id: $id) {
+    id
+    name
+    description
+    isActive
+    createdAt
+    updatedAt
+    __typename
+  }
+}
+
+query ListSales(
+  $filter: ModelSaleFilterInput
+  $limit: Int
+  $nextToken: String
+) {
+  listSales(filter: $filter, limit: $limit, nextToken: $nextToken) {
+    items {
+      id
+      name
+      description
+      isActive
+      createdAt
+      updatedAt
+      __typename
+    }
+    nextToken
+    __typename
+  }
+}
+
 query GetSaleItem($id: ID!) {
   getSaleItem(id: $id) {
     id
+    saleId
     name
     description
     price
@@ -168,6 +201,7 @@ query ListSaleItems(
   listSaleItems(filter: $filter, limit: $limit, nextToken: $nextToken) {
     items {
       id
+      saleId
       name
       description
       price
@@ -245,6 +279,42 @@ query FoodItemsByEventId(
       notes
       servings
       broughtBy
+      createdAt
+      updatedAt
+      __typename
+    }
+    nextToken
+    __typename
+  }
+}
+
+query SaleItemsBySaleId(
+  $saleId: ID!
+  $sortDirection: ModelSortDirection
+  $filter: ModelSaleItemFilterInput
+  $limit: Int
+  $nextToken: String
+) {
+  saleItemsBySaleId(
+    saleId: $saleId
+    sortDirection: $sortDirection
+    filter: $filter
+    limit: $limit
+    nextToken: $nextToken
+  ) {
+    items {
+      id
+      saleId
+      name
+      description
+      price
+      category
+      status
+      seller
+      images
+      activities
+      condition
+      comparableSite
       createdAt
       updatedAt
       __typename
