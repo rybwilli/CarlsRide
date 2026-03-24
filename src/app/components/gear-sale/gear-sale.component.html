@@ -12,6 +12,7 @@
 
   <div class="gear-sale-body">
     <aside class="gear-filters">
+      <!-- Column 1: Category then Condition -->
       <div class="gear-filters__section">
         <span class="gear-filters__label">Category</span>
         <button
@@ -20,6 +21,16 @@
           [class.gear-filter-btn--active]="(activeCategoryFilter$ | async) === f.value"
           (click)="setCategoryFilter(f.value)">
           {{ f.emoji }} {{ f.label }}
+        </button>
+      </div>
+      <div class="gear-filters__section">
+        <span class="gear-filters__label">Activity</span>
+        <button
+          *ngFor="let f of activityFilters"
+          class="gear-filter-btn"
+          [class.gear-filter-btn--active]="(activeActivityFilter$ | async) === f.value"
+          (click)="setActivityFilter(f.value)">
+          {{ f.label }}
         </button>
       </div>
       <div class="gear-filters__section">
@@ -33,12 +44,12 @@
         </button>
       </div>
       <div class="gear-filters__section">
-        <span class="gear-filters__label">Activity</span>
+        <span class="gear-filters__label">Status</span>
         <button
-          *ngFor="let f of activityFilters"
+          *ngFor="let f of statusFilters"
           class="gear-filter-btn"
-          [class.gear-filter-btn--active]="(activeActivityFilter$ | async) === f.value"
-          (click)="setActivityFilter(f.value)">
+          [class.gear-filter-btn--active]="(activeStatusFilter$ | async) === f.value"
+          (click)="setStatusFilter(f.value)">
           {{ f.label }}
         </button>
       </div>

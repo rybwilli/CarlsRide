@@ -143,7 +143,7 @@ nav a {
 
 /* Main content */
 .app-content {
-  max-width: 960px;
+  max-width: 1200px;
   margin: 2rem auto;
   padding: 0 1.5rem;
 }
@@ -691,20 +691,23 @@ nav a {
 }
 
 .gear-filters {
-  width: 170px;
+  width: 360px;
   flex-shrink: 0;
-  display: flex;
-  flex-direction: column;
-  gap: 1.25rem;
+  display: grid;
+  grid-template-columns: 1fr 1fr;
+  gap: 1.25rem 1.5rem;
   position: sticky;
   top: 1rem;
+  align-content: start;
 
-  @media (max-width: 768px) {
+  @media (max-width: 900px) {
     width: 100%;
     position: static;
-    flex-direction: row;
-    flex-wrap: wrap;
-    gap: 1rem;
+    grid-template-columns: 1fr 1fr;
+  }
+
+  @media (max-width: 480px) {
+    grid-template-columns: 1fr;
   }
 
   &__section {

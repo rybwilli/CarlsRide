@@ -1,7 +1,7 @@
 import { Component } from '@angular/core';
 import { ActivatedRoute, Router } from '@angular/router';
 import { Observable, combineLatest, map, BehaviorSubject } from 'rxjs';
-import { SaleItem, SaleActivity, SaleCategory, SaleCondition } from '../../models/sale-item.model';
+import { SaleItem, SaleActivity, SaleCategory, SaleCondition, SaleItemStatus } from '../../models/sale-item.model';
 import { SaleService } from '../../services/sale.service';
 
 @Component({
@@ -13,6 +13,7 @@ export class GearSaleComponent {
   private categoryFilter$ = new BehaviorSubject<SaleCategory | 'all'>('all');
   private activityFilter$ = new BehaviorSubject<SaleActivity | 'all'>('all');
   private conditionFilter$ = new BehaviorSubject<SaleCondition | 'all'>('all');
+  private statusFilter$ = new BehaviorSubject<SaleItemStatus | 'all'>('all');
 
   filtered$: Observable<SaleItem[]>;
 
@@ -44,6 +45,13 @@ export class GearSaleComponent {
     { value: 'poor',      label: 'Poor' },
   ];
 
+  statusFilters: { value: SaleItemStatus | 'all'; label: string }[] = [
+    { value: 'all',       label: 'All' },
+    { value: 'available', label: 'Available' },
+    { value: 'pending',   label: 'Pending' },
+    { value: 'sold',      label: 'Sold' },
+  ];
+
   venmoUsername: string;
   canSell = false;
   sellerToken = '';
@@ -58,11 +66,13 @@ export class GearSaleComponent {
       this.categoryFilter$,
       this.activityFilter$,
       this.conditionFilter$,
+      this.statusFilter$,
     ]).pipe(
-      map(([items, cat, act, cond]) => items.filter(i => {
+      map(([items, cat, act, cond, status]) => items.filter(i => {
         if (cat !== 'all' && i.category !== cat) return false;
         if (act !== 'all' && !i.activities?.includes(act)) return false;
         if (cond !== 'all' && i.condition !== cond) return false;
+        if (status !== 'all' && i.status !== status) return false;
         return true;
       }))
     );
@@ -71,10 +81,12 @@ export class GearSaleComponent {
   setCategoryFilter(f: SaleCategory | 'all'): void { this.categoryFilter$.next(f); }
   setActivityFilter(f: SaleActivity | 'all'): void { this.activityFilter$.next(f); }
   setConditionFilter(f: SaleCondition | 'all'): void { this.conditionFilter$.next(f); }
+  setStatusFilter(f: SaleItemStatus | 'all'): void { this.statusFilter$.next(f); }
 
   get activeCategoryFilter$() { return this.categoryFilter$.asObservable(); }
   get activeActivityFilter$() { return this.activityFilter$.asObservable(); }
   get activeConditionFilter$() { return this.conditionFilter$.asObservable(); }
+  get activeStatusFilter$() { return this.statusFilter$.asObservable(); }
 
   getCategoryEmoji(category: SaleCategory): string {
     return this.saleService.categories.find(c => c.value === category)?.emoji ?? '📦';
