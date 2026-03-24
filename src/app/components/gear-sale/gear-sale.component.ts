@@ -59,6 +59,7 @@ export class GearSaleComponent implements OnInit {
   venmoUsername: string;
   canSell = false;
   sellerToken = '';
+  showSaleInfo = false;
 
   activeSaleName$ = this.saleCatalogService.activeSale$.pipe(map(s => s.name));
 
