@@ -4,6 +4,8 @@ import { Observable } from 'rxjs';
 import { AppEvent, EventService } from '../../services/event.service';
 import { Sale } from '../../models/sale.model';
 import { SaleCatalogService } from '../../services/sale-catalog.service';
+import { ItemShowingEvent } from '../../models/item-showing.model';
+import { ItemShowingService } from '../../services/item-showing.service';
 
 @Component({
   selector: 'app-admin',
@@ -41,9 +43,27 @@ export class AdminComponent implements OnInit {
   editSaleName = '';
   editSaleDescription = '';
 
+  // Showings
+  editingShowingId: string | null = null;
+  deletingShowing: ItemShowingEvent | null = null;
+
+  newShowingSaleId = '';
+  newShowingDateTime = '';
+  newShowingLocation = '';
+  newShowingDetails = '';
+  newShowingContactName = '';
+  newShowingContactEmail = '';
+
+  editShowingDateTime = '';
+  editShowingLocation = '';
+  editShowingDetails = '';
+  editShowingContactName = '';
+  editShowingContactEmail = '';
+
   constructor(
     public eventService: EventService,
     public saleCatalogService: SaleCatalogService,
+    public itemShowingService: ItemShowingService,
     private router: Router,
     route: ActivatedRoute
   ) {
@@ -61,6 +81,7 @@ export class AdminComponent implements OnInit {
   ngOnInit(): void {
     this.eventService.loadOrCreateEvent();
     this.saleCatalogService.loadOrCreateSale();
+    this.itemShowingService.loadShowings();
   }
 
   // ── Events ──────────────────────────────────────────
@@ -160,5 +181,61 @@ export class AdminComponent implements OnInit {
     if (!this.deletingSale) return;
     await this.saleCatalogService.deleteSale(this.deletingSale.id);
     this.deletingSale = null;
+  }
+
+  // ── Showings ──────────────────────────────────────────
+
+  get isCreateShowingValid(): boolean {
+    return !!(this.newShowingSaleId && this.newShowingDateTime && this.newShowingLocation.trim() && this.newShowingContactName.trim());
+  }
+
+  async createShowing(): Promise<void> {
+    if (!this.isCreateShowingValid) return;
+    await this.itemShowingService.createShowing({
+      saleId: this.newShowingSaleId,
+      dateTime: this.newShowingDateTime,
+      location: this.newShowingLocation.trim(),
+      details: this.newShowingDetails.trim() || undefined,
+      contactName: this.newShowingContactName.trim(),
+      contactEmail: this.newShowingContactEmail.trim() || undefined,
+    });
+    this.newShowingSaleId = '';
+    this.newShowingDateTime = '';
+    this.newShowingLocation = '';
+    this.newShowingDetails = '';
+    this.newShowingContactName = '';
+    this.newShowingContactEmail = '';
+  }
+
+  startEditShowing(showing: ItemShowingEvent): void {
+    this.editingShowingId = showing.id;
+    this.editShowingDateTime = showing.dateTime;
+    this.editShowingLocation = showing.location;
+    this.editShowingDetails = showing.details ?? '';
+    this.editShowingContactName = showing.contactName;
+    this.editShowingContactEmail = showing.contactEmail ?? '';
+  }
+
+  cancelEditShowing(): void { this.editingShowingId = null; }
+
+  async saveEditShowing(): Promise<void> {
+    if (!this.editingShowingId) return;
+    await this.itemShowingService.updateShowing(this.editingShowingId, {
+      dateTime: this.editShowingDateTime,
+      location: this.editShowingLocation.trim(),
+      details: this.editShowingDetails.trim() || undefined,
+      contactName: this.editShowingContactName.trim(),
+      contactEmail: this.editShowingContactEmail.trim() || undefined,
+    });
+    this.editingShowingId = null;
+  }
+
+  deleteShowing(showing: ItemShowingEvent): void { this.deletingShowing = showing; }
+  cancelDeleteShowing(): void { this.deletingShowing = null; }
+
+  async confirmDeleteShowing(): Promise<void> {
+    if (!this.deletingShowing) return;
+    await this.itemShowingService.deleteShowing(this.deletingShowing.id);
+    this.deletingShowing = null;
   }
 }

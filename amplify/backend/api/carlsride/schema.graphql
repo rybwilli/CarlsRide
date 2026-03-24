@@ -62,6 +62,16 @@ type SaleItem @model {
   comparableSite: String
 }
 
+type ItemShowingEvent @model {
+  id: ID!
+  saleId: ID! @index(name: "bySale")
+  dateTime: String!
+  location: String!
+  details: String
+  contactName: String!
+  contactEmail: String
+}
+
 type RouteLink {
   linkType: String!
   url: String!

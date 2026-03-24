@@ -1143,6 +1143,18 @@ nav a {
   }
 }
 
+.admin-showing-sale-title {
+  font-size: 1rem;
+  font-weight: 700;
+  color: var(--color-text-muted);
+  text-transform: uppercase;
+  letter-spacing: 0.5px;
+  margin: 1rem 0 0.5rem;
+  display: flex;
+  align-items: center;
+  gap: 0.5rem;
+}
+
 .admin-active-badge {
   font-size: 0.8rem;
   font-weight: 600;

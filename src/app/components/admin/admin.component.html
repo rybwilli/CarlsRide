@@ -69,6 +69,117 @@
 
   <hr class="section-divider" />
 
+  <!-- ── Item Showings ── -->
+  <section class="admin-section">
+    <h2>Item Showings</h2>
+
+    <div *ngIf="allSales$ | async as sales">
+      <ng-container *ngFor="let sale of sales">
+        <h3 class="admin-showing-sale-title">{{ sale.name }} <span class="admin-active-badge" *ngIf="sale.isActive">✅ Active</span></h3>
+
+        <div *ngIf="itemShowingService.showingsForSale(sale.id).length === 0" class="empty-state" style="margin-bottom:0.75rem">
+          No showings scheduled for this sale.
+        </div>
+
+        <div *ngFor="let showing of itemShowingService.showingsForSale(sale.id)" class="admin-event-card">
+          <div *ngIf="editingShowingId !== showing.id">
+            <div class="admin-event-card__header">
+              <div>
+                <h3>{{ showing.dateTime | date:'medium' }}</h3>
+                <div class="admin-event-card__meta">
+                  📍 {{ showing.location }} &nbsp;·&nbsp; 👤 {{ showing.contactName }}
+                  <span *ngIf="showing.contactEmail"> &nbsp;·&nbsp; ✉️ {{ showing.contactEmail }}</span>
+                </div>
+                <p *ngIf="showing.details" class="admin-event-card__desc">{{ showing.details }}</p>
+              </div>
+            </div>
+            <div class="admin-event-card__actions">
+              <button class="btn-secondary btn-sm" (click)="startEditShowing(showing)">Edit</button>
+              <button class="btn-delete btn-sm" (click)="deleteShowing(showing)">Delete</button>
+            </div>
+          </div>
+
+          <!-- Inline edit -->
+          <div *ngIf="editingShowingId === showing.id" class="admin-edit-form">
+            <div class="form-row">
+              <div class="form-group">
+                <label>Date & Time</label>
+                <input type="datetime-local" [(ngModel)]="editShowingDateTime" />
+              </div>
+              <div class="form-group">
+                <label>Location</label>
+                <input type="text" [(ngModel)]="editShowingLocation" />
+              </div>
+            </div>
+            <div class="form-row">
+              <div class="form-group">
+                <label>Contact Name</label>
+                <input type="text" [(ngModel)]="editShowingContactName" />
+              </div>
+              <div class="form-group">
+                <label>Contact Email (optional)</label>
+                <input type="email" [(ngModel)]="editShowingContactEmail" />
+              </div>
+            </div>
+            <div class="form-group">
+              <label>Details (optional)</label>
+              <textarea [(ngModel)]="editShowingDetails" rows="2"></textarea>
+            </div>
+            <div class="form-actions">
+              <button class="btn-secondary" (click)="cancelEditShowing()">Cancel</button>
+              <button class="btn-primary" (click)="saveEditShowing()">Save</button>
+            </div>
+          </div>
+        </div>
+      </ng-container>
+    </div>
+  </section>
+
+  <hr class="section-divider" />
+
+  <!-- Create Showing -->
+  <section class="admin-section">
+    <h2>Add a Showing</h2>
+    <div class="form-card">
+      <div class="form-group">
+        <label>Sale</label>
+        <select [(ngModel)]="newShowingSaleId">
+          <option value="">— Select a Sale —</option>
+          <option *ngFor="let s of allSales$ | async" [value]="s.id">{{ s.name }}</option>
+        </select>
+      </div>
+      <div class="form-row">
+        <div class="form-group">
+          <label>Date & Time</label>
+          <input type="datetime-local" [(ngModel)]="newShowingDateTime" />
+        </div>
+        <div class="form-group">
+          <label>Location</label>
+          <input type="text" [(ngModel)]="newShowingLocation" placeholder="e.g. 4209 Branson St." />
+        </div>
+      </div>
+      <div class="form-row">
+        <div class="form-group">
+          <label>Contact Name</label>
+          <input type="text" [(ngModel)]="newShowingContactName" placeholder="Your name" />
+        </div>
+        <div class="form-group">
+          <label>Contact Email (optional)</label>
+          <input type="email" [(ngModel)]="newShowingContactEmail" placeholder="you@example.com" />
+        </div>
+      </div>
+      <div class="form-group">
+        <label>Details (optional)</label>
+        <textarea [(ngModel)]="newShowingDetails" rows="2" placeholder="Any additional info..."></textarea>
+      </div>
+      <div class="form-actions">
+        <button class="btn-primary" (click)="createShowing()" [disabled]="!isCreateShowingValid">Add Showing</button>
+      </div>
+    </div>
+  </section>
+
+  <hr class="section-divider" />
+
   <!-- ── Events ── -->
   <section class="admin-section">
     <h2>Events</h2>
@@ -170,6 +281,18 @@
       </div>
     </div>
   </section>
+</div>
+
+<!-- Delete showing modal -->
+<div class="modal-backdrop" *ngIf="deletingShowing" (click)="cancelDeleteShowing()">
+  <div class="modal" (click)="$event.stopPropagation()">
+    <h3>Delete this showing?</h3>
+    <p>{{ deletingShowing.dateTime | date:'medium' }} at {{ deletingShowing.location }}</p>
+    <div class="modal__actions">
+      <button class="btn-secondary" (click)="cancelDeleteShowing()">Cancel</button>
+      <button class="btn-delete" (click)="confirmDeleteShowing()">Yes, Delete</button>
+    </div>
+  </div>
 </div>
 
 <!-- Delete sale modal -->
