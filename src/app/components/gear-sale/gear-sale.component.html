@@ -5,7 +5,7 @@
       <div class="gear-sale-header__title-text">
         <h1>
           Gear Sale
-          <span class="gear-sale-header__sale-name" *ngIf="activeSaleName$ | async as name">— {{ name }}</span>
+          <span class="gear-sale-header__sale-name gear-sale-header__desc" [class.gear-sale-header__desc--visible]="showSaleInfo" *ngIf="activeSaleName$ | async as name">— {{ name }}</span>
           <button class="gear-sale-header__info-btn" (click)="showSaleInfo = !showSaleInfo" aria-label="Sale info">ℹ️</button>
         </h1>
         <!-- Full description: hidden on mobile, shown via info toggle -->
