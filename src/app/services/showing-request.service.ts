@@ -36,6 +36,12 @@ export class ShowingRequestService {
     ) ?? null;
   }
 
+  activeRequestsForItem(saleItemId: string): ShowingRequest[] {
+    return this.requestsSubject.value.filter(
+      r => r.saleItemId === saleItemId && (r.status === 'pending' || r.status === 'confirmed')
+    );
+  }
+
   async createRequest(input: Omit<ShowingRequest, 'id' | 'status'>): Promise<void> {
     const result: any = await client.graphql({
       query: `mutation CreateShowingRequest($input: CreateShowingRequestInput!) {

@@ -52,6 +52,13 @@
     </div>
 
     <div class="form-group">
+      <label class="checkbox-label">
+        <input type="checkbox" [(ngModel)]="allowMultipleSales" />
+        Allow Multiple Sales (item can be sold to more than one buyer)
+      </label>
+    </div>
+
+    <div class="form-group">
       <label>Photos (optional)</label>
       <input type="file" accept="image/*" multiple (change)="onImagesSelected($event)" />
     </div>

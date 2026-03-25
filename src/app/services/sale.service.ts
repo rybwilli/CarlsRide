@@ -6,7 +6,7 @@ import { generateClient } from 'aws-amplify/api';
 
 const client = generateClient();
 
-const SALE_FIELDS = `id saleId name description price category status seller images activities condition comparableSite`;
+const SALE_FIELDS = `id saleId name description price category status seller images activities condition comparableSite allowMultipleSales`;
 
 @Injectable({ providedIn: 'root' })
 export class SaleService {

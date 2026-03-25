@@ -22,6 +22,7 @@ export class GearEditComponent implements OnInit {
   comparableSite = '';
   condition: SaleCondition | '' = '';
   images: string[] = [];
+  allowMultipleSales = false;
 
   readonly activities: { value: SaleActivity; label: string }[] = [
     { value: 'road',       label: 'Road' },
@@ -66,6 +67,7 @@ export class GearEditComponent implements OnInit {
     this.comparableSite = item.comparableSite ?? '';
     this.condition = item.condition ?? '';
     this.images = item.images ? [...item.images] : [];
+    this.allowMultipleSales = item.allowMultipleSales ?? false;
   }
 
   get isValid(): boolean {
@@ -123,6 +125,7 @@ export class GearEditComponent implements OnInit {
       activities: this.selectedActivities.length ? [...this.selectedActivities] : undefined,
       condition: this.condition || undefined,
       comparableSite: this.comparableSite.trim() || undefined,
+      allowMultipleSales: this.allowMultipleSales || undefined,
     });
     this.router.navigate(['/gear'], { queryParams: { seller: this.sellerToken } });
   }

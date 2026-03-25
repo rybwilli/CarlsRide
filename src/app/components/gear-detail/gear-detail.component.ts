@@ -88,6 +88,11 @@ export class GearDetailComponent implements OnInit {
     return this.showingRequestService.activeRequestForItem(this.item.id);
   }
 
+  get existingRequestsForItem() {
+    if (!this.item) return [];
+    return this.showingRequestService.activeRequestsForItem(this.item.id);
+  }
+
   showingForRequest(showingEventId: string): ItemShowingEvent | null {
     return this.showings.find(s => s.id === showingEventId) ?? null;
   }
@@ -113,9 +118,11 @@ export class GearDetailComponent implements OnInit {
         contact: this.requestContact.trim(),
       });
 
-      // Move the item to pending and reflect locally
-      this.saleService.markPending(this.item.id);
-      this.item = { ...this.item, status: 'pending' };
+      // Only mark pending if the item doesn't allow multiple sales
+      if (!this.item.allowMultipleSales) {
+        this.saleService.markPending(this.item.id);
+        this.item = { ...this.item, status: 'pending' };
+      }
 
       // Store submitted data for read-only display
       this.submittedRequest = {

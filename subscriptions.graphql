@@ -254,6 +254,7 @@ subscription OnCreateSaleItem($filter: ModelSubscriptionSaleItemFilterInput) {
     activities
     condition
     comparableSite
+    allowMultipleSales
     createdAt
     updatedAt
     __typename
@@ -274,6 +275,7 @@ subscription OnUpdateSaleItem($filter: ModelSubscriptionSaleItemFilterInput) {
     activities
     condition
     comparableSite
+    allowMultipleSales
     createdAt
     updatedAt
     __typename
@@ -294,6 +296,7 @@ subscription OnDeleteSaleItem($filter: ModelSubscriptionSaleItemFilterInput) {
     activities
     condition
     comparableSite
+    allowMultipleSales
     createdAt
     updatedAt
     __typename

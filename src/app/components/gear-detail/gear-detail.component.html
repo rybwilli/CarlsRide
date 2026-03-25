@@ -98,13 +98,13 @@
           </ng-container>
         </div>
         <p class="gear-detail__request-pending-note">
-          Your request has been submitted and this item is now pending. We'll be in touch!
+          Your request has been submitted! We'll be in touch.
         </p>
       </div>
     </ng-container>
 
-    <!-- ② Item already pending (not submitted this session) -->
-    <ng-container *ngIf="!submittedRequest && item.status === 'pending'">
+    <!-- ② Item already pending, single-sale: show existing request read-only -->
+    <ng-container *ngIf="!submittedRequest && item.status === 'pending' && !item.allowMultipleSales">
       <div class="gear-detail__request-submitted">
         <ng-container *ngIf="existingRequestForItem as req">
           <div class="gear-detail__request-submitted__badge">
@@ -152,8 +152,50 @@
       </div>
     </ng-container>
 
-    <!-- ③ Item available: show the form -->
-    <ng-container *ngIf="!submittedRequest && item.status === 'available'">
+    <!-- ③ Allow multiple sales: show all existing requests above the form -->
+    <ng-container *ngIf="item.allowMultipleSales && existingRequestsForItem.length > 0">
+      <div class="gear-detail__multi-requests">
+        <h3 class="gear-detail__multi-requests__title">Current Requests</h3>
+        <div *ngFor="let req of existingRequestsForItem" class="gear-detail__request-submitted" style="margin-bottom: 1rem">
+          <div class="gear-detail__request-submitted__badge">
+            <span class="modal-request-row__status-badge modal-request-row__status-badge--{{ req.status }}">
+              {{ req.status | titlecase }}
+            </span>
+          </div>
+          <div class="gear-detail__showing-info">
+            <div class="gear-detail__showing-info-row">
+              <span class="gear-detail__meta-label">👤 Name:</span>
+              <span>{{ req.name }}</span>
+            </div>
+            <div class="gear-detail__showing-info-row">
+              <span class="gear-detail__meta-label">📞 Contact:</span>
+              <span>{{ req.contact }}</span>
+            </div>
+            <ng-container *ngIf="showingForRequest(req.showingEventId) as s">
+              <div class="gear-detail__showing-info-row">
+                <span class="gear-detail__meta-label">📅 Showing:</span>
+                <span>{{ s.dateTime | date:'EEE, MMM d, y h:mm a' }}</span>
+              </div>
+              <div class="gear-detail__showing-info-row">
+                <span class="gear-detail__meta-label">📍 Where:</span>
+                <span>{{ s.location }}</span>
+              </div>
+              <div *ngIf="s.details" class="gear-detail__showing-info-row">
+                <span class="gear-detail__meta-label">ℹ️ Details:</span>
+                <span>{{ s.details }}</span>
+              </div>
+              <div class="gear-detail__showing-info-row">
+                <span class="gear-detail__meta-label">👤 Organizer:</span>
+                <span>{{ s.contactName }}<span *ngIf="s.contactEmail"> — {{ s.contactEmail }}</span></span>
+              </div>
+            </ng-container>
+          </div>
+        </div>
+      </div>
+    </ng-container>
+
+    <!-- ④ Item available (or multi-sale): show the form -->
+    <ng-container *ngIf="!submittedRequest && (item.status === 'available' || item.allowMultipleSales)">
       <div *ngIf="futureShowings.length === 0" class="empty-state" style="margin-bottom: 1rem">
         No scheduled showings yet. Check back soon or contact the seller directly.
       </div>

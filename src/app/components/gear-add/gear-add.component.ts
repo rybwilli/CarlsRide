@@ -20,6 +20,7 @@ export class GearAddComponent {
   comparableSite = '';
   seller = '';
   images: string[] = [];
+  allowMultipleSales = false;
 
   readonly activities: { value: SaleActivity; label: string }[] = [
     { value: 'road',       label: 'Road' },
@@ -103,6 +104,7 @@ export class GearAddComponent {
       activities: this.selectedActivities.length ? [...this.selectedActivities] : undefined,
       condition: this.condition || undefined,
       comparableSite: this.comparableSite.trim() || undefined,
+      allowMultipleSales: this.allowMultipleSales || undefined,
     });
     this.router.navigate(['/gear'], { queryParams: { seller: this.sellerToken } });
   }

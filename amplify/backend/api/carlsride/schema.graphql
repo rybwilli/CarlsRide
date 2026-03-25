@@ -60,6 +60,7 @@ type SaleItem @model {
   activities: [String]
   condition: String
   comparableSite: String
+  allowMultipleSales: Boolean
 }
 
 type ItemShowingEvent @model {

@@ -1580,6 +1580,19 @@ nav a {
   }
 }
 
+.gear-detail__multi-requests {
+  margin-bottom: 1.5rem;
+
+  &__title {
+    font-size: 0.9rem;
+    font-weight: 700;
+    text-transform: uppercase;
+    letter-spacing: 0.5px;
+    color: var(--color-text-muted);
+    margin-bottom: 0.75rem;
+  }
+}
+
 .gear-detail__request-pending-note {
   margin-top: 0.75rem;
   font-size: 0.9rem;

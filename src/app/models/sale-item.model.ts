@@ -17,4 +17,5 @@ export interface SaleItem {
   activities?: SaleActivity[];
   condition?: SaleCondition;
   comparableSite?: string;
+  allowMultipleSales?: boolean;
 }
