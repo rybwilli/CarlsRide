@@ -1,7 +1,10 @@
 <div class="gear-detail-page" *ngIf="item">
   <div class="gear-detail__topbar">
     <button class="btn-back" (click)="goBack()">← Back to Gear Sale</button>
-    <button *ngIf="canSell" class="btn-secondary btn-sm" (click)="editItem()">Edit Listing</button>
+    <div *ngIf="canSell" class="gear-detail__topbar-actions">
+      <button class="btn-secondary btn-sm" (click)="editItem()">Edit Listing</button>
+      <button class="btn-delete btn-sm" (click)="showDeleteConfirm = true">Delete Listing</button>
+    </div>
   </div>
 
   <!-- Image gallery -->
@@ -254,6 +257,18 @@
       </div>
     </ng-container>
 
+  </div>
+</div>
+
+<!-- Delete listing confirmation modal -->
+<div class="modal-backdrop" *ngIf="showDeleteConfirm" (click)="showDeleteConfirm = false">
+  <div class="modal" (click)="$event.stopPropagation()">
+    <h3>Delete "{{ item?.name }}"?</h3>
+    <p>Are you sure? This listing will be permanently removed.</p>
+    <div class="modal__actions">
+      <button class="btn-secondary" (click)="showDeleteConfirm = false">Cancel</button>
+      <button class="btn-delete" (click)="deleteItem()">Yes, Delete</button>
+    </div>
   </div>
 </div>
 

@@ -66,6 +66,16 @@ export class SaleService {
     this.itemsSubject.next(this.itemsSubject.value.map(i => i.id === id ? { ...i, ...changes } : i));
   }
 
+  async deleteItem(id: string): Promise<void> {
+    await client.graphql({
+      query: `mutation DeleteSaleItem($input: DeleteSaleItemInput!) {
+        deleteSaleItem(input: $input) { id }
+      }`,
+      variables: { input: { id } }
+    });
+    this.itemsSubject.next(this.itemsSubject.value.filter(i => i.id !== id));
+  }
+
   getItem(id: string): SaleItem | undefined {
     return this.itemsSubject.value.find(i => i.id === id);
   }

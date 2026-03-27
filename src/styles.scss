@@ -827,6 +827,12 @@ nav a {
     margin-bottom: 1.25rem;
   }
 
+  &__topbar-actions {
+    display: flex;
+    gap: 0.5rem;
+    align-items: center;
+  }
+
   &__header {
     display: flex;
     justify-content: space-between;

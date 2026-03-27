@@ -29,6 +29,8 @@ export class GearDetailComponent implements OnInit {
   // After a successful submission, store the details for read-only display
   submittedRequest: { name: string; contact: string; showing: ItemShowingEvent | null } | null = null;
 
+  showDeleteConfirm = false;
+
   constructor(
     public saleService: SaleService,
     public itemShowingService: ItemShowingService,
@@ -68,6 +70,12 @@ export class GearDetailComponent implements OnInit {
 
   editItem(): void {
     this.router.navigate(['/gear', this.item!.id, 'edit'], { queryParams: { seller: this.sellerToken } });
+  }
+
+  async deleteItem(): Promise<void> {
+    if (!this.item) return;
+    await this.saleService.deleteItem(this.item.id);
+    this.goBack();
   }
 
   get isRequestValid(): boolean {

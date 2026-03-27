@@ -9,6 +9,7 @@ import { ItemShowingService } from '../../services/item-showing.service';
 import { ShowingRequest, ShowingRequestStatus } from '../../models/showing-request.model';
 import { ShowingRequestService } from '../../services/showing-request.service';
 import { SaleService } from '../../services/sale.service';
+import { SaleItem } from '../../models/sale-item.model';
 
 @Component({
   selector: 'app-admin',
@@ -64,6 +65,18 @@ export class AdminComponent implements OnInit {
   editShowingDetails = '';
   editShowingContactName = '';
   editShowingContactEmail = '';
+
+  // Sale Items
+  deletingItem: SaleItem | null = null;
+
+  deleteItem(item: SaleItem): void { this.deletingItem = item; }
+  cancelDeleteItem(): void { this.deletingItem = null; }
+
+  async confirmDeleteItem(): Promise<void> {
+    if (!this.deletingItem) return;
+    await this.saleService.deleteItem(this.deletingItem.id);
+    this.deletingItem = null;
+  }
 
   // Showing Requests
   deletingRequestId: string | null = null;
