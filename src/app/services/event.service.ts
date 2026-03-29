@@ -16,7 +16,7 @@ const FALLBACK_EVENT: AppEvent = {
   name: "Carl's Ride in a month",
   date: '2026-05-09',
   gatheringTime: '2:00 PM',
-  location: '4209 Branson St.',
+  location: '4320 France Ave. (tentative)',
   description: 'A memorial ride for Carl.',
 };
 

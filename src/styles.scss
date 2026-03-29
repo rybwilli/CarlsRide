@@ -666,6 +666,16 @@ nav a {
 }
 
 .gear-sale-page {
+  .gear-sale-notice {
+    background: #fff8e1;
+    border: 1px solid #f0c040;
+    border-radius: var(--radius);
+    padding: 0.6rem 1rem;
+    font-size: 0.9rem;
+    color: #7a5c00;
+    margin-bottom: 1rem;
+  }
+
   .gear-sale-header {
     display: flex;
     align-items: flex-start;
