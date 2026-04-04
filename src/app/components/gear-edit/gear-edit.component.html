@@ -86,9 +86,12 @@
       </div>
     </div>
 
+    <div *ngIf="submitError" class="gear-detail__request-error">{{ submitError }}</div>
     <div class="form-actions">
       <button class="btn-secondary" (click)="cancel()">Cancel</button>
-      <button class="btn-primary" (click)="submit()" [disabled]="!isValid">Save Changes</button>
+      <button class="btn-primary" (click)="submit()" [disabled]="!isValid || submitting">
+        {{ submitting ? 'Saving...' : 'Save Changes' }}
+      </button>
     </div>
   </div>
 </div>

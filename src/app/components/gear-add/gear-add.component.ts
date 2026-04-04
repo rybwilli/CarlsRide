@@ -2,6 +2,7 @@ import { Component } from '@angular/core';
 import { ActivatedRoute, Router } from '@angular/router';
 import { SaleActivity, SaleCategory, SaleCondition } from '../../models/sale-item.model';
 import { SaleService } from '../../services/sale.service';
+import { uploadData, getUrl } from 'aws-amplify/storage';
 
 @Component({
   selector: 'app-gear-add',
@@ -61,21 +62,27 @@ export class GearAddComponent {
   onImagesSelected(event: Event): void {
     const files = (event.target as HTMLInputElement).files;
     if (!files) return;
-    Array.from(files).forEach(file => this.compressAndAdd(file));
+    Array.from(files).forEach(file => this.compressAndUpload(file));
   }
 
-  private compressAndAdd(file: File): void {
+  private compressAndUpload(file: File): void {
     const reader = new FileReader();
     reader.onload = (e) => {
       const img = new Image();
-      img.onload = () => {
+      img.onload = async () => {
         const MAX = 800;
         const scale = Math.min(1, MAX / Math.max(img.width, img.height));
         const canvas = document.createElement('canvas');
         canvas.width = Math.round(img.width * scale);
         canvas.height = Math.round(img.height * scale);
         canvas.getContext('2d')!.drawImage(img, 0, 0, canvas.width, canvas.height);
-        this.images.push(canvas.toDataURL('image/jpeg', 0.7));
+        canvas.toBlob(async (blob) => {
+          if (!blob) return;
+          const key = `sale-items/${Date.now()}-${file.name}`;
+          await uploadData({ key, data: blob, options: { accessLevel: 'guest', contentType: 'image/jpeg' } }).result;
+          const { url } = await getUrl({ key, options: { accessLevel: 'guest' } });
+          this.images.push(url.toString());
+        }, 'image/jpeg', 0.7);
       };
       img.src = e.target!.result as string;
     };
@@ -96,23 +103,33 @@ export class GearAddComponent {
     return this.selectedActivities.includes(value);
   }
 
-  submit(): void {
+  submitError = '';
+  submitting = false;
+
+  async submit(): Promise<void> {
     if (!this.isValid || this.price === null) return;
-    this.saleService.addItem({
-      name: this.name.trim(),
-      description: this.description.trim(),
-      price: this.price,
-      category: this.category,
-      seller: this.seller.trim(),
-      images: this.images.length ? [...this.images] : undefined,
-      activities: this.selectedActivities.length ? [...this.selectedActivities] : undefined,
-      condition: this.condition || undefined,
-      comparableSite: this.comparableSite.trim() || undefined,
-      allowMultipleSales: this.allowMultipleSales || undefined,
-      highPrice: this.highPrice ?? undefined,
-      additionalListingUrl: this.additionalListingUrl.trim() || undefined,
-    });
-    this.router.navigate(['/gear'], { queryParams: { seller: this.sellerToken } });
+    this.submitting = true;
+    this.submitError = '';
+    try {
+      await this.saleService.addItem({
+        name: this.name.trim(),
+        description: this.description.trim(),
+        price: this.price,
+        category: this.category,
+        seller: this.seller.trim(),
+        images: this.images.length ? [...this.images] : undefined,
+        activities: this.selectedActivities.length ? [...this.selectedActivities] : undefined,
+        condition: this.condition || undefined,
+        comparableSite: this.comparableSite.trim() || undefined,
+        allowMultipleSales: this.allowMultipleSales || undefined,
+        highPrice: this.highPrice ?? undefined,
+        additionalListingUrl: this.additionalListingUrl.trim() || undefined,
+      });
+      this.router.navigate(['/gear'], { queryParams: { seller: this.sellerToken } });
+    } catch {
+      this.submitError = 'Failed to save item. Please try again.';
+      this.submitting = false;
+    }
   }
 
   cancel(): void {
