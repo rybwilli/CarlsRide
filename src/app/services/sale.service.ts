@@ -24,6 +24,7 @@ export class SaleService {
     { value: 'tools',       label: 'Tools',       emoji: '🛠️' },
     { value: 'helmets',     label: 'Helmets',     emoji: '⛑️' },
     { value: 'clothing',      label: 'Clothing',     emoji: '👕' },
+    { value: 'shoes',         label: 'Shoes',        emoji: '👟' },
     { value: 'tents',         label: 'Tents',        emoji: '⛺' },
     { value: 'outdoor gear',  label: 'Outdoor Gear', emoji: '🏕️' },
     { value: 'accessories',   label: 'Accessories',  emoji: '🎒' },
