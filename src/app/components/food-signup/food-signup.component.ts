@@ -34,7 +34,7 @@ export class FoodSignupComponent {
   addNotes = '';
 
   readonly categories: { value: FoodCategory; label: string; emoji: string }[] = [
-    { value: 'bbq',       label: 'BBQ',                  emoji: '🔥' },
+    { value: 'bbq',       label: 'BBQ and Mains',         emoji: '🔥' },
     { value: 'sides',     label: 'Sides',                emoji: '🥗' },
     { value: 'drinks',    label: 'Alcoholic Drinks',      emoji: '🍺' },
     { value: 'na-drinks', label: 'Non-Alcoholic Drinks',  emoji: '🥤' },
