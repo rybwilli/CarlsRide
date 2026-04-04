@@ -20,6 +20,8 @@ export class GearEditComponent implements OnInit {
   status: SaleItemStatus = 'available';
   selectedActivities: SaleActivity[] = [];
   comparableSite = '';
+  highPrice: number | null = null;
+  additionalListingUrl = '';
   condition: SaleCondition | '' = '';
   images: string[] = [];
   allowMultipleSales = false;
@@ -34,6 +36,8 @@ export class GearEditComponent implements OnInit {
     { value: 'kids',       label: 'Kids' },
     { value: 'ski',        label: 'Ski' },
     { value: 'skate',      label: 'Skate' },
+    { value: 'camping',    label: 'Camping' },
+    { value: 'winter',     label: 'Winter' },
     { value: 'general',    label: 'General' },
   ];
 
@@ -65,6 +69,8 @@ export class GearEditComponent implements OnInit {
     this.status = item.status;
     this.selectedActivities = item.activities ? [...item.activities] : [];
     this.comparableSite = item.comparableSite ?? '';
+    this.highPrice = item.highPrice ?? null;
+    this.additionalListingUrl = item.additionalListingUrl ?? '';
     this.condition = item.condition ?? '';
     this.images = item.images ? [...item.images] : [];
     this.allowMultipleSales = item.allowMultipleSales ?? false;
@@ -126,6 +132,8 @@ export class GearEditComponent implements OnInit {
       condition: this.condition || undefined,
       comparableSite: this.comparableSite.trim() || undefined,
       allowMultipleSales: this.allowMultipleSales || undefined,
+      highPrice: this.highPrice ?? undefined,
+      additionalListingUrl: this.additionalListingUrl.trim() || undefined,
     });
     this.router.navigate(['/gear'], { queryParams: { seller: this.sellerToken } });
   }

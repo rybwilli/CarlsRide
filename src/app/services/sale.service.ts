@@ -6,14 +6,14 @@ import { generateClient } from 'aws-amplify/api';
 
 const client = generateClient();
 
-const SALE_FIELDS = `id saleId name description price category status seller images activities condition comparableSite allowMultipleSales`;
+const SALE_FIELDS = `id saleId name description price category status seller images activities condition comparableSite allowMultipleSales highPrice additionalListingUrl`;
 
 @Injectable({ providedIn: 'root' })
 export class SaleService {
   private itemsSubject = new BehaviorSubject<SaleItem[]>([]);
   items$: Observable<SaleItem[]> = this.itemsSubject.asObservable();
 
-  readonly venmoUsername = 'Ryan-Williams-09432';
+  readonly venmoUsername = 'Lrladwig';
   readonly sellerToken = 'carlsride2026';
 
   readonly categories: { value: SaleCategory; label: string; emoji: string }[] = [
@@ -23,9 +23,11 @@ export class SaleService {
     { value: 'tires',       label: 'Tires',       emoji: '🏎️' },
     { value: 'tools',       label: 'Tools',       emoji: '🛠️' },
     { value: 'helmets',     label: 'Helmets',     emoji: '⛑️' },
-    { value: 'clothing',    label: 'Clothing',    emoji: '👕' },
-    { value: 'accessories', label: 'Accessories', emoji: '🎒' },
-    { value: 'other',       label: 'Other',       emoji: '📦' },
+    { value: 'clothing',      label: 'Clothing',     emoji: '👕' },
+    { value: 'tents',         label: 'Tents',        emoji: '⛺' },
+    { value: 'outdoor gear',  label: 'Outdoor Gear', emoji: '🏕️' },
+    { value: 'accessories',   label: 'Accessories',  emoji: '🎒' },
+    { value: 'other',         label: 'Other',        emoji: '📦' },
   ];
 
   constructor(private saleCatalogService: SaleCatalogService) {

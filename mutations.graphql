@@ -294,6 +294,8 @@ mutation CreateSaleItem(
     condition
     comparableSite
     allowMultipleSales
+    highPrice
+    additionalListingUrl
     createdAt
     updatedAt
     __typename
@@ -318,6 +320,8 @@ mutation UpdateSaleItem(
     condition
     comparableSite
     allowMultipleSales
+    highPrice
+    additionalListingUrl
     createdAt
     updatedAt
     __typename
@@ -342,6 +346,8 @@ mutation DeleteSaleItem(
     condition
     comparableSite
     allowMultipleSales
+    highPrice
+    additionalListingUrl
     createdAt
     updatedAt
     __typename

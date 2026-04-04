@@ -188,6 +188,8 @@ query GetSaleItem($id: ID!) {
     condition
     comparableSite
     allowMultipleSales
+    highPrice
+    additionalListingUrl
     createdAt
     updatedAt
     __typename
@@ -214,6 +216,8 @@ query ListSaleItems(
       condition
       comparableSite
       allowMultipleSales
+      highPrice
+      additionalListingUrl
       createdAt
       updatedAt
       __typename
@@ -392,6 +396,8 @@ query SaleItemsBySaleId(
       condition
       comparableSite
       allowMultipleSales
+      highPrice
+      additionalListingUrl
       createdAt
       updatedAt
       __typename

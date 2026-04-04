@@ -61,6 +61,8 @@ type SaleItem @model {
   condition: String
   comparableSite: String
   allowMultipleSales: Boolean
+  highPrice: Float
+  additionalListingUrl: String
 }
 
 type ItemShowingEvent @model {

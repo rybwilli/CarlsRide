@@ -26,7 +26,9 @@
       <div class="gear-detail__category">{{ getCategoryEmoji(item.category) }} {{ item.category }}</div>
       <h1>{{ item.name }}</h1>
     </div>
-    <div class="gear-detail__price">${{ item.price | number:'1.0-0' }}</div>
+    <div class="gear-detail__price">
+      ${{ item.price | number:'1.0-0' }}<ng-container *ngIf="item.highPrice"> – ${{ item.highPrice | number:'1.0-0' }}</ng-container>
+    </div>
   </div>
 
   <div class="gear-detail__status" *ngIf="item.status !== 'available'">
@@ -52,6 +54,10 @@
     <div *ngIf="item.comparableSite" class="gear-detail__meta-row">
       <span class="gear-detail__meta-label">Compare: </span>
       <a [href]="item.comparableSite" target="_blank" rel="noopener noreferrer" class="gear-detail__compare-link">View comparable item ↗</a>
+    </div>
+    <div *ngIf="item.additionalListingUrl" class="gear-detail__meta-row">
+      <span class="gear-detail__meta-label">Also listed: </span>
+      <a [href]="item.additionalListingUrl" target="_blank" rel="noopener noreferrer" class="gear-detail__compare-link">View listing ↗</a>
     </div>
   </div>
 

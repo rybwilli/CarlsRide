@@ -37,6 +37,8 @@ export class GearSaleComponent implements OnInit {
     { value: 'kids',       label: 'Kids' },
     { value: 'ski',        label: 'Ski' },
     { value: 'skate',      label: 'Skate' },
+    { value: 'camping',    label: 'Camping' },
+    { value: 'winter',     label: 'Winter' },
     { value: 'general',    label: 'General' },
   ];
 

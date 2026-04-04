@@ -255,6 +255,8 @@ subscription OnCreateSaleItem($filter: ModelSubscriptionSaleItemFilterInput) {
     condition
     comparableSite
     allowMultipleSales
+    highPrice
+    additionalListingUrl
     createdAt
     updatedAt
     __typename
@@ -276,6 +278,8 @@ subscription OnUpdateSaleItem($filter: ModelSubscriptionSaleItemFilterInput) {
     condition
     comparableSite
     allowMultipleSales
+    highPrice
+    additionalListingUrl
     createdAt
     updatedAt
     __typename
@@ -297,6 +301,8 @@ subscription OnDeleteSaleItem($filter: ModelSubscriptionSaleItemFilterInput) {
     condition
     comparableSite
     allowMultipleSales
+    highPrice
+    additionalListingUrl
     createdAt
     updatedAt
     __typename
