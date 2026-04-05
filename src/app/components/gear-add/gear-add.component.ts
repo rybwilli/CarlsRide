@@ -4,7 +4,6 @@ import { SaleActivity, SaleCategory, SaleCondition } from '../../models/sale-ite
 import { SaleService } from '../../services/sale.service';
 import { SaleCatalogService } from '../../services/sale-catalog.service';
 import { Sale } from '../../models/sale.model';
-import { uploadData, getUrl } from 'aws-amplify/storage';
 
 @Component({
   selector: 'app-gear-add',
@@ -77,27 +76,21 @@ export class GearAddComponent {
   onImagesSelected(event: Event): void {
     const files = (event.target as HTMLInputElement).files;
     if (!files) return;
-    Array.from(files).forEach(file => this.compressAndUpload(file));
+    Array.from(files).forEach(file => this.compressAndAdd(file));
   }
 
-  private compressAndUpload(file: File): void {
+  private compressAndAdd(file: File): void {
     const reader = new FileReader();
     reader.onload = (e) => {
       const img = new Image();
-      img.onload = async () => {
+      img.onload = () => {
         const MAX = 800;
         const scale = Math.min(1, MAX / Math.max(img.width, img.height));
         const canvas = document.createElement('canvas');
         canvas.width = Math.round(img.width * scale);
         canvas.height = Math.round(img.height * scale);
         canvas.getContext('2d')!.drawImage(img, 0, 0, canvas.width, canvas.height);
-        canvas.toBlob(async (blob) => {
-          if (!blob) return;
-          const key = `sale-items/${Date.now()}-${file.name}`;
-          await uploadData({ key, data: blob, options: { accessLevel: 'guest', contentType: 'image/jpeg' } }).result;
-          const { url } = await getUrl({ key, options: { accessLevel: 'guest' } });
-          this.images.push(url.toString());
-        }, 'image/jpeg', 0.7);
+        this.images.push(canvas.toDataURL('image/jpeg', 0.7));
       };
       img.src = e.target!.result as string;
     };
