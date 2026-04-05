@@ -12,11 +12,14 @@ const SALE_FIELDS = `id saleId name description price category status seller ima
 export class SaleService {
   private itemsSubject = new BehaviorSubject<SaleItem[]>([]);
   items$: Observable<SaleItem[]> = this.itemsSubject.asObservable();
+  loading = true;
 
   categoryFilter: SaleCategory | 'all' = 'all';
   activityFilter: SaleActivity | 'all' = 'all';
   conditionFilter: SaleCondition | 'all' = 'all';
   statusFilter: SaleItemStatus | 'all' = 'all';
+  searchText = '';
+  priceSort: 'asc' | 'desc' = 'desc';
 
   readonly venmoUsername = 'Lrladwig';
   readonly sellerToken = 'carlsride2026';
@@ -52,6 +55,8 @@ export class SaleService {
       this.itemsSubject.next([...saleItems, ...unlinkedItems]);
     } catch (e) {
       console.warn('Could not load sale items from API.', e);
+    } finally {
+      this.loading = false;
     }
   }
 

@@ -18,8 +18,11 @@ export class GearSaleComponent implements OnInit {
   private activityFilter$!: BehaviorSubject<SaleActivity | 'all'>;
   private conditionFilter$!: BehaviorSubject<SaleCondition | 'all'>;
   private statusFilter$!: BehaviorSubject<SaleItemStatus | 'all'>;
+  private searchText$!: BehaviorSubject<string>;
+  private priceSort$!: BehaviorSubject<'asc' | 'desc'>;
 
   filtered$!: Observable<SaleItem[]>;
+  totalItems$!: Observable<number>;
 
   categoryFilters = [
     { value: 'all' as SaleCategory | 'all', label: 'All', emoji: '🛒' },
@@ -90,6 +93,10 @@ export class GearSaleComponent implements OnInit {
     this.activityFilter$ = new BehaviorSubject<SaleActivity | 'all'>(saleService.activityFilter);
     this.conditionFilter$ = new BehaviorSubject<SaleCondition | 'all'>(saleService.conditionFilter);
     this.statusFilter$ = new BehaviorSubject<SaleItemStatus | 'all'>(saleService.statusFilter);
+    this.searchText$ = new BehaviorSubject<string>(saleService.searchText);
+    this.priceSort$ = new BehaviorSubject<'asc' | 'desc'>(saleService.priceSort);
+
+    this.totalItems$ = saleService.items$.pipe(map(items => items.length));
 
     this.filtered$ = combineLatest([
       saleService.items$,
@@ -97,14 +104,22 @@ export class GearSaleComponent implements OnInit {
       this.activityFilter$,
       this.conditionFilter$,
       this.statusFilter$,
+      this.searchText$,
+      this.priceSort$,
     ]).pipe(
-      map(([items, cat, act, cond, status]) => items.filter(i => {
-        if (cat !== 'all' && i.category !== cat) return false;
-        if (act !== 'all' && !i.activities?.includes(act)) return false;
-        if (cond !== 'all' && i.condition !== cond) return false;
-        if (status !== 'all' && i.status !== status) return false;
-        return true;
-      }))
+      map(([items, cat, act, cond, status, search, sort]) => {
+        const q = search.trim().toLowerCase();
+        let result = items.filter(i => {
+          if (cat !== 'all' && i.category !== cat) return false;
+          if (act !== 'all' && !i.activities?.includes(act)) return false;
+          if (cond !== 'all' && i.condition !== cond) return false;
+          if (status !== 'all' && i.status !== status) return false;
+          if (q && !i.name.toLowerCase().includes(q) && !i.description.toLowerCase().includes(q) && !i.seller.toLowerCase().includes(q)) return false;
+          return true;
+        });
+        result = [...result].sort((a, b) => sort === 'asc' ? a.price - b.price : b.price - a.price);
+        return result;
+      })
     );
   }
 
@@ -138,11 +153,15 @@ export class GearSaleComponent implements OnInit {
   setActivityFilter(f: SaleActivity | 'all'): void { this.activityFilter$.next(f); this.saleService.activityFilter = f; }
   setConditionFilter(f: SaleCondition | 'all'): void { this.conditionFilter$.next(f); this.saleService.conditionFilter = f; }
   setStatusFilter(f: SaleItemStatus | 'all'): void { this.statusFilter$.next(f); this.saleService.statusFilter = f; }
+  setSearchText(v: string): void { this.searchText$.next(v); this.saleService.searchText = v; }
+  setPriceSort(v: 'asc' | 'desc'): void { this.priceSort$.next(v); this.saleService.priceSort = v; }
 
   get activeCategoryFilter$() { return this.categoryFilter$.asObservable(); }
   get activeActivityFilter$() { return this.activityFilter$.asObservable(); }
   get activeConditionFilter$() { return this.conditionFilter$.asObservable(); }
   get activeStatusFilter$() { return this.statusFilter$.asObservable(); }
+  get activeSearchText$() { return this.searchText$.asObservable(); }
+  get activePriceSort$() { return this.priceSort$.asObservable(); }
 
   getCategoryEmoji(category: SaleCategory): string {
     return this.saleService.categories.find(c => c.value === category)?.emoji ?? '📦';

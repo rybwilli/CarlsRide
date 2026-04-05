@@ -72,7 +72,30 @@
     </aside>
 
   <div class="gear-sale-content">
-  <div class="gear-grid" *ngIf="filtered$ | async as items">
+
+  <div class="gear-toolbar">
+    <input
+      class="gear-toolbar__search"
+      type="search"
+      placeholder="Search items..."
+      [value]="activeSearchText$ | async"
+      (input)="setSearchText($any($event.target).value)" />
+    <div class="gear-toolbar__sort">
+      <span class="gear-toolbar__sort-label">Price:</span>
+      <button class="gear-filter-btn" [class.gear-filter-btn--active]="(activePriceSort$ | async) === 'desc'" (click)="setPriceSort('desc')">High → Low</button>
+      <button class="gear-filter-btn" [class.gear-filter-btn--active]="(activePriceSort$ | async) === 'asc'"  (click)="setPriceSort('asc')">Low → High</button>
+    </div>
+    <span class="gear-toolbar__count" *ngIf="!saleService.loading">
+      Items: <strong>{{ (filtered$ | async)?.length ?? 0 }}</strong> / <strong>{{ totalItems$ | async }}</strong>
+    </span>
+  </div>
+
+  <div *ngIf="saleService.loading" class="gear-loading">
+    <img class="gear-loading__wheel" src="assets/mtb-wheel.jpg" alt="Loading..." />
+    <p class="gear-loading__text">Loading gear...</p>
+  </div>
+
+  <div class="gear-grid" *ngIf="!saleService.loading && (filtered$ | async) as items">
     <div *ngFor="let item of items" class="gear-card" (click)="viewItem(item.id)" [class.gear-card--pending]="item.status === 'pending'" [class.gear-card--sold]="item.status === 'sold'">
       <div class="gear-card__status-badge" *ngIf="item.status !== 'available'">
         {{ item.status === 'pending' ? '⏳ Pending' : '✅ Sold' }}
@@ -89,7 +112,7 @@
           <span *ngIf="item.condition" class="gear-card__badge">{{ item.condition | titlecase }}</span>
         </div>
         <div class="gear-card__footer">
-          <span class="gear-card__price">${{ item.price | number:'1.0-0' }}</span>
+          <span class="gear-card__price">${{ item.price | number:'1.0-0' }}<ng-container *ngIf="item.highPrice"> – ${{ item.highPrice | number:'1.0-0' }}</ng-container></span>
           <span class="gear-card__seller">by {{ item.seller }}</span>
         </div>
       </div>
