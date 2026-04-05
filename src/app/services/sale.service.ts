@@ -1,6 +1,6 @@
 import { Injectable } from '@angular/core';
 import { BehaviorSubject, Observable } from 'rxjs';
-import { SaleItem, SaleCategory } from '../models/sale-item.model';
+import { SaleItem, SaleCategory, SaleActivity, SaleCondition, SaleItemStatus } from '../models/sale-item.model';
 import { SaleCatalogService } from './sale-catalog.service';
 import { generateClient } from 'aws-amplify/api';
 
@@ -12,6 +12,11 @@ const SALE_FIELDS = `id saleId name description price category status seller ima
 export class SaleService {
   private itemsSubject = new BehaviorSubject<SaleItem[]>([]);
   items$: Observable<SaleItem[]> = this.itemsSubject.asObservable();
+
+  categoryFilter: SaleCategory | 'all' = 'all';
+  activityFilter: SaleActivity | 'all' = 'all';
+  conditionFilter: SaleCondition | 'all' = 'all';
+  statusFilter: SaleItemStatus | 'all' = 'all';
 
   readonly venmoUsername = 'Lrladwig';
   readonly sellerToken = 'carlsride2026';
@@ -36,18 +41,60 @@ export class SaleService {
   }
 
   private async loadItems(): Promise<void> {
+    const saleId = this.saleCatalogService.activeSale?.id;
+    if (!saleId) return;
     try {
-      const result: any = await client.graphql({
-        query: `query ListSaleItems { listSaleItems { items { ${SALE_FIELDS} } } }`
-      });
-      this.itemsSubject.next(result.data.listSaleItems.items);
+      // Fetch items for the active sale and items with no saleId in parallel
+      const [saleItems, unlinkedItems] = await Promise.all([
+        this.fetchBySaleId(saleId),
+        this.fetchUnlinkedItems(),
+      ]);
+      this.itemsSubject.next([...saleItems, ...unlinkedItems]);
     } catch (e) {
       console.warn('Could not load sale items from API.', e);
     }
   }
 
+  private async fetchBySaleId(saleId: string): Promise<SaleItem[]> {
+    let items: SaleItem[] = [];
+    let nextToken: string | null = null;
+    do {
+      const result: any = await client.graphql({
+        query: `query SaleItemsBySaleId($saleId: ID!, $nextToken: String) {
+          saleItemsBySaleId(saleId: $saleId, limit: 1000, nextToken: $nextToken) {
+            items { ${SALE_FIELDS} }
+            nextToken
+          }
+        }`,
+        variables: { saleId, nextToken }
+      });
+      items = items.concat(result.data.saleItemsBySaleId.items);
+      nextToken = result.data.saleItemsBySaleId.nextToken;
+    } while (nextToken);
+    return items;
+  }
+
+  private async fetchUnlinkedItems(): Promise<SaleItem[]> {
+    let items: SaleItem[] = [];
+    let nextToken: string | null = null;
+    do {
+      const result: any = await client.graphql({
+        query: `query ListUnlinkedSaleItems($nextToken: String) {
+          listSaleItems(filter: { saleId: { attributeExists: false } }, limit: 1000, nextToken: $nextToken) {
+            items { ${SALE_FIELDS} }
+            nextToken
+          }
+        }`,
+        variables: { nextToken }
+      });
+      items = items.concat(result.data.listSaleItems.items);
+      nextToken = result.data.listSaleItems.nextToken;
+    } while (nextToken);
+    return items;
+  }
+
   async addItem(item: Omit<SaleItem, 'id' | 'status'>): Promise<SaleItem> {
-    const input = { ...item, status: 'available', saleId: this.saleCatalogService.activeSale.id };
+    const input = { ...item, status: 'available', saleId: item.saleId ?? this.saleCatalogService.activeSale.id };
     const result: any = await client.graphql({
       query: `mutation CreateSaleItem($input: CreateSaleItemInput!) {
         createSaleItem(input: $input) { ${SALE_FIELDS} }

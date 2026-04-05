@@ -1,0 +1,14 @@
+{
+  "resourceName": "Images",
+  "policyUUID": "30df36a5",
+  "bucketName": "carlsridestorage",
+  "storageAccess": "authAndGuest",
+  "guestAccess": [
+    "CREATE_AND_UPDATE"
+  ],
+  "authAccess": [
+    "DELETE"
+  ],
+  "triggerFunction": "NONE",
+  "groupAccess": {}
+}

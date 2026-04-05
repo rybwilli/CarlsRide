@@ -27,6 +27,13 @@
         </select>
       </div>
     </div>
+    <div class="form-group" *ngIf="sales.length > 1">
+      <label>Sale</label>
+      <select [(ngModel)]="selectedSaleId">
+        <option *ngFor="let s of sales" [value]="s.id">{{ s.name }}</option>
+      </select>
+    </div>
+
     <div class="form-group">
       <label>Item Name</label>
       <input type="text" [(ngModel)]="name" placeholder="e.g. Trek Domane 56cm" />
@@ -89,9 +96,22 @@
     <div *ngIf="submitError" class="gear-detail__request-error">{{ submitError }}</div>
     <div class="form-actions">
       <button class="btn-secondary" (click)="cancel()">Cancel</button>
+      <button class="btn-delete" (click)="showDeleteConfirm = true" type="button">Delete Listing</button>
       <button class="btn-primary" (click)="submit()" [disabled]="!isValid || submitting">
         {{ submitting ? 'Saving...' : 'Save Changes' }}
       </button>
+    </div>
+  </div>
+</div>
+
+<!-- Delete confirmation modal -->
+<div class="modal-backdrop" *ngIf="showDeleteConfirm" (click)="showDeleteConfirm = false">
+  <div class="modal" (click)="$event.stopPropagation()">
+    <h3>Delete "{{ name }}"?</h3>
+    <p>Are you sure? This listing will be permanently removed.</p>
+    <div class="modal__actions">
+      <button class="btn-secondary" (click)="showDeleteConfirm = false">Cancel</button>
+      <button class="btn-delete" (click)="deleteItem()">Yes, Delete</button>
     </div>
   </div>
 </div>

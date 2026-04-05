@@ -14,12 +14,12 @@ import { ShowingRequestService } from '../../services/showing-request.service';
   styleUrls: ['./gear-sale.component.scss'],
 })
 export class GearSaleComponent implements OnInit {
-  private categoryFilter$ = new BehaviorSubject<SaleCategory | 'all'>('all');
-  private activityFilter$ = new BehaviorSubject<SaleActivity | 'all'>('all');
-  private conditionFilter$ = new BehaviorSubject<SaleCondition | 'all'>('all');
-  private statusFilter$ = new BehaviorSubject<SaleItemStatus | 'all'>('all');
+  private categoryFilter$!: BehaviorSubject<SaleCategory | 'all'>;
+  private activityFilter$!: BehaviorSubject<SaleActivity | 'all'>;
+  private conditionFilter$!: BehaviorSubject<SaleCondition | 'all'>;
+  private statusFilter$!: BehaviorSubject<SaleItemStatus | 'all'>;
 
-  filtered$: Observable<SaleItem[]>;
+  filtered$!: Observable<SaleItem[]>;
 
   categoryFilters = [
     { value: 'all' as SaleCategory | 'all', label: 'All', emoji: '🛒' },
@@ -86,6 +86,11 @@ export class GearSaleComponent implements OnInit {
     this.sellerToken = route.snapshot.queryParamMap.get('seller') ?? '';
     this.canSell = this.sellerToken === saleService.sellerToken;
 
+    this.categoryFilter$ = new BehaviorSubject<SaleCategory | 'all'>(saleService.categoryFilter);
+    this.activityFilter$ = new BehaviorSubject<SaleActivity | 'all'>(saleService.activityFilter);
+    this.conditionFilter$ = new BehaviorSubject<SaleCondition | 'all'>(saleService.conditionFilter);
+    this.statusFilter$ = new BehaviorSubject<SaleItemStatus | 'all'>(saleService.statusFilter);
+
     this.filtered$ = combineLatest([
       saleService.items$,
       this.categoryFilter$,
@@ -129,10 +134,10 @@ export class GearSaleComponent implements OnInit {
     return this.showings.filter(s => this.inventoryRequestsForShowing(s.id).length > 0);
   }
 
-  setCategoryFilter(f: SaleCategory | 'all'): void { this.categoryFilter$.next(f); }
-  setActivityFilter(f: SaleActivity | 'all'): void { this.activityFilter$.next(f); }
-  setConditionFilter(f: SaleCondition | 'all'): void { this.conditionFilter$.next(f); }
-  setStatusFilter(f: SaleItemStatus | 'all'): void { this.statusFilter$.next(f); }
+  setCategoryFilter(f: SaleCategory | 'all'): void { this.categoryFilter$.next(f); this.saleService.categoryFilter = f; }
+  setActivityFilter(f: SaleActivity | 'all'): void { this.activityFilter$.next(f); this.saleService.activityFilter = f; }
+  setConditionFilter(f: SaleCondition | 'all'): void { this.conditionFilter$.next(f); this.saleService.conditionFilter = f; }
+  setStatusFilter(f: SaleItemStatus | 'all'): void { this.statusFilter$.next(f); this.saleService.statusFilter = f; }
 
   get activeCategoryFilter$() { return this.categoryFilter$.asObservable(); }
   get activeActivityFilter$() { return this.activityFilter$.asObservable(); }

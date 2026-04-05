@@ -2,6 +2,8 @@ import { Component, OnInit } from '@angular/core';
 import { ActivatedRoute, Router } from '@angular/router';
 import { SaleActivity, SaleCategory, SaleCondition, SaleItemStatus } from '../../models/sale-item.model';
 import { SaleService } from '../../services/sale.service';
+import { SaleCatalogService } from '../../services/sale-catalog.service';
+import { Sale } from '../../models/sale.model';
 import { uploadData, getUrl } from 'aws-amplify/storage';
 
 @Component({
@@ -12,6 +14,8 @@ import { uploadData, getUrl } from 'aws-amplify/storage';
 export class GearEditComponent implements OnInit {
   itemId = '';
   sellerToken = '';
+  sales: Sale[] = [];
+  selectedSaleId = '';
 
   name = '';
   description = '';
@@ -50,7 +54,14 @@ export class GearEditComponent implements OnInit {
     { value: 'poor',      label: 'Poor' },
   ];
 
-  constructor(public saleService: SaleService, private router: Router, private route: ActivatedRoute) {}
+  constructor(
+    public saleService: SaleService,
+    public saleCatalogService: SaleCatalogService,
+    private router: Router,
+    private route: ActivatedRoute
+  ) {
+    saleCatalogService.allSales$.subscribe(sales => { this.sales = sales; });
+  }
 
   ngOnInit(): void {
     this.sellerToken = this.route.snapshot.queryParamMap.get('seller') ?? '';
@@ -75,6 +86,7 @@ export class GearEditComponent implements OnInit {
     this.condition = item.condition ?? '';
     this.images = item.images ? [...item.images] : [];
     this.allowMultipleSales = item.allowMultipleSales ?? false;
+    this.selectedSaleId = item.saleId ?? this.saleCatalogService.activeSale?.id ?? '';
   }
 
   get isValid(): boolean {
@@ -127,6 +139,12 @@ export class GearEditComponent implements OnInit {
 
   submitError = '';
   submitting = false;
+  showDeleteConfirm = false;
+
+  async deleteItem(): Promise<void> {
+    await this.saleService.deleteItem(this.itemId);
+    this.router.navigate(['/gear'], { queryParams: { seller: this.sellerToken } });
+  }
 
   async submit(): Promise<void> {
     if (!this.isValid || this.price === null) return;
@@ -134,6 +152,7 @@ export class GearEditComponent implements OnInit {
     this.submitError = '';
     try {
       await this.saleService.updateItem(this.itemId, {
+        saleId: this.selectedSaleId || undefined,
         name: this.name.trim(),
         description: this.description.trim(),
         price: this.price,

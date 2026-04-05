@@ -2,6 +2,8 @@ import { Component } from '@angular/core';
 import { ActivatedRoute, Router } from '@angular/router';
 import { SaleActivity, SaleCategory, SaleCondition } from '../../models/sale-item.model';
 import { SaleService } from '../../services/sale.service';
+import { SaleCatalogService } from '../../services/sale-catalog.service';
+import { Sale } from '../../models/sale.model';
 import { uploadData, getUrl } from 'aws-amplify/storage';
 
 @Component({
@@ -11,6 +13,8 @@ import { uploadData, getUrl } from 'aws-amplify/storage';
 })
 export class GearAddComponent {
   sellerToken: string;
+  sales: Sale[] = [];
+  selectedSaleId = '';
 
   name = '';
   description = '';
@@ -48,11 +52,22 @@ export class GearAddComponent {
     { value: 'poor',      label: 'Poor' },
   ];
 
-  constructor(public saleService: SaleService, private router: Router, route: ActivatedRoute) {
+  constructor(
+    public saleService: SaleService,
+    public saleCatalogService: SaleCatalogService,
+    private router: Router,
+    route: ActivatedRoute
+  ) {
     this.sellerToken = route.snapshot.queryParamMap.get('seller') ?? '';
     if (this.sellerToken !== saleService.sellerToken) {
       this.router.navigate(['/gear']);
     }
+    saleCatalogService.allSales$.subscribe(sales => {
+      this.sales = sales;
+      if (!this.selectedSaleId) {
+        this.selectedSaleId = saleCatalogService.activeSale?.id ?? '';
+      }
+    });
   }
 
   get isValid(): boolean {
@@ -112,6 +127,7 @@ export class GearAddComponent {
     this.submitError = '';
     try {
       await this.saleService.addItem({
+        saleId: this.selectedSaleId || this.saleCatalogService.activeSale?.id,
         name: this.name.trim(),
         description: this.description.trim(),
         price: this.price,
