@@ -107,6 +107,7 @@
         <div class="gear-card__category">{{ getCategoryEmoji(item.category) }} {{ item.category }}</div>
         <h2 class="gear-card__name">{{ item.name }}</h2>
         <p class="gear-card__description">{{ item.description }}</p>
+        <a *ngIf="item.comparableSite" [href]="item.comparableSite" target="_blank" rel="noopener noreferrer" class="gear-card__compare-link" (click)="$event.stopPropagation()">View comparable item ↗</a>
         <div class="gear-card__badges">
           <span *ngFor="let a of item.activities" class="gear-card__badge">{{ a | titlecase }}</span>
           <span *ngIf="item.condition" class="gear-card__badge">{{ item.condition | titlecase }}</span>
