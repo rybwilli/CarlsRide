@@ -320,9 +320,22 @@
                   <div class="admin-request-row"
                        [class.admin-request-row--confirmed]="req.status === 'confirmed'"
                        [class.admin-request-row--dismissed]="req.status === 'dismissed'">
+                    <ng-container *ngIf="req.saleItemId && saleService.getItem(req.saleItemId) as saleItem">
+                      <img *ngIf="saleItem.images?.length"
+                           [src]="saleItem.images![0]"
+                           [alt]="saleItem.name"
+                           class="modal-request-row__thumb" />
+                      <div *ngIf="!saleItem.images?.length" class="modal-request-row__thumb modal-request-row__thumb--placeholder">📦</div>
+                    </ng-container>
                     <div class="admin-request-row__info">
                       <strong>{{ req.name }}</strong>
                       <span class="admin-request-row__contact">{{ req.contact }}</span>
+                      <ng-container *ngIf="req.saleItemId && saleService.getItem(req.saleItemId) as saleItem">
+                        <span class="modal-request-row__item">
+                          {{ saleItem.name }}
+                          <span class="modal-request-row__item-cat">{{ saleItem.category | titlecase }}</span>
+                        </span>
+                      </ng-container>
                     </div>
                     <div class="admin-request-row__status">
                       <span class="modal-request-row__status-badge modal-request-row__status-badge--{{ req.status }}">
