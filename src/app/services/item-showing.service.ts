@@ -23,7 +23,9 @@ export class ItemShowingService {
   }
 
   showingsForSale(saleId: string): ItemShowingEvent[] {
-    return this.showingsSubject.value.filter(s => s.saleId === saleId);
+    return this.showingsSubject.value
+      .filter(s => s.saleId === saleId)
+      .sort((a, b) => new Date(a.dateTime).getTime() - new Date(b.dateTime).getTime());
   }
 
   async createShowing(input: Omit<ItemShowingEvent, 'id'>): Promise<void> {

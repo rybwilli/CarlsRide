@@ -69,32 +69,6 @@
 
   <hr class="section-divider" />
 
-  <!-- ── Sale Items ── -->
-  <section class="admin-section">
-    <h2>Sale Items</h2>
-
-    <div *ngIf="saleService.items$ | async as items">
-      <div *ngIf="items.length === 0" class="empty-state">No sale items yet.</div>
-
-      <div *ngFor="let item of items" class="admin-event-card">
-        <div class="admin-event-card__header">
-          <div>
-            <h3>{{ item.name }}</h3>
-            <div class="admin-event-card__meta">
-              {{ item.category | titlecase }} &nbsp;·&nbsp; ${{ item.price }} &nbsp;·&nbsp; {{ item.status | titlecase }}
-              <span *ngIf="item.seller"> &nbsp;·&nbsp; 👤 {{ item.seller }}</span>
-            </div>
-            <p *ngIf="item.description" class="admin-event-card__desc">{{ item.description }}</p>
-          </div>
-        </div>
-        <div class="admin-event-card__actions">
-          <button class="btn-delete btn-sm" (click)="deleteItem(item)">Delete</button>
-        </div>
-      </div>
-    </div>
-  </section>
-
-  <hr class="section-divider" />
 
   <!-- ── Item Showings ── -->
   <section class="admin-section">
