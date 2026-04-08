@@ -1831,6 +1831,11 @@ nav a {
   white-space: nowrap;
 
   &--met { color: var(--color-easy); }
+
+}
+
+.food-item__servings {
+  @media (max-width: 600px) { display: none; }
 }
 
 .btn-remove {
