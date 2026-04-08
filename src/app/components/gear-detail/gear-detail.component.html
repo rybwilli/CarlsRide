@@ -7,6 +7,9 @@
     </div>
   </div>
 
+  <div class="gear-detail__layout">
+  <div class="gear-detail__main">
+
   <!-- Image gallery -->
   <div class="gear-gallery" *ngIf="item.images?.length">
     <img class="gear-gallery__main" [src]="item.images![selectedImage]" [alt]="item.name" />
@@ -66,6 +69,8 @@
     <button *ngIf="canSell && item.status === 'pending'" class="btn-primary" (click)="saleService.markSold(item.id)">Mark Sold</button>
     <button *ngIf="canSell && item.status === 'pending'" class="btn-secondary" (click)="saleService.markAvailable(item.id)">Unmark Pending</button>
   </div>
+
+  </div> <!-- /.gear-detail__main -->
 
   <!-- ── Request a Showing ── -->
   <div class="gear-detail__request-section">
@@ -263,7 +268,8 @@
       </div>
     </ng-container>
 
-  </div>
+  </div> <!-- /.gear-detail__request-section -->
+  </div> <!-- /.gear-detail__layout -->
 </div>
 
 <!-- Delete listing confirmation modal -->

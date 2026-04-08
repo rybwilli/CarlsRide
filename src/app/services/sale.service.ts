@@ -21,7 +21,7 @@ export class SaleService {
   searchText = '';
   priceSort: 'asc' | 'desc' = 'desc';
 
-  readonly venmoUsername = 'Lrladwig';
+  readonly venmoUsername = 'Ryan-Williams-09432';
   readonly sellerToken = 'carlsride2026';
 
   readonly categories: { value: SaleCategory; label: string; emoji: string }[] = [

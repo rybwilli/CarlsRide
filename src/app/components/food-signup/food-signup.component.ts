@@ -54,8 +54,8 @@ export class FoodSignupComponent {
           totalServings: items
             .filter(i => i.category === c.value)
             .reduce((sum, i) => sum + (i.servings ?? 0), 0),
-          minMultiplier: c.value === 'bbq' ? 3 : 2,
-          maxMultiplier: c.value === 'bbq' ? 4 : 3,
+          minMultiplier: c.value === 'bbq' ? 5 : 3,
+          maxMultiplier: c.value === 'bbq' ? 6 : 4,
         }));
 
         return { sections, attendees };
