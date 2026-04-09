@@ -101,7 +101,7 @@
         {{ item.status === 'pending' ? '⏳ Pending' : '✅ Sold' }}
       </div>
       <div class="gear-card__image" *ngIf="item.images?.length">
-        <img [src]="item.images![0]" [alt]="item.name" />
+        <img [src]="item.images![getImageIndex(item.id)]" [alt]="item.name" />
       </div>
       <div class="gear-card__body">
         <div class="gear-card__category">{{ getCategoryEmoji(item.category) }} {{ item.category }}</div>

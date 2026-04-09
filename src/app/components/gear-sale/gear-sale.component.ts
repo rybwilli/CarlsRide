@@ -1,4 +1,4 @@
-import { Component, OnInit } from '@angular/core';
+import { Component, OnInit, OnDestroy } from '@angular/core';
 import { ActivatedRoute, Router } from '@angular/router';
 import { Observable, combineLatest, map, BehaviorSubject } from 'rxjs';
 import { SaleItem, SaleActivity, SaleCategory, SaleCondition, SaleItemStatus } from '../../models/sale-item.model';
@@ -13,7 +13,10 @@ import { ShowingRequestService } from '../../services/showing-request.service';
   templateUrl: './gear-sale.component.html',
   styleUrls: ['./gear-sale.component.scss'],
 })
-export class GearSaleComponent implements OnInit {
+export class GearSaleComponent implements OnInit, OnDestroy {
+  imageIndexes = new Map<string, number>();
+  private imageTimers = new Map<string, ReturnType<typeof setTimeout>>();
+
   private categoryFilter$!: BehaviorSubject<SaleCategory | 'all'>;
   private activityFilter$!: BehaviorSubject<SaleActivity | 'all'>;
   private conditionFilter$!: BehaviorSubject<SaleCondition | 'all'>;
@@ -98,6 +101,12 @@ export class GearSaleComponent implements OnInit {
 
     this.totalItems$ = saleService.items$.pipe(map(items => items.length));
 
+    saleService.items$.subscribe(items => {
+      this.imageTimers.forEach(t => clearTimeout(t));
+      this.imageTimers.clear();
+      items.filter(i => (i.images?.length ?? 0) > 1).forEach(i => this.scheduleNextImage(i.id, i.images!));
+    });
+
     this.filtered$ = combineLatest([
       saleService.items$,
       this.categoryFilter$,
@@ -162,6 +171,24 @@ export class GearSaleComponent implements OnInit {
   get activeStatusFilter$() { return this.statusFilter$.asObservable(); }
   get activeSearchText$() { return this.searchText$.asObservable(); }
   get activePriceSort$() { return this.priceSort$.asObservable(); }
+
+  private scheduleNextImage(id: string, images: string[]): void {
+    const delay = (3 + Math.random() * 3) * 1000;
+    const timer = setTimeout(() => {
+      const current = this.imageIndexes.get(id) ?? 0;
+      this.imageIndexes.set(id, (current + 1) % images.length);
+      this.scheduleNextImage(id, images);
+    }, delay);
+    this.imageTimers.set(id, timer);
+  }
+
+  getImageIndex(id: string): number {
+    return this.imageIndexes.get(id) ?? 0;
+  }
+
+  ngOnDestroy(): void {
+    this.imageTimers.forEach(t => clearTimeout(t));
+  }
 
   getCategoryEmoji(category: SaleCategory): string {
     return this.saleService.categories.find(c => c.value === category)?.emoji ?? '📦';
