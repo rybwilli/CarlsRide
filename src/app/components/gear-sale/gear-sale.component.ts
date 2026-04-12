@@ -75,6 +75,7 @@ export class GearSaleComponent implements OnInit, OnDestroy {
   showings: ItemShowingEvent[] = [];
   showInventoryModal = false;
   inventoryModalStep: 'list' | 'form' | 'confirm' | 'success' = 'list';
+  expandedShowingIds = new Set<string>();
   inventoryRequestName = '';
   inventoryRequestContact = '';
   inventoryRequestShowingEventId = '';
@@ -146,7 +147,20 @@ export class GearSaleComponent implements OnInit, OnDestroy {
 
   inventoryRequestsForShowing(showingEventId: string) {
     return this.showingRequestService.requestsForShowing(showingEventId)
-      .filter(r => !r.saleItemId && (r.status === 'pending' || r.status === 'confirmed'));
+      .filter(r => r.status === 'pending' || r.status === 'confirmed');
+  }
+
+  toggleRequestsExpanded(showingId: string): void {
+    if (this.expandedShowingIds.has(showingId)) {
+      this.expandedShowingIds.delete(showingId);
+    } else {
+      this.expandedShowingIds.add(showingId);
+    }
+  }
+
+  itemNameForRequest(saleItemId: string | undefined): string {
+    if (!saleItemId) return '';
+    return this.saleService.getItem(saleItemId)?.name ?? '';
   }
 
   get futureShowings() {

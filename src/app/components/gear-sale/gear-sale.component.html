@@ -157,14 +157,21 @@
             <div class="inventory-modal-showing__contact">👤 {{ s.contactName }}<span *ngIf="s.contactEmail"> — {{ s.contactEmail }}</span></div>
           </div>
 
-          <div class="inventory-modal-showing__requests" *ngIf="inventoryRequestsForShowing(s.id).length > 0">
-            <div *ngFor="let req of inventoryRequestsForShowing(s.id)" class="inventory-modal-showing__request-row">
-              <span class="inventory-modal-showing__req-name">{{ req.name }}</span>
-              <span class="modal-request-row__status-badge modal-request-row__status-badge--{{ req.status }}">
-                {{ req.status | titlecase }}
-              </span>
+          <ng-container *ngIf="inventoryRequestsForShowing(s.id) as reqs">
+            <button *ngIf="reqs.length > 0" class="inventory-modal-showing__requests-toggle" (click)="toggleRequestsExpanded(s.id)">
+              {{ reqs.length }} request{{ reqs.length === 1 ? '' : 's' }} {{ expandedShowingIds.has(s.id) ? '▲' : '▼' }}
+            </button>
+            <div *ngIf="reqs.length > 0 && expandedShowingIds.has(s.id)" class="inventory-modal-showing__requests">
+              <div *ngFor="let req of reqs" class="inventory-modal-showing__request-row">
+                <span class="inventory-modal-showing__req-name">
+                  {{ req.name }}<ng-container *ngIf="req.saleItemId"> — {{ itemNameForRequest(req.saleItemId) }}</ng-container>
+                </span>
+                <span class="modal-request-row__status-badge modal-request-row__status-badge--{{ req.status }}">
+                  {{ req.status | titlecase }}
+                </span>
+              </div>
             </div>
-          </div>
+          </ng-container>
 
           <div class="inventory-modal-showing__actions">
             <button class="btn-primary btn-sm" (click)="startInventoryRequest(s.id)">+ Request This Showing</button>
