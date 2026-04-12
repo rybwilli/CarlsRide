@@ -118,8 +118,8 @@
         </div>
       </div>
       <div class="gear-card__actions" (click)="$event.stopPropagation()">
-        <button *ngIf="item.status === 'available'" class="btn-primary btn-sm" (click)="viewItem(item.id)">
-          View more pictures and details
+        <button *ngIf="item.status === 'available' || item.status === 'pending'" class="btn-primary btn-sm" (click)="viewItem(item.id)">
+          View details
         </button>
         <button *ngIf="canSell && item.status === 'available'" class="btn-secondary btn-sm" (click)="saleService.markPending(item.id)">Mark Pending</button>
         <button *ngIf="canSell && item.status === 'pending'" class="btn-primary btn-sm" (click)="saleService.markSold(item.id)">Mark Sold</button>

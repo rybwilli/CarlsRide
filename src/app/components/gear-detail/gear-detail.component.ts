@@ -30,6 +30,7 @@ export class GearDetailComponent implements OnInit {
   submittedRequest: { name: string; contact: string; showing: ItemShowingEvent | null } | null = null;
 
   showDeleteConfirm = false;
+  showVenmoWarning = false;
 
   constructor(
     public saleService: SaleService,
@@ -112,6 +113,19 @@ export class GearDetailComponent implements OnInit {
 
   cancelSubmitConfirm(): void {
     this.showConfirmPopup = false;
+  }
+
+  openVenmoWarning(): void {
+    this.showVenmoWarning = true;
+  }
+
+  confirmVenmo(): void {
+    this.showVenmoWarning = false;
+    window.open(this.saleService.getVenmoUrl(this.item!), '_blank', 'noopener,noreferrer');
+  }
+
+  cancelVenmoWarning(): void {
+    this.showVenmoWarning = false;
   }
 
   async submitRequest(): Promise<void> {

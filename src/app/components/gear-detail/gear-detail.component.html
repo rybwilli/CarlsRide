@@ -163,6 +163,9 @@
         <p class="gear-detail__request-pending-note">
           This item has a pending showing request. Contact the seller if you're still interested.
         </p>
+        <div class="form-actions">
+          <button class="btn-venmo" (click)="openVenmoWarning()">💸 Pay with Venmo</button>
+        </div>
       </div>
     </ng-container>
 
@@ -256,14 +259,20 @@
         <div *ngIf="requestError" class="gear-detail__request-error">{{ requestError }}</div>
         <div class="form-actions">
           <button class="btn-primary" (click)="openSubmitConfirm()" [disabled]="!isRequestValid">
-            Submit Request
+            Request Pickup: Mark Item as Pending
           </button>
-          <a [href]="saleService.getVenmoUrl(item)"
-             target="_blank"
-             rel="noopener noreferrer"
-             class="btn-venmo">
-            💸 Pay with Venmo
-          </a>
+          <ng-container *ngIf="item.status !== 'available'">
+            <button *ngIf="item.status === 'pending'" class="btn-venmo" (click)="openVenmoWarning()">
+              💸 Pay with Venmo
+            </button>
+            <a *ngIf="item.status !== 'pending'"
+               [href]="saleService.getVenmoUrl(item)"
+               target="_blank"
+               rel="noopener noreferrer"
+               class="btn-venmo">
+              💸 Pay with Venmo
+            </a>
+          </ng-container>
         </div>
       </div>
     </ng-container>
@@ -284,11 +293,24 @@
   </div>
 </div>
 
+<!-- Venmo warning popup for pending items -->
+<div class="modal-backdrop" *ngIf="showVenmoWarning" (click)="cancelVenmoWarning()">
+  <div class="modal" (click)="$event.stopPropagation()">
+    <p>Please make sure you have claimed the item or are certain you requested the item pickup before paying.</p>
+    <p>Additionally, unless you are feeling generous, please only pay once. Thanks!</p>
+    <div class="modal__actions">
+      <button class="btn-secondary" (click)="cancelVenmoWarning()">Cancel</button>
+      <button class="btn-primary" (click)="confirmVenmo()">Pay with Venmo</button>
+    </div>
+  </div>
+</div>
+
 <!-- Submit request confirmation popup -->
 <div class="modal-backdrop" *ngIf="showConfirmPopup" (click)="cancelSubmitConfirm()">
   <div class="modal" (click)="$event.stopPropagation()">
-    <h3>Submit Showing Request?</h3>
+    <h3>Request showing or pickup and mark item as pending?</h3>
     <p>Check back before your showing to make sure your request is confirmed.</p>
+    <p>After pickup, click on the pending listing to pay via Venmo.</p>
     <div class="modal__actions">
       <button class="btn-secondary" (click)="cancelSubmitConfirm()">Cancel</button>
       <button class="btn-primary" (click)="submitRequest()">Submit</button>
