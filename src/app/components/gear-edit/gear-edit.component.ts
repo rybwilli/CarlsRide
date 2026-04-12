@@ -1,4 +1,5 @@
-import { Component, OnInit } from '@angular/core';
+import { Component, OnInit, OnDestroy } from '@angular/core';
+import { Subscription } from 'rxjs';
 import { ActivatedRoute, Router } from '@angular/router';
 import { SaleActivity, SaleCategory, SaleCondition, SaleItemStatus } from '../../models/sale-item.model';
 import { SaleService } from '../../services/sale.service';
@@ -10,7 +11,8 @@ import { Sale } from '../../models/sale.model';
   templateUrl: './gear-edit.component.html',
   styleUrls: ['./gear-edit.component.scss'],
 })
-export class GearEditComponent implements OnInit {
+export class GearEditComponent implements OnInit, OnDestroy {
+  private itemSub?: Subscription;
   itemId = '';
   sellerToken = '';
   sales: Sale[] = [];
@@ -69,23 +71,31 @@ export class GearEditComponent implements OnInit {
       return;
     }
     this.itemId = this.route.snapshot.paramMap.get('id') ?? '';
-    const item = this.saleService.getItem(this.itemId);
-    if (!item) { this.router.navigate(['/gear']); return; }
 
-    this.name = item.name;
-    this.description = item.description;
-    this.price = item.price;
-    this.category = item.category;
-    this.seller = item.seller;
-    this.status = item.status;
-    this.selectedActivities = item.activities ? [...item.activities] : [];
-    this.comparableSite = item.comparableSite ?? '';
-    this.highPrice = item.highPrice ?? null;
-    this.additionalListingUrl = item.additionalListingUrl ?? '';
-    this.condition = item.condition ?? '';
-    this.images = item.images ? [...item.images] : [];
-    this.allowMultipleSales = item.allowMultipleSales ?? false;
-    this.selectedSaleId = item.saleId ?? this.saleCatalogService.activeSale?.id ?? '';
+    this.itemSub = this.saleService.items$.subscribe(items => {
+      if (!items.length && this.saleService.loading) return;
+      const item = items.find(i => i.id === this.itemId);
+      if (!item) { this.router.navigate(['/gear']); return; }
+
+      this.name = item.name;
+      this.description = item.description;
+      this.price = item.price;
+      this.category = item.category;
+      this.seller = item.seller;
+      this.status = item.status;
+      this.selectedActivities = item.activities ? [...item.activities] : [];
+      this.comparableSite = item.comparableSite ?? '';
+      this.highPrice = item.highPrice ?? null;
+      this.additionalListingUrl = item.additionalListingUrl ?? '';
+      this.condition = item.condition ?? '';
+      this.images = item.images ? [...item.images] : [];
+      this.allowMultipleSales = item.allowMultipleSales ?? false;
+      this.selectedSaleId = item.saleId ?? this.saleCatalogService.activeSale?.id ?? '';
+    });
+  }
+
+  ngOnDestroy(): void {
+    this.itemSub?.unsubscribe();
   }
 
   get isValid(): boolean {
