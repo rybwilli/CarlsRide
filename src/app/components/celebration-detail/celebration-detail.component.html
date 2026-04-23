@@ -35,7 +35,10 @@
   <hr class="section-divider" />
 
   <div class="ride-detail__join" *ngIf="!joined">
-    <h3>I'll be there!</h3>
+    <div class="join-header">
+      <h3>I'll be there!</h3>
+      <a routerLink="/food" class="food-reminder">🍔 Don't forget to sign up for food &amp; drinks</a>
+    </div>
     <div class="form-group">
       <label for="addName">Your name *</label>
       <input id="addName" type="text" [(ngModel)]="addName" placeholder="Full name" />
