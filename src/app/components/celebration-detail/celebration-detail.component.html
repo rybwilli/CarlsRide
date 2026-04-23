@@ -1,0 +1,63 @@
+<div class="ride-detail-page">
+  <div class="ride-detail__topbar">
+    <button class="btn-back" (click)="goBack()">← Back to Rides</button>
+  </div>
+
+  <div class="ride-detail__header">
+    <h1>🎉 Come to the Celebration</h1>
+  </div>
+
+  <p class="ride-detail__description">
+    All rides end at the party — sign up so we know you're coming!
+  </p>
+
+  <div class="ride-detail__riders">
+    <h3>
+      Attendees
+      <span *ngIf="totalAttendees$ | async as total">
+        &mdash; {{ total }} {{ total === 1 ? 'person' : 'people' }} total
+      </span>
+    </h3>
+    <ul>
+      <li *ngFor="let a of attendees$ | async" class="rider-row">
+        <span class="rider-name">{{ a.name }}</span>
+        <span *ngIf="a.email" class="rider-email">{{ a.email }}</span>
+        <span *ngIf="a.contact" class="rider-email">{{ a.contact }}</span>
+        <span *ngIf="a.additionalPeople" class="rider-guests">+{{ a.additionalPeople }} guest{{ a.additionalPeople !== 1 ? 's' : '' }}</span>
+        <button class="btn-remove" (click)="remove(a.id)" title="Remove">✕</button>
+      </li>
+      <li *ngIf="(attendees$ | async)?.length === 0" class="rider-row">
+        No one yet — be the first!
+      </li>
+    </ul>
+  </div>
+
+  <hr class="section-divider" />
+
+  <div class="ride-detail__join" *ngIf="!joined">
+    <h3>I'll be there!</h3>
+    <div class="form-group">
+      <label for="addName">Your name *</label>
+      <input id="addName" type="text" [(ngModel)]="addName" placeholder="Full name" />
+    </div>
+    <div class="form-group">
+      <label for="addAdditional">Additional guests</label>
+      <input id="addAdditional" type="number" [(ngModel)]="addAdditionalPeople" min="0" placeholder="0" />
+    </div>
+    <div class="form-group">
+      <label for="addEmail">Email (optional)</label>
+      <input id="addEmail" type="email" [(ngModel)]="addEmail" placeholder="you@example.com" />
+    </div>
+    <div class="form-group">
+      <label for="addContact">Contact / phone (optional)</label>
+      <input id="addContact" type="text" [(ngModel)]="addContact" placeholder="555-867-5309" />
+    </div>
+    <button class="btn-primary" (click)="submit()" [disabled]="!isValid || submitting">
+      {{ submitting ? 'Adding...' : 'Count me in!' }}
+    </button>
+  </div>
+
+  <div class="join-success" *ngIf="joined">
+    🎊 You're on the list! See you there.
+  </div>
+</div>

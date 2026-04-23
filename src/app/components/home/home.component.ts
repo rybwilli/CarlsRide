@@ -1,7 +1,9 @@
-import { Component } from '@angular/core';
+import { Component, OnInit } from '@angular/core';
 import { combineLatest, map, Observable } from 'rxjs';
 import { RideService } from '../../services/ride.service';
 import { FoodService } from '../../services/food.service';
+import { EventAttendeeService } from '../../services/event-attendee.service';
+import { EventService } from '../../services/event.service';
 
 interface Stats {
   riders: number;
@@ -15,20 +17,31 @@ interface Stats {
   templateUrl: './home.component.html',
   styleUrls: ['./home.component.scss']
 })
-export class HomeComponent {
+export class HomeComponent implements OnInit {
   stats$: Observable<Stats>;
   bbqLocation: string;
 
-  constructor(rideService: RideService, foodService: FoodService) {
+  constructor(
+    rideService: RideService,
+    foodService: FoodService,
+    private eventAttendeeService: EventAttendeeService,
+    private eventService: EventService,
+  ) {
     this.bbqLocation = rideService.bbqLocation;
-    this.stats$ = combineLatest([rideService.rides$, foodService.items$]).pipe(
-      map(([rides, items]) => {
+    this.stats$ = combineLatest([rideService.rides$, foodService.items$, eventAttendeeService.attendees$]).pipe(
+      map(([rides, items, eventAttendees]) => {
         const allRiders = rides.flatMap(r => r.riders);
         const riders = allRiders.length;
-        const attendees = allRiders.reduce((sum, r) => sum + 1 + (r.additionalGuests ?? 0), 0);
+        const riderAttendees = allRiders.reduce((sum, r) => sum + 1 + (r.additionalGuests ?? 0), 0);
+        const celebrationAttendees = eventAttendees.reduce((sum, a) => sum + 1 + (a.additionalPeople ?? 0), 0);
+        const attendees = riderAttendees + celebrationAttendees;
         const contributors = new Set(items.map(i => i.broughtBy)).size;
         return { riders, attendees, rides: rides.length, contributors };
       })
     );
+  }
+
+  ngOnInit(): void {
+    this.eventAttendeeService.loadAttendees(this.eventService.currentEvent.id);
   }
 }

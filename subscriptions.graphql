@@ -16,6 +16,10 @@ subscription OnCreateEvent($filter: ModelSubscriptionEventFilterInput) {
       nextToken
       __typename
     }
+    attendees {
+      nextToken
+      __typename
+    }
     createdAt
     updatedAt
     __typename
@@ -35,6 +39,10 @@ subscription OnUpdateEvent($filter: ModelSubscriptionEventFilterInput) {
       __typename
     }
     foodItems {
+      nextToken
+      __typename
+    }
+    attendees {
       nextToken
       __typename
     }
@@ -60,6 +68,58 @@ subscription OnDeleteEvent($filter: ModelSubscriptionEventFilterInput) {
       nextToken
       __typename
     }
+    attendees {
+      nextToken
+      __typename
+    }
+    createdAt
+    updatedAt
+    __typename
+  }
+}
+
+subscription OnCreateEventAttendee(
+  $filter: ModelSubscriptionEventAttendeeFilterInput
+) {
+  onCreateEventAttendee(filter: $filter) {
+    id
+    eventId
+    name
+    additionalPeople
+    email
+    contact
+    createdAt
+    updatedAt
+    __typename
+  }
+}
+
+subscription OnUpdateEventAttendee(
+  $filter: ModelSubscriptionEventAttendeeFilterInput
+) {
+  onUpdateEventAttendee(filter: $filter) {
+    id
+    eventId
+    name
+    additionalPeople
+    email
+    contact
+    createdAt
+    updatedAt
+    __typename
+  }
+}
+
+subscription OnDeleteEventAttendee(
+  $filter: ModelSubscriptionEventAttendeeFilterInput
+) {
+  onDeleteEventAttendee(filter: $filter) {
+    id
+    eventId
+    name
+    additionalPeople
+    email
+    contact
     createdAt
     updatedAt
     __typename

@@ -11,6 +11,16 @@ type Event @model {
   description: String
   rides: [Ride] @hasMany(indexName: "byEvent", fields: ["id"])
   foodItems: [FoodItem] @hasMany(indexName: "byEvent", fields: ["id"])
+  attendees: [EventAttendee] @hasMany(indexName: "byEventAttendee", fields: ["id"])
+}
+
+type EventAttendee @model {
+  id: ID!
+  eventId: ID! @index(name: "byEventAttendee")
+  name: String!
+  additionalPeople: Int!
+  email: String
+  contact: String
 }
 
 type Ride @model {

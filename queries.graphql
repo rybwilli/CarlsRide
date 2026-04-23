@@ -16,6 +16,10 @@ query GetEvent($id: ID!) {
       nextToken
       __typename
     }
+    attendees {
+      nextToken
+      __typename
+    }
     createdAt
     updatedAt
     __typename
@@ -35,6 +39,42 @@ query ListEvents(
       gatheringTime
       location
       description
+      createdAt
+      updatedAt
+      __typename
+    }
+    nextToken
+    __typename
+  }
+}
+
+query GetEventAttendee($id: ID!) {
+  getEventAttendee(id: $id) {
+    id
+    eventId
+    name
+    additionalPeople
+    email
+    contact
+    createdAt
+    updatedAt
+    __typename
+  }
+}
+
+query ListEventAttendees(
+  $filter: ModelEventAttendeeFilterInput
+  $limit: Int
+  $nextToken: String
+) {
+  listEventAttendees(filter: $filter, limit: $limit, nextToken: $nextToken) {
+    items {
+      id
+      eventId
+      name
+      additionalPeople
+      email
+      contact
       createdAt
       updatedAt
       __typename
@@ -292,6 +332,36 @@ query ListShowingRequests(
       name
       contact
       status
+      createdAt
+      updatedAt
+      __typename
+    }
+    nextToken
+    __typename
+  }
+}
+
+query EventAttendeesByEventId(
+  $eventId: ID!
+  $sortDirection: ModelSortDirection
+  $filter: ModelEventAttendeeFilterInput
+  $limit: Int
+  $nextToken: String
+) {
+  eventAttendeesByEventId(
+    eventId: $eventId
+    sortDirection: $sortDirection
+    filter: $filter
+    limit: $limit
+    nextToken: $nextToken
+  ) {
+    items {
+      id
+      eventId
+      name
+      additionalPeople
+      email
+      contact
       createdAt
       updatedAt
       __typename

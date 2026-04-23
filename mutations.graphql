@@ -19,6 +19,10 @@ mutation CreateEvent(
       nextToken
       __typename
     }
+    attendees {
+      nextToken
+      __typename
+    }
     createdAt
     updatedAt
     __typename
@@ -41,6 +45,10 @@ mutation UpdateEvent(
       __typename
     }
     foodItems {
+      nextToken
+      __typename
+    }
+    attendees {
       nextToken
       __typename
     }
@@ -69,6 +77,61 @@ mutation DeleteEvent(
       nextToken
       __typename
     }
+    attendees {
+      nextToken
+      __typename
+    }
+    createdAt
+    updatedAt
+    __typename
+  }
+}
+
+mutation CreateEventAttendee(
+  $input: CreateEventAttendeeInput!
+  $condition: ModelEventAttendeeConditionInput
+) {
+  createEventAttendee(input: $input, condition: $condition) {
+    id
+    eventId
+    name
+    additionalPeople
+    email
+    contact
+    createdAt
+    updatedAt
+    __typename
+  }
+}
+
+mutation UpdateEventAttendee(
+  $input: UpdateEventAttendeeInput!
+  $condition: ModelEventAttendeeConditionInput
+) {
+  updateEventAttendee(input: $input, condition: $condition) {
+    id
+    eventId
+    name
+    additionalPeople
+    email
+    contact
+    createdAt
+    updatedAt
+    __typename
+  }
+}
+
+mutation DeleteEventAttendee(
+  $input: DeleteEventAttendeeInput!
+  $condition: ModelEventAttendeeConditionInput
+) {
+  deleteEventAttendee(input: $input, condition: $condition) {
+    id
+    eventId
+    name
+    additionalPeople
+    email
+    contact
     createdAt
     updatedAt
     __typename

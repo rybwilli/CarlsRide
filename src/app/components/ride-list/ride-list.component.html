@@ -56,5 +56,25 @@
     <div *ngIf="rides.length === 0" class="empty-state">
       No rides yet. Be the first to add one!
     </div>
+
+    <div class="ride-card celebration-tile" (click)="goCelebration()">
+      <div class="ride-card__header">
+        <h2>🎉 Come to the Celebration</h2>
+        <span class="badge badge--easy" *ngIf="totalAttendees$ | async as total">
+          {{ total }} {{ total === 1 ? 'person' : 'people' }}
+        </span>
+      </div>
+      <p class="ride-card__description">
+        All rides end at the party — sign up so we know you're coming!
+      </p>
+      <div class="ride-card__meta" *ngIf="attendees$ | async as attendees">
+        <span><strong>Attendees ({{ attendees.length }})</strong></span>
+        <div class="ride-card__riders" *ngIf="attendees.length">
+          <span *ngFor="let a of attendees" class="ride-card__rider-chip">
+            {{ a.name }}{{ a.additionalPeople ? ' +' + a.additionalPeople : '' }}
+          </span>
+        </div>
+      </div>
+    </div>
   </div>
 </div>
