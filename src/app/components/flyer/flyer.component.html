@@ -1,0 +1,44 @@
+<div class="flyer-controls no-print">
+  <button class="btn-primary" (click)="print()">🖨️ Print Flyer</button>
+</div>
+
+<div class="flyer" *ngIf="event$ | async as event">
+  <div class="flyer__top">
+    <img src="assets/carls-ride-logo.png" alt="Carl's Ride" class="flyer__logo" />
+    <div class="flyer__qr">
+      <img src="assets/qrcode.png" alt="QR Code" class="flyer__qr-img" />
+      <p class="flyer__qr-label">Ride &nbsp;/&nbsp; Celebrate &nbsp;/&nbsp; Shop</p>
+      <ul class="flyer__tagline-list">
+        <li>Join a ride</li>
+        <li>Come celebrate</li>
+        <li>Get sweet gear</li>
+        <li>Join for Carl</li>
+        <li>Join for community</li>
+      </ul>
+    </div>
+  </div>
+
+  <div class="flyer__body">
+    <div class="flyer__details">
+      <div class="flyer__details-rows">
+        <div class="flyer__detail-row">
+          <span class="flyer__detail-label">Date</span>
+          <span class="flyer__detail-value">{{ event.date | date:'EEEE, MMMM d, yyyy' }}</span>
+        </div>
+        <div class="flyer__detail-row">
+          <span class="flyer__detail-label">Rides</span>
+          <span class="flyer__detail-value">Ride your bike with friends to end at {{ event.gatheringTime }}</span>
+        </div>
+        <div class="flyer__detail-row">
+          <span class="flyer__detail-label">Gathering</span>
+          <span class="flyer__detail-value">{{ event.gatheringTime }} at {{ event.location }}</span>
+        </div>
+        <div class="flyer__detail-row">
+          <span class="flyer__detail-label">Gear Sale</span>
+          <span class="flyer__detail-value">Cycling and outdoor gear online and at the celebration</span>
+        </div>
+      </div>
+    </div>
+    <p class="flyer__footer-text">Ride On, Carl</p>
+  </div>
+</div>

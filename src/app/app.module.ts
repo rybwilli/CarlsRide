@@ -17,6 +17,7 @@ import { GearEditComponent } from './components/gear-edit/gear-edit.component';
 import { GearDetailComponent } from './components/gear-detail/gear-detail.component';
 import { AdminComponent } from './components/admin/admin.component';
 import { CelebrationDetailComponent } from './components/celebration-detail/celebration-detail.component';
+import { FlyerComponent } from './components/flyer/flyer.component';
 
 @NgModule({
   declarations: [
@@ -34,6 +35,7 @@ import { CelebrationDetailComponent } from './components/celebration-detail/cele
     GearDetailComponent,
     AdminComponent,
     CelebrationDetailComponent,
+    FlyerComponent,
   ],
   imports: [
     BrowserModule,

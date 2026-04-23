@@ -13,11 +13,13 @@ import { GearEditComponent } from './components/gear-edit/gear-edit.component';
 import { GearDetailComponent } from './components/gear-detail/gear-detail.component';
 import { AdminComponent } from './components/admin/admin.component';
 import { CelebrationDetailComponent } from './components/celebration-detail/celebration-detail.component';
+import { FlyerComponent } from './components/flyer/flyer.component';
 
 const routes: Routes = [
   { path: '', component: HomeComponent },
   { path: 'rides', component: RideListComponent },
   { path: 'celebration', component: CelebrationDetailComponent },
+  { path: 'flyer', component: FlyerComponent },
   { path: 'rides/new', component: AddRideComponent },
   { path: 'rides/:id/edit', component: EditRideComponent },
   { path: 'rides/:id', component: RideDetailComponent },
