@@ -114,6 +114,9 @@
         <p class="gear-detail__request-pending-note">
           Your request has been submitted! We'll be in touch.
         </p>
+        <div class="form-actions">
+          <button class="btn-venmo" (click)="openVenmoWarning()">💸 Pay with Venmo</button>
+        </div>
       </div>
     </ng-container>
 
@@ -206,6 +209,9 @@
                 <span>{{ s.contactName }}<span *ngIf="s.contactEmail"> — {{ s.contactEmail }}</span></span>
               </div>
             </ng-container>
+          </div>
+          <div class="form-actions" *ngIf="req.status === 'pending' || req.status === 'confirmed'">
+            <button class="btn-venmo" (click)="openVenmoWarning()">💸 Pay with Venmo</button>
           </div>
         </div>
       </div>

@@ -21,7 +21,7 @@ export class SaleService {
   searchText = '';
   priceSort: 'asc' | 'desc' = 'desc';
 
-  readonly venmoUsername = 'Ryan-Williams-09432';
+  readonly venmoUsername = 'Lrladwig';
   readonly sellerToken = 'carlsride2026';
 
   readonly categories: { value: SaleCategory; label: string; emoji: string }[] = [
@@ -36,6 +36,7 @@ export class SaleService {
     { value: 'tents',         label: 'Tents',        emoji: '⛺' },
     { value: 'outdoor gear',  label: 'Outdoor Gear', emoji: '🏕️' },
     { value: 'accessories',   label: 'Accessories',  emoji: '🎒' },
+    { value: 'car transport', label: 'Car Transport', emoji: '🚗' },
     { value: 'other',         label: 'Other',        emoji: '📦' },
   ];
 
